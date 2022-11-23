@@ -6,12 +6,13 @@ import {
   TheHeader
 } from './index'
 
-import { AuthConsumer, } from '../role-accress/authContext'
+import { AuthConsumer, } from '../role-access/authContext'
 
 const Login = React.lazy(() => import('../views/pages/Login'))
 
 const TheLayout = () => {
   return (
+    
     <AuthConsumer>
       {({ authenticated, user, permissions }) => (
         authenticated ? (

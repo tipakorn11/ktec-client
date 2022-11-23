@@ -9,13 +9,12 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { Link } from 'react-router-dom';
-import { AuthConsumer, } from '../role-accress/authContext'
+import { AuthConsumer, } from '../role-access/authContext'
 import UserModal from './UserModal';
 //import GLOBAL from "../GLOBAL"
 import icon_user from '../assets/icons/default-team.jpg'
 const TheHeaderDropdown = () => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('session-user')));
-  const [position, setPosition] = useState(JSON.parse(localStorage.getItem('permission')))
   const [show,setShow] = useState(false)
 
   return (
@@ -30,7 +29,7 @@ const TheHeaderDropdown = () => {
             </CDropdownToggle>
             <CDropdownMenu className="pt-0" placement="bottom-end">
               <CDropdownItem divider />
-              {position.position_name != "บุคคลทั่วไป" ?
+              {/* {position.position_name != "บุคคลทั่วไป" ?
 
                 <CDropdownItem onClick={() => setShow(true)}>
                   <CIcon name="cil-credit-card" className="mfe-2" />{user.firstname + ' ' + user.lastname + ' (' + position.position_name + ')'} <CBadge color="secondary" className="mfs-auto"></CBadge>
@@ -39,7 +38,7 @@ const TheHeaderDropdown = () => {
                 <CDropdownItem onClick={() => setShow(true)}>
                   <CIcon name="cil-credit-card" className="mfe-2" />{'' + position.position_name + ''} <CBadge color="secondary" className="mfs-auto"></CBadge>
                 </CDropdownItem>
-              }
+              } */}
               <CDropdownItem onClick={() => _handleLogout()}>
                 <CIcon name="cil-lock-locked" className="mfe-2" />Logout</CDropdownItem>
             </CDropdownMenu>

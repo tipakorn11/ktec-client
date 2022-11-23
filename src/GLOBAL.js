@@ -2,7 +2,7 @@
 const GROBAL = {
 
   BASE_SERVER: {
-    URL: 'http://localhost/ktec-client/',
+    URL: 'http://localhost/ktec-Server/',
     URL_IMG: 'http://localhost:3000',
     // URL_FILE: 'http://localhost/cpe-thesis-server/src/uploads/'
   },
@@ -10,9 +10,9 @@ const GROBAL = {
   // -----------------------------------------------------------------------------------
   // BASE_SERVER: {
   //   URL: 'https://www.cpe-thesis.rmuti.ac.th/thesis/',
-  //   // URL_IO: 'ws://localhost:3501/',
-  //   URL_IMG: 'http://localhost:3000',
-  //   // URL_EXPORT: 'http://localhost/giftshop_export/',
+    // URL_IO: 'ws://localhost:3501/',
+    // URL_IMG: 'http://localhost:3000',
+    // URL_EXPORT: 'http://localhost/giftshop_export/',
   // },
 
   ACCESS_TOKEN: {

@@ -1,31 +1,38 @@
 import { BaseFetch } from "../main-model";
 
 export default class UserModel extends BaseFetch{
-    getBuildingBy = (data) => this.directFetch({
+    getUserBy = (data) => this.directFetch({
         url: 'user/getUserBy',
         method: 'POST',
         body: JSON.stringify(data),
     })
-    getBuildingByID = (data) =>this.directFetch({
-        url: 'building/getBuildingByID',
+
+    auth = (data) => this.directFetch({
+        url: 'user/auth',
         method: 'POST',
         body: JSON.stringify(data),
     })
 
-    insertBuilding = (data) =>this.directFetch({
-        url: 'building/insertBuilding',
+    checkLogin = (data) =>this.directFetch({
+        url: 'user/checkLogin',
         method: 'POST',
         body: JSON.stringify(data),
     })
 
-    updateBuilding = (data) =>this.directFetch({
-        url: 'building/updateBuilding',
+    insertUser = (data) =>this.directFetch({
+        url: 'building/insertUser',
         method: 'POST',
         body: JSON.stringify(data),
     })
 
-    deleteBuilding = (data) =>this.directFetch({
-        url: 'building/deleteBuilding',
+    updateUser = (data) =>this.directFetch({
+        url: 'building/updateUser',
+        method: 'POST',
+        body: JSON.stringify(data),
+    })
+
+    deleteUser = (data) =>this.directFetch({
+        url: 'building/deleteUser',
         method: 'POST',
         body: JSON.stringify(data),
     })
