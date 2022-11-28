@@ -13,7 +13,6 @@ import {
 // import routes from '../routes'
 import {
   TheHeaderDropdown,
-  TheHeaderDropdownNotif,
 } from './index'
 
 const TheHeader = () => {
@@ -37,8 +36,7 @@ const TheHeader = () => {
       <CHeaderBrand className="mx-auto d-lg-none" to={`/`} />
       <CHeaderNav className="d-md-down-none mr-auto"></CHeaderNav>
       <CHeaderNav className="px-3">
-        <TheHeaderDropdownNotif />
-        <TheHeaderDropdown />
+        {/* <TheHeaderDropdown /> */}
       </CHeaderNav>
       <CSubheader className="px-3 justify-content-between">
         {/* <CBreadcrumbRouter className="border-0 c-subheader-nav m-0 px-0 px-md-3" routes={routes} /> */}

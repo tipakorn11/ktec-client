@@ -5,10 +5,8 @@ import {
   CDropdownMenu,
   CDropdownToggle,
   CImg,
-  CBadge
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import { Link } from 'react-router-dom';
 import { AuthConsumer, } from '../role-access/authContext'
 import UserModal from './UserModal';
 //import GLOBAL from "../GLOBAL"
@@ -27,9 +25,9 @@ const TheHeaderDropdown = () => {
                 <CImg src={icon_user} className="c-avatar-img" alt="user-profile" />
               </div>
             </CDropdownToggle>
-            <CDropdownMenu className="pt-0" placement="bottom-end">
+            {/* <CDropdownMenu className="pt-0" placement="bottom-end">
               <CDropdownItem divider />
-              {/* {position.position_name != "บุคคลทั่วไป" ?
+               {position.position_name != "บุคคลทั่วไป" ?
 
                 <CDropdownItem onClick={() => setShow(true)}>
                   <CIcon name="cil-credit-card" className="mfe-2" />{user.firstname + ' ' + user.lastname + ' (' + position.position_name + ')'} <CBadge color="secondary" className="mfs-auto"></CBadge>
@@ -38,10 +36,10 @@ const TheHeaderDropdown = () => {
                 <CDropdownItem onClick={() => setShow(true)}>
                   <CIcon name="cil-credit-card" className="mfe-2" />{'' + position.position_name + ''} <CBadge color="secondary" className="mfs-auto"></CBadge>
                 </CDropdownItem>
-              } */}
-              <CDropdownItem onClick={() => _handleLogout()}>
+              }
+              <CDropdownItem onClick={() => _handleLogout()}> 
                 <CIcon name="cil-lock-locked" className="mfe-2" />Logout</CDropdownItem>
-            </CDropdownMenu>
+            </CDropdownMenu> */}
           </CDropdown>
         )}
       </AuthConsumer>

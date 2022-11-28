@@ -10,7 +10,7 @@ import {
   CSidebarNavDropdown,
   CSidebarNavItem,
 } from '@coreui/react'
-import logo from '../assets/image/Logo_rmuti_sidebar.png'
+import logo from '../assets/image/logo_sidebar_ktec.png'
 
 import accessMenu from './menu'
 
@@ -21,14 +21,13 @@ const TheSidebar = (props) => {
   const { PERMISSIONS } = props
 
   const [navigations, setNavigation] = useState([])
-  //console.log(PERMISSIONS);
   useEffect(() => {
     setNavigation(accessMenu({ PERMISSIONS, }))
   }, [PERMISSIONS])
 
   return (
     <CSidebar show={show} onShowChange={(val) => dispatch({ type: 'set', sidebarShow: val })}>
-      <img src={logo} className="mx-auto d-block bottom-shadow" alt="logo" />
+      <img src={logo} className="px-auto d-block bottom-shadow" alt="logo" />
       <CSidebarNav>
         <div style={{ color: '#6b6c6d', padding: 12, }}>
           {/* <strong>ERP</strong> - <strong style={{ color: '#818080', fontSize: '75%', }}>Enterprise resource planning</strong> */}

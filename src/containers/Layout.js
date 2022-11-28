@@ -17,11 +17,11 @@ const TheLayout = () => {
       {({ authenticated, user, permissions }) => (
         authenticated ? (
           <div className="c-app c-default-layout">
-            <TheSidebar PERMISSIONS={permissions} />
+            <TheSidebar />
             <div className="c-wrapper">
               <TheHeader />
               <div className="c-body">
-                <TheContent PERMISSIONS={permissions} USER={user} />
+                <TheContent  USER={user} />
               </div>
               {/* <TheFooter /> */}
             </div>

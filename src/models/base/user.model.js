@@ -7,7 +7,7 @@ export default class UserModel extends BaseFetch{
         body: JSON.stringify(data),
     })
 
-    auth = (data) => this.directFetch({
+    auth = (data) => this.authFetch({
         url: 'user/auth',
         method: 'POST',
         body: JSON.stringify(data),
@@ -19,13 +19,13 @@ export default class UserModel extends BaseFetch{
         body: JSON.stringify(data),
     })
 
-    insertUser = (data) =>this.directFetch({
+    insertUser = (data) =>this.authFetch({
         url: 'building/insertUser',
         method: 'POST',
         body: JSON.stringify(data),
     })
 
-    updateUser = (data) =>this.directFetch({
+    updateUser = (data) =>this.authFetch({
         url: 'building/updateUser',
         method: 'POST',
         body: JSON.stringify(data),

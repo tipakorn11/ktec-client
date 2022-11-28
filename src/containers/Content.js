@@ -17,21 +17,21 @@ const loading = (
 const TheContent = (props) => {
   const { PERMISSIONS, USER } = props
 
-  const _generatePermission = (data) => PERMISSIONS.find(item => item.menu_name === data.key) || {
-    permission_view: false,
-    permission_add: false,
-    permission_edit: false,
-    permission_approve: false,
-    permission_cancel: false,
-    permission_delete: false,
-  }
+  // const _generatePermission = (data) => PERMISSIONS.find(item => item.menu_name === data.key) || {
+  //   permission_view: false,
+  //   permission_add: false,
+  //   permission_edit: false,
+  //   permission_approve: false,
+  //   permission_cancel: false,
+  //   permission_delete: false,
+  // }
   // console.log();
   return (
     <main className="c-main">
       <CContainer fluid>
         <Suspense fallback={loading}>
           <Switch>
-            {routes.map((route, idx) => {
+            {/* {routes.map((route, idx) => {
               let PERMISSION = _generatePermission({ key: route.key, })
               return route.component && PERMISSION.permission_view && (
                 <Route
@@ -46,7 +46,7 @@ const TheContent = (props) => {
                   )}
                 />
               )
-            })}
+            })} */}
             <Redirect from="/" to="/" />
           </Switch>
         </Suspense>

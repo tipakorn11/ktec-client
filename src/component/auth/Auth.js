@@ -26,7 +26,6 @@ class Auth extends Component {
 
   _checkLogin = async ({ username, password, }) => {
     const res_login = await user_model.checkLogin({ username, password, })
-    console.log(res_login);
     if (res_login.require === false) {
       this.setState({ authcertifying: false, }, () => {
         Swal.fire({ title: "ไม่สามารถล็อคอินได้ !", text: 'คำขอเกิดข้อผิดพลาด', icon: "error", })
@@ -39,13 +38,11 @@ class Auth extends Component {
       try {
         localStorage.setItem('x-access-token', res_login.token)
         localStorage.setItem('session-user', JSON.stringify(res_login.data[0]))
-        
         GLOBAL.ACCESS_TOKEN = { 'x-access-token': res_login.token }
-        
         this.setState({
           authcertifying: false,
           authenticated: true,
-          permissions: GLOBAL.PERMISSION.permission || [],
+          // permissions: GLOBAL.PERMISSION.permission || [],
           user: res_login.data[0],
         })
       } catch (e) {
@@ -64,20 +61,19 @@ class Auth extends Component {
         Swal.fire({ title: "ไม่สามารถระบุตัวตนได้!", text: 'กรุณาล็อคอินอีกครั้ง', icon: "error", })
       })
     }else{
-      let permission = JSON.parse(localStorage.getItem('permission') );
+      // let permission = JSON.parse(localStorage.getItem('permission') );
       GLOBAL.ACCESS_TOKEN = { 'x-access-token': localStorage.getItem('x-access-token') }
-      GLOBAL.PERMISSION.permission = permission.permission;
+      // GLOBAL.PERMISSION.permission = permission.permission;
       this.setState({
         authcertifying: false,
         authenticated: true,
-        permissions: permission.permission || [],
+        // permissions: permission.permission || [],
         user: JSON.parse(localStorage.getItem('session-user') ),
       })
     }
   }
   _initiateAuthentication = () => {
     try {
-      console.log(this.state.authenticated);
       if (this.state.authcertifying && !this.state.authenticated) {
         const token = localStorage.getItem('x-access-token')
         if (token) {
