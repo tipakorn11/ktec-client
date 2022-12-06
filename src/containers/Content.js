@@ -15,8 +15,7 @@ const loading = (
 )
 
 const TheContent = (props) => {
-  const { PERMISSIONS, USER } = props
-
+  const {  USER } = props
   // const _generatePermission = (data) => PERMISSIONS.find(item => item.menu_name === data.key) || {
   //   permission_view: false,
   //   permission_add: false,
@@ -31,22 +30,21 @@ const TheContent = (props) => {
       <CContainer fluid>
         <Suspense fallback={loading}>
           <Switch>
-            {/* {routes.map((route, idx) => {
-              let PERMISSION = _generatePermission({ key: route.key, })
-              return route.component && PERMISSION.permission_view && (
-                <Route
-                  key={idx}
-                  path={route.path}
-                  exact={route.exact}
-                  name={route.name}
-                  render={props => (
-                    <CFade>
-                      <route.component {...props} SESSION={{ USER, PERMISSION, }} />
-                    </CFade>
-                  )}
-                />
-              )
-            })} */}
+            {routes.map((route, idx) => {
+              // let PERMISSION = _generatePermission({ key: route.key, })
+              return ( 
+              <Route
+                key={idx}
+                path={route.path}
+                exact={route.exact}
+                name={route.name}
+                render={props => (
+                  <CFade>
+                    <route.component {...props} SESSION={{ USER, }} />
+                  </CFade>
+                )}
+              />)
+            })}
             <Redirect from="/" to="/" />
           </Switch>
         </Suspense>

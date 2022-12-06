@@ -31,8 +31,8 @@ export default class UserModel extends BaseFetch{
         body: JSON.stringify(data),
     })
 
-    deleteUser = (data) =>this.directFetch({
-        url: 'building/deleteUser',
+    deleteUserByid = (data) =>this.directFetch({
+        url: 'building/deleteUserByid',
         method: 'POST',
         body: JSON.stringify(data),
     })

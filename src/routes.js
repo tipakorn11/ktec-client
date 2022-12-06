@@ -1,6 +1,14 @@
 import React from "react"
 const routes = [
   // { key: 'ปริญญานิพนธ์', name: "ปริญญานิพนธ์", path: "/manage-thesis/thesis", component: React.lazy(() => import("./views/manage-thesis/thesis")) },
+  { key: 'คำนำหน้า', name: "คำนำหน้า", path: "/prefix", component: React.lazy(() => import("./views/prefix"))},
+  { key: 'อัปโหลดข้อมูล', name: "อัปโหลดข้อมูล", path: "/manage-user", component: React.lazy(() => import("./views/file-approve"))},
+  { key: 'จัดการแผนก', name: "จัดการแผนก", path: "/course", component: React.lazy(() => import("./views/course"))},
+  { key: 'จัดการข้อมูล', name: "จัดการข้อมูล", path: "/manage-users", component: React.lazy(() => import("./views/manage-users"))},
+  { key: 'ข่าวประชาสัมพันธ์', name: "ข่าวประชาสัมพันธ์", path: "/news", component: React.lazy(() => import("./views/news"))},
+  { path: "/",  key: 'ข่าวประชาสัมพันธ์', name: "ข่าวประชาสัมพันธ์", component: React.lazy(() => import("./views/news"))},
+
+  // { key: 'สถิติผู้เข้าชมปริญญานิพนธ์', name: "สถิติผู้เข้าชมปริญญานิพนธ์", path: "/statistic/view", component: React.lazy(() => import("./views/dasboard/view-dashboard"))},
       
 ]
 export default routes
