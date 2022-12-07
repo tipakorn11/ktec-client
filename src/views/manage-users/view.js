@@ -46,7 +46,7 @@ class ViewComponent extends React.Component {
     }
     _fetchData = (params = { pagination: this.state.pagination }) => this.setState({ loading: true, }, async () => {
         let users = await users_model.getUserBy()
-       console.log(users);
+        console.log(users);
         this.setState({
           users,
           total: users.total,

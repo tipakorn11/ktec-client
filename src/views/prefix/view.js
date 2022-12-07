@@ -86,7 +86,7 @@ class ViewComponent extends React.Component {
           <CardHeader>
             <h3 className="text-header">จัดการคำนำหน้า</h3>
               <Link to={`/prefix/insert`} className="btn btn-success float-right">
-                <i className="fa fa-plus" aria-hidden="true" /> เพิ่มแผนก
+                <i className="fa fa-plus" aria-hidden="true" /> เพิ่มคำนำหน้า
               </Link>
           </CardHeader>
           <CardBody>
@@ -100,7 +100,13 @@ class ViewComponent extends React.Component {
               rowKey='newsID'
               columns={[
                 {
-                  title: "ชื่อแผนก",
+                  title: "รหัสคำนำหน้า",
+                  dataIndex: "prefixID",
+                  filterAble: true,
+                  ellipsis: true,
+                },
+                {
+                  title: "คำนำหน้า",
                   dataIndex: "prefix_name",
                   filterAble: true,
                   ellipsis: true,

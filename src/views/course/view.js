@@ -46,7 +46,6 @@ class ViewComponent extends React.Component {
     }
     _fetchData = (params = { pagination: this.state.pagination }) => this.setState({ loading: true, }, async () => {
         let courses = await course_model.getCourseBy()
-        console.log(courses);
 
         this.setState({
           courses,
@@ -99,6 +98,12 @@ class ViewComponent extends React.Component {
               current={this.state.pagination.current}
               rowKey='newsID'
               columns={[
+                {
+                  title: "รหัสแผนก",
+                  dataIndex: "courseID",
+                  filterAble: true,
+                  ellipsis: true,
+                },
                 {
                   title: "ชื่อแผนก",
                   dataIndex: "course_name",

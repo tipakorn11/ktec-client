@@ -13,7 +13,7 @@ import {
 } from "reactstrap"
 import { Link } from "react-router-dom"
 import Swal from "sweetalert2"
-import { Loading, AsyncTypeahead } from "../../component/customComponent"
+import { Loading } from "../../component/customComponent"
 
 
 import { PrefixModel} from "../../models"
@@ -25,8 +25,14 @@ class Insert extends React.Component {
     this.state = {
       loading: true,
       prefix:[],
-      option_years:[]
+      option_years:[],
+      prefixID:'',
+      prefix_name:'',
+
     }
+
+
+
   }
 
   componentDidMount() {
@@ -34,6 +40,9 @@ class Insert extends React.Component {
   }
 
   _fetchData = async () => {
+    const { code } = this.props.match.params
+
+    let prefix = await prefix_model.getPrefixByid({ prefixID: code })
     const d = new Date()
     var year = d.getFullYear();
     const option_years = []
@@ -48,12 +57,20 @@ class Insert extends React.Component {
         label:y
       })
     }
+    const{
+      prefixID,
+      prefix_name
+
+    }=prefix.data[0]
     //.log(option_years);
     this.setState({
+      prefix,
+      prefixID,
+      prefix_name,
       loading: false,
       option_years,
       education_year:year + 543
-    })
+    },() => console.log('hee',prefix))
   }
 
   _handleSubmit = async (event) => {
@@ -62,9 +79,7 @@ class Insert extends React.Component {
       //console.log(this.state);
       const res = await prefix_model.insertPrefix({
         prefixID: this.state.prefixID,
-        prefix_title: this.state.prefix_title,
-        prefix_description: this.state.prefix_description,
-        prefix_file_date: this.state.prefix_file,
+        prefix_name: this.state.prefix_name,
       })
       console.log(res);
       if (res.require) {
@@ -96,10 +111,50 @@ class Insert extends React.Component {
   }
   
   render() {
-    
     return (
       <div>
-       
+        <Loading show={this.state.loading} />
+        <Card>
+          <CardHeader>
+            <h3 className="text-header">แก้ไขแผนก</h3>
+          </CardHeader>
+          <Form onSubmit={this._handleSubmit}>
+            <CardBody className="p-5">
+              <Row>
+              
+              <Col md={12}>
+                  <Row>
+                    <Col md={2}>
+                      <FormGroup>
+                        <label>รหัสคำนำหน้า <font color="#F00"><b>*</b></font></label>
+                        <Input
+                          type="text"
+                          value={this.state.prefixID}
+                          onChange={(e) => this.setState({ prefixID: e.target.value })}
+                          readOnly
+                        />
+                      </FormGroup>
+                    </Col>
+                    <Col md={2}>
+                      <FormGroup>
+                        <label>ชื่อคำนำหน้า <font color="#F00"><b>*</b></font></label>
+                        <Input
+                          type="text"
+                          value={this.state.prefix_name}
+                          onChange={(e) => this.setState({ prefix_name: e.target.value })}
+                        />
+                      </FormGroup>
+                    </Col>
+                  </Row>
+                </Col>
+              </Row>
+            </CardBody>
+            <CardFooter className="text-right">
+              <Button type="submit" color="success">Save</Button>
+              <Link to={`/prefix`}><Button type="button">Back</Button></Link>
+            </CardFooter>
+          </Form>
+        </Card>
       </div>
     )
   }

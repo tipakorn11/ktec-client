@@ -6,6 +6,11 @@ export default class UserModel extends BaseFetch{
         method: 'POST',
         body: JSON.stringify(data),
     })
+    getUserByid = (data) => this.directFetch({
+        url: 'user/getUserByid',
+        method: 'POST',
+        body: JSON.stringify(data),
+    })
 
     auth = (data) => this.authFetch({
         url: 'user/auth',

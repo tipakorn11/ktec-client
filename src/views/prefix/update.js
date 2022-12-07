@@ -126,7 +126,7 @@ class Update extends React.Component {
                   <Row>
                     <Col md={2}>
                       <FormGroup>
-                        <label>รหัสแผนก <font color="#F00"><b>*</b></font></label>
+                        <label>รหัสคำนำหน้า <font color="#F00"><b>*</b></font></label>
                         <Input
                           type="text"
                           value={this.state.prefixID}
@@ -137,7 +137,7 @@ class Update extends React.Component {
                     </Col>
                     <Col md={2}>
                       <FormGroup>
-                        <label>ชื่อแผนก <font color="#F00"><b>*</b></font></label>
+                        <label>ชื่อคำนำหน้า <font color="#F00"><b>*</b></font></label>
                         <Input
                           type="text"
                           value={this.state.prefix_name}
