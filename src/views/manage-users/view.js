@@ -101,13 +101,20 @@ class ViewComponent extends React.Component {
               columns={[
                 {
                   title: "ชื่อ",
-                  dataIndex: "thai_fname",
+                  dataIndex: "",
+                  render: (cell) => `${cell.thai_fname}  ${cell.thai_lname}`,
                   filterAble: true,
                   ellipsis: true,
                 },
-                {
+                { 
                   title: "แผนก",
-                  dataIndex: "news_description",
+                  dataIndex: "",
+                  render: (cell) => {
+                    if(cell.courseID === '30001')
+                      return 'ช่าง'
+                    else if(cell.courseID === '30002')
+                      return 'บริหาร'
+                  } ,
                   filterAble: true,
                   ellipsis: true,
                 },
@@ -134,14 +141,6 @@ class ViewComponent extends React.Component {
                         </Link>
                       )
                     }
-                    if (1) {
-                      row_accessible.push(
-                        <button key="delete" type="button" className="icon-button color-danger" onClick={() => this._onDelete(cell.newsID)} title="ลบรายการ">
-                          <i className="fa fa-trash" aria-hidden="true" />
-                        </button>
-                      )
-                    }
-
                     return row_accessible
                   },
                   width: 80

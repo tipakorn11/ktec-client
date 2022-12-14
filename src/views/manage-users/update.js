@@ -13,9 +13,8 @@ import {
 } from "reactstrap"
 import { Link } from "react-router-dom"
 import Swal from "sweetalert2"
-import { Loading ,SelectSearch} from "../../component/customComponent"
-
-
+import { Loading ,SelectSearch,DatePicker} from "../../component/customComponent"
+import { differenceInDays } from 'date-fns'
 import { UserModel,PrefixModel} from "../../models"
 
 const user_model = new UserModel()
@@ -27,7 +26,12 @@ class Detail extends React.Component {
       loading: true,
       user:[],
       prefix:[],
-      option_years:[]
+      option_years:[],
+      position: [],
+      education: [],
+      education_sub:[],
+      etc:[],
+      training:[],
     }
   }
 
@@ -53,11 +57,7 @@ class Detail extends React.Component {
         label:y
       })
     }
-    const{
-      prefixID,
-      prefix_name
-
-    }=prefix.data[0]
+    
     const{
       citizenID,
       thai_fname,
@@ -70,12 +70,36 @@ class Detail extends React.Component {
       mother_lname,
       nationality,
       personalID,
+      prefixID,
+      prefix_name,
       
     }=user.data[0]
+    const{
+      house_no,
+      village_name,
+      alley,
+      road,
+      sub_district,
+      sub_area,
+      country,
+      postal_code,
+      tel,
+
+
+    }=user.useraddress[0]
+    
+    let education = user.education.filter(item => item.educational_typeID === 'ED1001')
+    let education_sub = user.education.filter(item => item.educational_typeID === 'ED1002')
+    let etc = user.education.filter(item => item.educational_typeID === 'ED1003')
+
     //.log(option_years);
     this.setState({
         user,
-        prefix,
+        position: user.position,
+        education,
+        education_sub,
+        etc,
+        training: user.training,
         citizenID,
         thai_fname,
         thai_lname,
@@ -89,16 +113,26 @@ class Detail extends React.Component {
         personalID,
         prefixID,
         prefix_name,
+        house_no,
+        village_name,
+        alley,
+        road,
+        sub_district,
+        sub_area,
+        country,
+        postal_code,
+        tel,
         loading: false,
         option_years,
         education_year:year + 543
-    })
+    },() => console.log(user))
   }
 
   render() {
-    // let prefix_options = [{ label: this.state.prefix_name, value: '' }, ...this.state.prefix.map(item => ({
-    //   label: item.prefix_name, value: item.prefixID
-    // }))]
+
+      const pos= this.state.position.filter(item => item.positionID != 'pos1' && item.positionID != 'pos2')
+      let position = pos.map(item => item.position_name)
+      console.log(differenceInDays(new Date(2022, 1, 2) ,new Date( 2022,1, 7)))
     return (
       <div>
        <Loading show={this.state.loading} />
@@ -112,158 +146,347 @@ class Detail extends React.Component {
                 <Col lg={8}>
                   <Row>
                     <Col md={3}>
-                      <label>รหัสบุคลากร <font color="#F00"><b>*</b></font></label>
+                      <label>รหัสบุคลากร </label>
                       <Input
                         type="text"
                         value={this.state.personalID}
                         onChange={(e) => this.setState({ personalID: e.target.value })}
-                        required
                         readOnly
                       />
                     </Col>
                     <Col md={3}>
                       <FormGroup>
-                        <label>คำนำหน้า <font color="#F00"><b>*</b></font></label>
-                        <SelectSearch
-                          // options={prefix_options}
-                          value={this.state.prefixID}
-                          onChange={(e) => this.setState({ prefixID: e })}
+                        <label>คำนำหน้า </label>
+                        <Input
+                          value={this.state.prefix_name}
                         />
-                        <p className="text-muted">Example : นาย.</p>
                       </FormGroup>
                     </Col>
                     <Col md={3}>
                       <FormGroup>
-                        <label>ชื่อ <font color="#F00"><b>*</b></font></label>
+                        <label>ชื่อ </label>
                         <Input
                           type="text"
-                          value={this.state.employee_name}
-                          onChange={(e) => this.setState({ employee_name: e.target.value })}
-                          required
+                          value={this.state.thai_fname}
                         />
-                        <p className="text-muted">Example : วินัย.</p>
                       </FormGroup>
                     </Col>
                     <Col md={3}>
                       <FormGroup>
-                        <label>นามสกุล <font color="#F00"><b>*</b></font></label>
+                        <label>นามสกุล </label>
                         <Input
                           type="text"
-                          value={this.state.employee_lastname}
-                          onChange={(e) => this.setState({ employee_lastname: e.target.value })}
-                          required
+                          value={this.state.thai_lname}
                         />
-                        <p className="text-muted">Example : ชาญชัย.</p>
                       </FormGroup>
                     </Col>
                   </Row>
                   <Row>
                     <Col md={4}>
                       <FormGroup>
-                        <label>อีเมล์ </label>
+                        <label>สัญชาติ </label>
                         <Input
-                          type="email"
-                          value={this.state.employee_email}
-                          onChange={(e) => this.setState({ employee_email: e.target.value })}
+                          value={this.state.nationality}
                         />
-                        <p className="text-muted">Example : admin@arno.co.th.</p>
                       </FormGroup>
                     </Col>
                     <Col md={4}>
                       <FormGroup>
-                        <label>โทรศัพท์ </label>
+                        <label>ปีเกิด </label>
                         <Input
                           type="text"
-                          value={this.state.employee_tel}
-                          onChange={(e) => this.setState({ employee_tel: e.target.value })}
+                          value={this.state.bdate}
                         />
-                        <p className="text-muted">Example : 0610243003.</p>
                       </FormGroup>
                     </Col>
                     <Col md={4}>
                       <FormGroup>
-                        <label>บัตรประชาชน 13 หลัก <font color="#F00"><b>*</b></font></label>
+                        <label>บัตรประชาชน 13 หลัก </label>
                         <Input
                           type="text"
-                          value={this.state.employee_idcard}
-                          onChange={(e) => this.setState({ employee_idcard: e.target.value })}
-                          required
+                          value={this.state.citizenID}
                         />
-                        <p className="text-muted">Example : 1111111111111.</p>
+                      </FormGroup>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col md={6}>
+                      <FormGroup>
+                        <label>ชื่อบิดา </label>
+                        <Input
+                          value={"นาย "+this.state.father_fname+" "+this.state.father_lname}
+                        />
+                      </FormGroup>
+                    </Col>
+                    <Col md={6}>
+                      <FormGroup>
+                        <label>ชื่อมารดา </label>
+                        <Input
+                          type="text"
+                          value={"นาง "+this.state.mother_fname+" "+this.state.mother_lname}
+
+                        />
                       </FormGroup>
                     </Col>
                   </Row>
                   <Row>
                     <Col md={8}>
                       <FormGroup>
-                        <label>ที่อยู่ <font color="#F00"><b>*</b></font></label>
+                        <label>ที่อยู่ </label>
                         <Input
                           type="textarea"
                           row={3}
-                          value={this.state.employee_address}
-                          onChange={(e) => this.setState({ employee_address: e.target.value })}
+                          value={this.state.house_no +" ซอย "+this.state.alley+" ถนน "+this.state.road+" แขวง/ตำบล "+ this.state.sub_area + " \nเขต/อำเภอ "+ this.state.sub_district+ " จังหวัด "+this.state.country }
                         />
-                        <p className="text-muted">Example : 271/55.</p>
                       </FormGroup>
                     </Col>
                     <Col md={4}>
                       <FormGroup>
-                        <label>เลขไปรษณีย์ <font color="#F00"><b>*</b></font></label>
+                        <label>เลขไปรษณีย์ </label>
                         <Input
                           type="text"
-                          onChange={(e) => this.setState({ employee_zipcode: e.target.value })}
-                          value={this.state.employee_zipcode}
+                          value={this.state.postal_code}
                         />
-                        <p className="text-muted">Example : 30000.</p>
                       </FormGroup>
                     </Col>
                   </Row>
                   <Row>
-                    <Col md={3}>
-                      <FormGroup>
-                        <label>ตำแหน่ง <font color="#F00"><b>*</b></font></label>
-                        <SelectSearch
-                          // options={employee_position_options}
-                          value={this.state.employee_position_code}
-                          onChange={(e) => this.setState({ employee_position_code: e })}
+                    <Col md={12}>
+                      {position == 'รองผู้อำนวยการ' || position == 'ผู้อำนวยการ'?<FormGroup>
+                        <label>ตำแหน่ง </label>
+                        <Input
+                          value={position}
                         />
-                        <p className="text-muted">Example : พนักงานขาย.</p>
-                      </FormGroup>
-                    </Col>
-                    <Col md={3}>
-                      <FormGroup>
-                        <label>ประเภท <font color="#F00"><b>*</b></font></label>
-                        <SelectSearch
-                          // options={employee_type_options}
-                          value={this.state.employee_type_code}
-                          onChange={(e) => this.setState({ employee_type_code: e })}
-                        />
-                        <p className="text-muted">Example : รายวัน</p>
-                      </FormGroup>
-                    </Col>
-                    <Col md={3}>
-                      <FormGroup>
-                        <label>แผนก <font color="#F00"><b>*</b></font></label>
-                        <SelectSearch
-                          // options={department_options}
-                          value={this.state.department_code}
-                          onChange={(e) => this.setState({ department_code: e })}
-                        />
-                        <p className="text-muted">Example : แผนกขาย</p>
-                      </FormGroup>
-                    </Col>
-                    <Col md={3}>
-                      <FormGroup>
-                        <label>กะทำงาน <font color="#F00"><b>*</b></font></label>
-                        <SelectSearch
-                          // options={shift_work_options}
-                          value={this.state.shift_work_code}
-                          onChange={(e) => this.setState({ shift_work_code: e })}
-                        />
-                        <p className="text-muted">Example : กะเช้า</p>
-                      </FormGroup>
+                      </FormGroup>:''}
                     </Col>
                   </Row>
+                  <Row>
+                    <Col md={4}>
+                        <label>การศึกษา </label>
+                    </Col>
+                  </Row>
+                  {this.state.education.length ? this.state.education.map (item => (
+                    <div>
+                      <Row>
+                        <Col md={4}>
+                          <FormGroup>
+                            <label>วุฒิสาขา </label>
+                            <Input
+                              value={item.educational_name}
+                            />
+                          </FormGroup>
+                        </Col>
+                        <Col md={4}>
+                          <FormGroup>
+                            <label>วิชาเอก </label>
+                            <Input
+                              type="text"
+                              value={item.educational_major}
+
+                            />
+                          </FormGroup>
+                        </Col>
+                        <Col md={4}>
+                          <FormGroup>
+                            <label>สถาบัน </label>
+                            <Input
+                              type="text"
+                              value={item.institution_name}
+
+                            />
+                          </FormGroup>
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col md={4}>
+                          <FormGroup>
+                            <label>จังหวัด </label>
+                            <Input
+                              value={item.graduate_country}
+                            />
+                          </FormGroup>
+                        </Col>
+                        <Col md={4}>
+                          <FormGroup>
+                            <label>เมื่อ ว/ด/ป </label>
+                            <Input
+                              type="text"
+                              value={item.graduate_date}
+
+                            />
+                          </FormGroup>
+                        </Col>
+                      </Row>
+                    </div>
+                  )): null}
+                   {this.state.education_sub.length ? this.state.education_sub.map (item => (
+                    <div>
+                      <Row>
+                        <Col md={4}>
+                          <FormGroup>
+                            <label>วุฒิสาขา </label>
+                            <Input
+                              value={item.educational_name}
+                            />
+                          </FormGroup>
+                        </Col>
+                        <Col md={4}>
+                          <FormGroup>
+                            <label>วิชาเอก </label>
+                            <Input
+                              type="text"
+                              value={item.educational_major}
+
+                            />
+                          </FormGroup>
+                        </Col>
+                        <Col md={4}>
+                          <FormGroup>
+                            <label>สถาบัน </label>
+                            <Input
+                              type="text"
+                              value={item.institution_name}
+
+                            />
+                          </FormGroup>
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col md={4}>
+                          <FormGroup>
+                            <label>จังหวัด </label>
+                            <Input
+                              value={item.graduate_country}
+                            />
+                          </FormGroup>
+                        </Col>
+                        <Col md={4}>
+                          <FormGroup>
+                            <label>เมื่อ ว/ด/ป </label>
+                            <Input
+                              type="text"
+                              value={item.graduate_date}
+
+                            />
+                          </FormGroup>
+                        </Col>
+                      </Row>
+                    </div>
+                  )): null }
+                   {this.state.etc.length ? this.state.etc.map (item => (
+                    <div>
+                      <Row>
+                        <Col md={4}>
+                          <FormGroup>
+                            <label>วุฒิสาขา </label>
+                            <Input
+                              value={item.educational_name}
+                            />
+                          </FormGroup>
+                        </Col>
+                        <Col md={4}>
+                          <FormGroup>
+                            <label>วิชาเอก </label>
+                            <Input
+                              type="text"
+                              value={item.educational_major}
+
+                            />
+                          </FormGroup>
+                        </Col>
+                        <Col md={4}>
+                          <FormGroup>
+                            <label>สถาบัน </label>
+                            <Input
+                              type="text"
+                              value={item.institution_name}
+
+                            />
+                          </FormGroup>
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col md={4}>
+                          <FormGroup>
+                            <label>จังหวัด </label>
+                            <Input
+                              value={item.graduate_country}
+                            />
+                          </FormGroup>
+                        </Col>
+                        <Col md={4}>
+                          <FormGroup>
+                            <label>เมื่อ ว/ด/ป </label>
+                            <Input
+                              type="text"
+                              value={item.graduate_date}
+
+                            />
+                          </FormGroup>
+                        </Col>
+                      </Row>
+                    </div>
+                  )): null}
+                    <Row>
+                      <Col md={4}>
+                        <label>การอบรบม </label>
+                      </Col>
+                    </Row>
+                    {this.state.training.length ? this.state.training.map (item => (
+                      <div>
+                        <Row>
+                          <Col md={4}>
+                            <FormGroup>
+                              <label>หัวข้อการอบรม </label>
+                              <Input
+                                value={item.training_topic}
+                              />
+                            </FormGroup>
+                          </Col>
+                          <Col md={4}>
+                            <FormGroup>
+                              <label>หน่วยงานที่จัด </label>
+                              <Input
+                                type="text"
+                                value={item.training_agency}
+
+                              />
+                            </FormGroup>
+                          </Col>
+                          <Col md={4}>
+                            <FormGroup>
+                              <label>เมื่อ ว/ด/ป </label>
+                              <Input
+                                type="text"
+                                value={item.training_date}
+
+                              />
+                            </FormGroup>
+                          </Col>
+                        </Row>
+                        <Row>
+                          <Col md={4}>
+                            <FormGroup>
+                              <label>จังหวัด-ประเทศ </label>
+                              <Input
+                                value={item.country_agency}
+                              />
+                            </FormGroup>
+                          </Col>
+                          <Col md={4}>
+                            <FormGroup>
+                              <label>จำนวนวัน</label>
+                              <Input
+                                type="text"
+                                value={item.date_diff}
+
+                              />
+                            </FormGroup>
+                          </Col>
+                      </Row>
+                    </div>
+                 )): null}
+                  
                 </Col>
                 <Col lg={4}>
                   <label>โปรไฟล์ </label>
@@ -275,16 +498,14 @@ class Detail extends React.Component {
                       alt="profile"
                     />
                   </FormGroup>
-                  <FormGroup className="text-center">
-                    <Input
-                      type="file"
-                      accept="image/png, image/jpeg"
-                      // onChange={(e) => this._handleImageChange("employee_profile_image", e)}
-                    />
-                  </FormGroup>
+                  
                 </Col>
               </Row>
             </CardBody>
+            <CardFooter className="text-right">
+              <Button type="submit" color="success">Save</Button>
+              <Link to={`/manage-users`}><Button type="button">Back</Button></Link>
+            </CardFooter>
             </Form>
       </Card>
       </div>
