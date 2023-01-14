@@ -816,71 +816,102 @@ class Detail extends React.Component {
                           value={item.appointmentNO}
                         />
                       </FormGroup>
+                    </Col>
+                    <Col md={4}>
                       <FormGroup>
                         <label>ลงวันที่</label>
                         <Input
                           value={item.app_date}
                         />
                       </FormGroup>
+                    </Col>
+                    <Col md={4}>
                       <FormGroup>
                         <label>ตั้งแต่วันที่</label>
                         <Input
                           value={item.app_since}
                         />
                       </FormGroup>
+                    </Col>
+                  </Row>
+
+                  <Row>
+                    <Col md={4}>
                       <FormGroup>
                         <label>โรงเรียน</label>
                         <Input
                           value={item.app_currently_work}
                         />
                       </FormGroup>
+                    </Col>
+                    <Col md={4}>
                       <FormGroup>
                         <label>ประเภท</label>
                         <Input
                           value={item.app_teacher_type}
                         />
                       </FormGroup>
+                    </Col>
+                    <Col md={4}>
                       <FormGroup>
                         <label>เขต/อำเภอ</label>
                         <Input
                           value={item.app_district}
                         />
                       </FormGroup>
+                      </Col>
+                  </Row>
+
+                  <Row>
+                   <Col md={4}>
                       <FormGroup>
                         <label>จังหวัด</label>
                         <Input
                           value={item.app_country}
-                        />
+                          />
                       </FormGroup>
+                    </Col>
+                   <Col md={4}>
                       <FormGroup>
                         <label>วุฒิ</label>
                         <Input
                           value={item.app_educational}
-                        />
+                          />
                       </FormGroup>
+                    </Col>
+                   <Col md={4}>
                       <FormGroup>
                         <label>ใบอนุญาติให้จำหน่าย เลขที่</label>
                         <Input
                           value={item.app_dischargeNO}
-                        />
+                          />
                       </FormGroup>
-                      <FormGroup>
+                    </Col>
+                  </Row>
+                  
+                  <Row>
+                   <Col md={4}>
+                     <FormGroup>
                         <label>ลงวันที่</label>
                         <Input
                           value={item.app_discharge_date}
-                        />
+                          />
                       </FormGroup>
+                    </Col>
+                   <Col md={4}>
                       <FormGroup>
                         <label>ตั้งแต่วันที่</label>
                         <Input
                           value={item.app_discharge_since}
-                        />
+                          />
                       </FormGroup>
+                    </Col>
+                   <Col md={4}>
                       <FormGroup>
                         <label>สาเหตุ</label>
                         <Input
                           value={item.app_discharge_motive}
-                        />
+                          />
                       </FormGroup>
                     </Col>
                   </Row>
@@ -905,7 +936,7 @@ class Detail extends React.Component {
                   <Row>
                     <Col md={12}>
                       <FormGroup>
-                        <label>ผลงาน</label>
+                        <label>เครื่องราชอิสริยาภรณ์</label>
                         <Input
                           value={item.portfolio_name}
                         />

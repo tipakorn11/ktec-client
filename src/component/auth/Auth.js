@@ -38,11 +38,17 @@ class Auth extends Component {
       try {
         localStorage.setItem('x-access-token', res_login.token)
         localStorage.setItem('session-user', JSON.stringify(res_login.data[0]))
+        localStorage.setItem('permission',JSON.stringify(res_login.permission[0]));
+        localStorage.setItem('temp_permission',JSON.stringify(res_login.permission));
+       
+
         GLOBAL.ACCESS_TOKEN = { 'x-access-token': res_login.token }
+        GLOBAL.PERMISSION.permission = res_login.permission[0].permission;
+
         this.setState({
           authcertifying: false,
           authenticated: true,
-          // permissions: GLOBAL.PERMISSION.permission || [],
+          permissions: GLOBAL.PERMISSION.permission || [],
           user: res_login.data[0],
         })
       } catch (e) {
@@ -61,13 +67,14 @@ class Auth extends Component {
         Swal.fire({ title: "ไม่สามารถระบุตัวตนได้!", text: 'กรุณาล็อคอินอีกครั้ง', icon: "error", })
       })
     }else{
-      // let permission = JSON.parse(localStorage.getItem('permission') );
+      let permission = JSON.parse(localStorage.getItem('permission') );
       GLOBAL.ACCESS_TOKEN = { 'x-access-token': localStorage.getItem('x-access-token') }
-      // GLOBAL.PERMISSION.permission = permission.permission;
+      GLOBAL.PERMISSION.permission = permission.permission;
+     
       this.setState({
         authcertifying: false,
         authenticated: true,
-        // permissions: permission.permission || [],
+        permissions: permission.permission || [],
         user: JSON.parse(localStorage.getItem('session-user') ),
       })
     }

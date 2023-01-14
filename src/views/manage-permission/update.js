@@ -19,7 +19,7 @@ import { Loading } from "../../component/customComponent"
 import { PrefixModel} from "../../models"
 
 const prefix_model = new PrefixModel()
-class Insert extends React.Component {
+class Update extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -41,6 +41,8 @@ class Insert extends React.Component {
 
   _fetchData = async () => {
     const { code } = this.props.match.params
+
+    let prefix = await prefix_model.getPrefixByid({ prefixID: code })
     const d = new Date()
     var year = d.getFullYear();
     const option_years = []
@@ -55,20 +57,27 @@ class Insert extends React.Component {
         label:y
       })
     }
+    const{
+      prefixID,
+      prefix_name
+
+    }=prefix.data[0]
     //.log(option_years);
     this.setState({
-     
+      prefix,
+      prefixID,
+      prefix_name,
       loading: false,
       option_years,
       education_year:year + 543
-    })
+    },() => console.log('hee',prefix))
   }
 
   _handleSubmit = async (event) => {
     event.preventDefault()
     this._checkSubmit() && this.setState({ loading: true, }, async () => {
       //console.log(this.state);
-      const res = await prefix_model.insertPrefix({
+      const res = await prefix_model.updatePrefix({
         prefixID: this.state.prefixID,
         prefix_name: this.state.prefix_name,
       })
@@ -107,7 +116,7 @@ class Insert extends React.Component {
         <Loading show={this.state.loading} />
         <Card>
           <CardHeader>
-            <h3 className="text-header">เพิ่มคำนำหน้า</h3>
+            <h3 className="text-header">แก้ไขแผนก</h3>
           </CardHeader>
           <Form onSubmit={this._handleSubmit}>
             <CardBody className="p-5">
@@ -151,4 +160,4 @@ class Insert extends React.Component {
   }
 }
 
-export default Insert
+export default Update

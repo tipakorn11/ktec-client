@@ -6,14 +6,13 @@ const Insert = React.lazy(() => import('./insert'))
 const Update = React.lazy(() => import('./update'))
 const Detail = React.lazy(() => import('./detail'))
 const Users = ({ SESSION }) => {
-//   const { permission_view } = SESSION.PERMISSION
+  const { permission_view,permission_edit,permission_add} = SESSION.PERMISSION
   return (
     <Switch>
-      {/* {permission_view == 1 ? ?<Route  path={`/news/detail/:code`} render={props => <Detail {...props} {...SESSION} />}/>:null} */}
-      <Route path={`/manage-users/update/:code`} render={props => <Update {...props} {...SESSION} />} />
-      {/* <Route path={`/users/insert`} render={props => <Insert {...props} {...SESSION} />} /> */}
-      <Route path={`/manage-users/detail/:code`} render={props => <Detail {...props} {...SESSION} />} /> 
-      <Route path={`/manage-users/view`} render={props => <View {...props} {...SESSION} />} />
+      {permission_edit == 1 ? <Route path={`/manage-users/update/:code`} render={props => <Update {...props} {...SESSION} />} /> : null }
+      {permission_view == 1 ? <Route path={`/manage-users/detail/:code`} render={props => <Detail {...props} {...SESSION} />} /> : null }
+      {permission_add == 1 ? <Route path={`/manage-users/insert`} render={props => <Insert {...props} {...SESSION} />} /> : null }
+      {permission_view == 1 ? <Route path={`/manage-users/view`} render={props => <View {...props} {...SESSION} />} />  : null }
       <Route path={`/`} render={props => <View {...props} {...SESSION} />} />
 
     </Switch>

@@ -78,16 +78,19 @@ class ViewComponent extends React.Component {
             }
           }))
     render() {
-        // const { permission_view } = this.props.PERMISSION
+        const { permission_view,permission_add,permission_edit,permission_delete } = this.props.PERMISSION
         return (
              <div>
         <Loading show={this.state.loading} />
         <Card>
           <CardHeader>
             <h3 className="text-header">จัดการข้อมูลบุคลากร</h3>
-              <Link to={`/manage-users/insert`} className="btn btn-success float-right">
-                <i className="fa fa-plus" aria-hidden="true" /> เพิ่มข้อมูลบุคลากร
-              </Link>
+              {permission_add == 1 ?
+                <Link to={`/manage-users/insert`} className="btn btn-success float-right">
+                  <i className="fa fa-plus" aria-hidden="true" /> เพิ่มข้อมูลบุคลากร
+                </Link>
+              : null 
+              }
           </CardHeader>
           <CardBody>
             <DataTable
@@ -123,7 +126,7 @@ class ViewComponent extends React.Component {
                   dataIndex: '',
                   render: (cell) => {
                     const row_accessible = []
-                    if (1) {
+                    if (permission_view == 1 ) {
                         row_accessible.push(
                           <Link key={"detail"} to={`/manage-users/detail/${cell.personalID}`} title="รายละเอียด">
                             <button type="button" className="icon-button color-primary">
@@ -132,7 +135,7 @@ class ViewComponent extends React.Component {
                           </Link>
                         )
                       }
-                    if (1) {
+                    if (permission_edit == 1) {
                       row_accessible.push(
                         <Link key={"update"} to={`/manage-users/update/${cell.personalID}`} title="แก้ไขรายการ">
                           <button type="button" className="icon-button color-warning">

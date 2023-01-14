@@ -77,16 +77,19 @@ class ViewComponent extends React.Component {
             }
           }))
     render() {
-        // const { permission_view } = this.props.PERMISSION
+        const { permission_add, permission_edit, permission_delete } = this.props.PERMISSION
+        
         return (
              <div>
         <Loading show={this.state.loading} />
         <Card>
           <CardHeader>
             <h3 className="text-header">จัดการข้อมูลแผนก</h3>
-              <Link to={`/course/insert`} className="btn btn-success float-right">
-                <i className="fa fa-plus" aria-hidden="true" /> เพิ่มแผนก
-              </Link>
+              {permission_add == 1 ?
+                <Link to={`/course/insert`} className="btn btn-success float-right">
+                  <i className="fa fa-plus" aria-hidden="true" /> เพิ่มแผนก
+                </Link>
+                : null }
           </CardHeader>
           <CardBody>
             <DataTable
@@ -117,7 +120,7 @@ class ViewComponent extends React.Component {
                   render: (cell) => {
                     const row_accessible = []
                   
-                    if (1) {
+                    if (permission_edit == 1) {
                       row_accessible.push(
                         <Link key={"update"} to={`/course/update/${cell.courseID}`} title="แก้ไขรายการ">
                           <button type="button" className="icon-button color-warning">
@@ -126,7 +129,7 @@ class ViewComponent extends React.Component {
                         </Link>
                       )
                     }
-                    if (1) {
+                    if (permission_delete == 1) {
                       row_accessible.push(
                         <button key="delete" type="button" className="icon-button color-danger" onClick={() => this._onDelete(cell.courseID)} title="ลบรายการ">
                           <i className="fa fa-trash" aria-hidden="true" />

@@ -2,8 +2,9 @@
 const GROBAL = {
 
   BASE_SERVER: {
+    // URL: 'https://www.dev.rmuti.ac.th/ktec/ktec-Server/',
     URL: 'http://localhost/ktec-Server/',
-    URL_IMG: 'http://localhost:3000',
+    // URL_IMG: 'http://localhost:3000',
     // URL_FILE: 'http://localhost/cpe-thesis-server/src/uploads/'
   },
 

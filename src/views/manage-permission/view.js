@@ -11,7 +11,7 @@ import { Link } from 'react-router-dom'
 import Swal from 'sweetalert2'
 
 import { Loading, SelectSearch, DataTable } from "../../component/customComponent"
-import { NewsModel } from '../../models'
+import { PositionModel } from '../../models'
 const color_templates = [
     '#FF6384',
     '#36A2EB',
@@ -24,12 +24,13 @@ const color_templates = [
     '#1ABC9C',
     '#F0B27A',
 ]
-const news_model = new NewsModel()
+// const { permission_view,permission_add,permission_edit } = this.props.matach.params
+const position_model = new PositionModel()
 class ViewComponent extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            news: [],
+            positions: [],
             loading: true,
             pagination: {
                 current: 1,
@@ -45,11 +46,10 @@ class ViewComponent extends React.Component {
         this._fetchData()
     }
     _fetchData = (params = { pagination: this.state.pagination }) => this.setState({ loading: true, }, async () => {
-        let news = await news_model.getNewsBy()
-       
+        let positions = await position_model.getPositionBy()
         this.setState({
-          news,
-          total: news.total,
+          positions,
+          total: positions.total,
           loading: false,
            
             })
@@ -64,8 +64,7 @@ class ViewComponent extends React.Component {
           }).then(({ value }) => value && this.setState({ loading: true, }, async () => {
             let total = this.state.total - 1;
            
-            const res = await news_model.deleteNewsByid({ newsID: code })
-            console.log(res);
+            const res = await position_model.deletePositionByid({ positionID: code })
             if (res.require) {
               Swal.fire({ title: 'ลบรายการแล้ว !', text: '', icon: 'success' })
               this._fetchData()
@@ -78,59 +77,49 @@ class ViewComponent extends React.Component {
             }
           }))
     render() {
-        const { permission_view ,permission_add, permission_edit, permission_delete } = this.props.PERMISSION
-
+        const { permission_add, permission_edit, permission_delete } = this.props.PERMISSION
         return (
              <div>
         <Loading show={this.state.loading} />
         <Card>
           <CardHeader>
-            <h3 className="text-header">ข่าวประชาสัมพันธ์</h3>
-              {permission_add == 1 ?
-                <Link to={`/news/insert`} className="btn btn-success float-right">
-                  <i className="fa fa-plus" aria-hidden="true" /> เพิ่มข่าวประชาสัมพันธ์
-                </Link>
-              : null }
+            <h3 className="text-header">จัดการสิทธ์เข้าใช้งาน</h3>
+              {permission_add == 1 ?<Link to={`/manage-permission/insert`} className="btn btn-success float-right">
+                <i className="fa fa-plus" aria-hidden="true" /> เพิ่มสิทธ์เข้าใช้งาน
+              </Link> : null}
           </CardHeader>
           <CardBody>
             <DataTable
               onChange={this._fetchData}
               showRowNo={true}
               pageSize={this.state.pagination.pageSize}
-              dataSource={this.state.news.data}
-              dataTotal={this.state.news.total}
+              dataSource={this.state.positions.data}
+              dataTotal={this.state.positions.total}
               current={this.state.pagination.current}
-              rowKey='newsID'
+              rowKey=''
               columns={[
                 {
-                  title: "ชื่อเรื่อง",
-                  dataIndex: "news_title",
+                  title: "รหัส",
+                  dataIndex: "positionID",
                   filterAble: true,
                   ellipsis: true,
                 },
                 {
-                  title: "รายละเอียด",
-                  dataIndex: "news_description",
+                  title: "สิทธ์การใช้งาน",
+                  dataIndex: "position_name",
                   filterAble: true,
                   ellipsis: true,
                 },
+                
                 {
                   title: '',
                   dataIndex: '',
                   render: (cell) => {
                     const row_accessible = []
-                    if (permission_view == 1) {
-                        row_accessible.push(
-                          <Link key={"detail"} to={`/news/detail/${cell.newsID}`} title="รายละเอียด">
-                            <button type="button" className="icon-button color-primary">
-                              <i className="fa fa-search" aria-hidden="true" />
-                            </button>
-                          </Link>
-                        )
-                      }
+                  
                     if (permission_edit == 1) {
                       row_accessible.push(
-                        <Link key={"update"} to={`/news/update/${cell.newsID}`} title="แก้ไขรายการ">
+                        <Link key={"update"} to={`/position/update/${cell.positionID}`} title="แก้ไขรายการ">
                           <button type="button" className="icon-button color-warning">
                             <i className="fa fa-pencil-square-o" aria-hidden="true" />
                           </button>
@@ -139,7 +128,7 @@ class ViewComponent extends React.Component {
                     }
                     if (permission_delete == 1) {
                       row_accessible.push(
-                        <button key="delete" type="button" className="icon-button color-danger" onClick={() => this._onDelete(cell.newsID)} title="ลบรายการ">
+                        <button key="delete" type="button" className="icon-button color-danger" onClick={() => this._onDelete(cell.positionID)} title="ลบรายการ">
                           <i className="fa fa-trash" aria-hidden="true" />
                         </button>
                       )
