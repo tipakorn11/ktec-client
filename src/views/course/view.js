@@ -12,6 +12,7 @@ import Swal from 'sweetalert2'
 
 import { Loading, SelectSearch, DataTable } from "../../component/customComponent"
 import { CourseModel } from '../../models'
+
 const color_templates = [
     '#FF6384',
     '#36A2EB',

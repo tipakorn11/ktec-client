@@ -68,7 +68,7 @@ const accessMenu = ({ PERMISSIONS }) => {
     navigations.push(
       {
         _tag: "CSidebarNavTitle",
-        _children: ["หน้าแรก"],
+        _children: ["จัดการข่าวประชาสัมพันธ์"],
       },
       ...news
     );

@@ -84,9 +84,11 @@ class ViewComponent extends React.Component {
         <Card>
           <CardHeader>
             <h3 className="text-header">จัดการสิทธ์เข้าใช้งาน</h3>
-              {permission_add == 1 ?<Link to={`/manage-permission/insert`} className="btn btn-success float-right">
-                <i className="fa fa-plus" aria-hidden="true" /> เพิ่มสิทธ์เข้าใช้งาน
-              </Link> : null}
+              {permission_add == 1 ?
+                <Link to={`/manage-permission/insert`} className="btn btn-success float-right">
+                  <i className="fa fa-plus" aria-hidden="true" /> เพิ่มสิทธ์เข้าใช้งาน
+                </Link> 
+              : null}
           </CardHeader>
           <CardBody>
             <DataTable
@@ -119,7 +121,7 @@ class ViewComponent extends React.Component {
                   
                     if (permission_edit == 1) {
                       row_accessible.push(
-                        <Link key={"update"} to={`/position/update/${cell.positionID}`} title="แก้ไขรายการ">
+                        <Link key={"update"} to={`/manage-permission/update/${cell.positionID}`} title="แก้ไขรายการ">
                           <button type="button" className="icon-button color-warning">
                             <i className="fa fa-pencil-square-o" aria-hidden="true" />
                           </button>

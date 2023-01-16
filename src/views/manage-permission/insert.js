@@ -83,7 +83,6 @@ class Insert extends React.Component {
   _handleSubmit = async (event) => {
     event.preventDefault()
     this._checkSubmit() && this.setState({ loading: true, }, async () => {
-      //console.log(this.state);
       const res = await permission_model.insertPermission({
         permissions: this.state.permissions.map(item => ({
           menuID: item.menuID,
@@ -198,13 +197,12 @@ class Insert extends React.Component {
   
   render() {
     const menu_groups = [
-      { menu_group: '', menu_group_name: '', menu_group_color: '#dddddd' },
+      { menu_group: '', menu_group_name: '', menu_group_color: '#ddddd' },
       { menu_group: 'news', menu_group_name: 'หน้าแรก', menu_group_color: '#ffb97b' },
-      { menu_group: 'user', menu_group_name: 'จัดการข้อมูล', menu_group_color: 'crimson' },
-      { menu_group: 'master', menu_group_name: 'จัดการข้อมูลพื้นฐาน', menu_group_color: '#9adaff' },
+      { menu_group: 'user', menu_group_name: 'จัดการข้อมูล', menu_group_color: '#8bb4f9' },
+      { menu_group: 'master', menu_group_name: 'จัดการข้อมูลพื้นฐาน', menu_group_color: '#fea213' },
+
     ]
-    
-    console.log(this.state.permissions);
     return (
       <div>
         <Loading show={this.state.loading} />
@@ -280,11 +278,12 @@ class Insert extends React.Component {
                   </tr>
                 </thead>
                 <tbody>
-                  {this.state.permissions.map((item, idx) => {
+                  {
+                  this.state.permissions.map((item, idx) => {
                     let display_menus = []
                     if (idx && item.menu_group && item.menu_group !== this.state.permissions[idx - 1].menu_group ) {
-                      let menu_group = menu_groups.find(val => val.menu_group === item.menu_group)
-
+                      let menu_group 
+                      
                       if (menu_group) {
                         display_menus.push(
                           <tr key={menu_group.menu_group} style={{ backgroundColor: menu_group.menu_group_color }}>
@@ -296,7 +295,7 @@ class Insert extends React.Component {
 
                     display_menus.push(
                       <tr key={idx}>
-                        <td className="text-center">{idx + 1}</td>
+                        <td className="text-center">{idx + 1 }</td>
                         <td>{item.menu_name}</td>
                         <td className="text-center">
                           <input type="checkbox" checked={item.permission_view} onChange={(e) => this._checkedItem(e, idx, 'view')} />
@@ -320,13 +319,15 @@ class Insert extends React.Component {
                     )
 
                     return display_menus
-                  })}
+
+                  })
+                }
                 </tbody>
               </table>
             </CardBody>
             <CardFooter className="text-right">
               <Button type="submit" color="success">Save</Button>
-              <Link to={`/prefix`}><Button type="button">Back</Button></Link>
+              <Link to={`/manage-permission`}><Button type="button">Back</Button></Link>
             </CardFooter>
           </Form>
         </Card>
