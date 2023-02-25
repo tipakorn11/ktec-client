@@ -42,9 +42,29 @@ class Update extends React.Component {
   _fetchData = async () => {
     const { code } = this.props.match.params
     const permissions = await permission_model.getPermissionByid({ positionID : code })
-    const position = await position_model.getPositionBy({ positionID : code})
+    const position = await position_model.getPositionByid({ positionID : code})
     const menu_permission = []
     
+    const {
+      positionID,
+      position_name
+    } = position.data[0]
+
+    permissions.permission.forEach(item => {
+      menu_permission.push({
+          menuID: item.menuID,
+          menu_name: item.menu_name,
+          menu_group: item.menu_group,
+          permission_add: item.permission_add == 1 ? true : false,
+          permission_edit: item.permission_edit == 1 ? true : false,
+          permission_delete: item.permission_delete == 1 ? true : false,
+          permission_view: item.permission_view == 1 ? true : false,
+          permission_approve: item.permission_approve == 1 ? true : false,
+          permission_cancel: item.permission_cancel == 1 ? true : false
+
+      })
+  });
+
     const d = new Date()
     var year = d.getFullYear();
     const option_years = []
@@ -59,10 +79,11 @@ class Update extends React.Component {
         label:y
       })
     }
-    
     //.log(option_years);
     this.setState({
-      permissions: permissions.permission,
+      positionID,
+      position_name,
+      permissions: menu_permission,
       loading: false,
       option_years,
       education_year:year + 543
@@ -72,7 +93,7 @@ class Update extends React.Component {
   _handleSubmit = async (event) => {
     event.preventDefault()
     this._checkSubmit() && this.setState({ loading: true, }, async () => {
-      //console.log(this.state);
+      
       const res = await permission_model.updatePermission({
         permissions: this.state.permissions.map(item => ({
           menuID: item.menuID,
@@ -85,11 +106,11 @@ class Update extends React.Component {
           permission_delete: item.permission_delete ? 1 : 0,
         }))
       })
-      // const res1 = await position_model.insertPosition({
+      // const res1 = await position_model.updatePosition({
       //   positionID: this.state.positionID,
       //   position_name: this.state.position_name
       // })
-      if (res.require ) {
+      if (res.require) {
         Swal.fire({ title: "บันทึกข้อมูลแล้ว !", icon: "success", })
         this.props.history.push(`/manage-permission`)
       } else {
@@ -172,7 +193,7 @@ class Update extends React.Component {
   }
   _checkSubmit() {
 
-    if (this.state.license_name.trim() === '') {
+    if (this.state.position_name === '') {
       Swal.fire({ title: "กรุณาระบุชื่อสิทธิ์การใช้งาน / Please input Permission Name !", icon: "warning", })
       return false
     } else {

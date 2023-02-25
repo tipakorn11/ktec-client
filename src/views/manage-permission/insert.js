@@ -83,6 +83,7 @@ class Insert extends React.Component {
   _handleSubmit = async (event) => {
     event.preventDefault()
     this._checkSubmit() && this.setState({ loading: true, }, async () => {
+      
       const res = await permission_model.insertPermission({
         permissions: this.state.permissions.map(item => ({
           menuID: item.menuID,
@@ -95,6 +96,7 @@ class Insert extends React.Component {
           permission_delete: item.permission_delete ? 1 : 0,
         }))
       })
+      
       const res1 = await position_model.insertPosition({
         positionID: this.state.positionID,
         position_name: this.state.position_name
@@ -143,7 +145,6 @@ class Insert extends React.Component {
           } 
         }
       })
-
       return { permissions: state.permissions }
     })
   }
@@ -208,7 +209,7 @@ class Insert extends React.Component {
         <Loading show={this.state.loading} />
         <Card>
           <CardHeader>
-            <h3 className="text-header">แก้ไขแผนก</h3>
+            <h3 className="text-header">เพิ่มสิทธิการใช้งาน</h3>
           </CardHeader>
           <Form onSubmit={this._handleSubmit}>
             <CardBody className="p-5">
