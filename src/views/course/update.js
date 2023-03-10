@@ -97,12 +97,12 @@ class Update extends React.Component {
   
   _checkSubmit() {
 
-    if (this.state.course_title == '') {
-      Swal.fire("กรุณาระบุชื่อเรื่อง")
+    if (this.state.courseID == '') {
+      Swal.fire("กรุณาระบุรหัสหมวดวิชา")
       return false
     }
-    else if (this.state.course_description === '') {
-      Swal.fire("กรุณาระบุรายละเอียด")
+    else if (this.state.course_name === '') {
+      Swal.fire("กรุณาระบุชื่อหมวดวิชา")
       return false
     }
     else {
@@ -116,7 +116,7 @@ class Update extends React.Component {
         <Loading show={this.state.loading} />
         <Card>
           <CardHeader>
-            <h3 className="text-header">แก้ไขแผนก</h3>
+            <h3 className="text-header">แก้ไขหมวดวิชา</h3>
           </CardHeader>
           <Form onSubmit={this._handleSubmit}>
             <CardBody className="p-5">
@@ -126,7 +126,7 @@ class Update extends React.Component {
                   <Row>
                     <Col md={2}>
                       <FormGroup>
-                        <label>รหัสแผนก <font color="#F00"><b>*</b></font></label>
+                        <label>รหัสหมวดวิชา <font color="#F00"><b>*</b></font></label>
                         <Input
                           type="text"
                           value={this.state.courseID}
@@ -137,7 +137,7 @@ class Update extends React.Component {
                     </Col>
                     <Col md={2}>
                       <FormGroup>
-                        <label>ชื่อแผนก <font color="#F00"><b>*</b></font></label>
+                        <label>ชื่อหมวดวิชา <font color="#F00"><b>*</b></font></label>
                         <Input
                           type="text"
                           value={this.state.course_name}

@@ -24,11 +24,20 @@ const accessMenu = ({ PERMISSIONS }) => {
       exact: false,
     });
   }
-  if (_checkPermission("จัดการแผนก")) {
+  if (_checkPermission("จัดการหมวดวิชา")) {
     user.push({
       _tag: "CSidebarNavItem",
-      name: "จัดการแผนก",
+      name: "จัดการหมวดวิชา",
       to: "/course/view",
+      icon: <i className="c-sidebar-nav-icon fa fa-desktop" />,
+      exact: false,
+    });
+  }
+  if (_checkPermission("จัดการไฟล์")) {
+    user.push({
+      _tag: "CSidebarNavItem",
+      name: "จัดการไฟล์",
+      to: "/file-approve/view",
       icon: <i className="c-sidebar-nav-icon fa fa-desktop" />,
       exact: false,
     });

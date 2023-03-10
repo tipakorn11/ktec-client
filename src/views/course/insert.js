@@ -13,19 +13,20 @@ import {
 } from "reactstrap"
 import { Link } from "react-router-dom"
 import Swal from "sweetalert2"
-import { Loading, AsyncTypeahead } from "../../component/customComponent"
+import { Loading } from "../../component/customComponent"
+import { CourseModel} from "../../models"
 
-
-import { NewsModel} from "../../models"
-
-const news_model = new NewsModel()
+const course_model = new CourseModel()
 class Insert extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       loading: true,
-      news:[],
-      option_years:[]
+      course:[],
+      option_years:[],
+      courseID:'',
+      course_name:'',
+
     }
   }
 
@@ -48,7 +49,6 @@ class Insert extends React.Component {
         label:y
       })
     }
-    //.log(option_years);
     this.setState({
       loading: false,
       option_years,
@@ -59,17 +59,14 @@ class Insert extends React.Component {
   _handleSubmit = async (event) => {
     event.preventDefault()
     this._checkSubmit() && this.setState({ loading: true, }, async () => {
-      //console.log(this.state);
-      const res = await news_model.insertNews({
-        newsID: this.state.newsID,
-        news_title: this.state.news_title,
-        news_description: this.state.news_description,
-        news_file_date: this.state.news_file,
+      const res = await course_model.insertCourse({
+        courseID: this.state.courseID,
+        course_name: this.state.course_name,
       })
       console.log(res);
       if (res.require) {
         Swal.fire({ title: "บันทึกข้อมูลแล้ว !", icon: "success", })
-        this.props.history.push(`/news`)
+        this.props.history.push(`/course`)
       } else {
         this.setState({
           loading: false,
@@ -82,12 +79,12 @@ class Insert extends React.Component {
   
   _checkSubmit() {
 
-    if (this.state.news_title == '') {
-      Swal.fire("กรุณาระบุชื่อเรื่อง")
+    if (this.state.courseID == '') {
+      Swal.fire("กรุณาระบุรหัสหมวดวิชา")
       return false
     }
-    else if (this.state.news_description === '') {
-      Swal.fire("กรุณาระบุรายละเอียด")
+    else if (this.state.course_name === '') {
+      Swal.fire("กรุณาระบุชื่อหมวดวิชา")
       return false
     }
     else {
@@ -96,10 +93,49 @@ class Insert extends React.Component {
   }
   
   render() {
-    
     return (
       <div>
-       
+        <Loading show={this.state.loading} />
+        <Card>
+          <CardHeader>
+            <h3 className="text-header">เพิ่มหมวดวิชา</h3>
+          </CardHeader>
+          <Form onSubmit={this._handleSubmit}>
+            <CardBody className="p-5">
+              <Row>
+              
+              <Col md={12}>
+                  <Row>
+                    <Col md={2}>
+                      <FormGroup>
+                        <label>รหัสหมวดวิชา <font color="#F00"><b>*</b></font></label>
+                        <Input
+                          type="text"
+                          value={this.state.courseID}
+                          onChange={(e) => this.setState({ courseID: e.target.value })}
+                        />
+                      </FormGroup>
+                    </Col>
+                    <Col md={2}>
+                      <FormGroup>
+                        <label>ชื่อหมวดวิชา <font color="#F00"><b>*</b></font></label>
+                        <Input
+                          type="text"
+                          value={this.state.course_name}
+                          onChange={(e) => this.setState({ course_name: e.target.value })}
+                        />
+                      </FormGroup>
+                    </Col>
+                  </Row>
+                </Col>
+              </Row>
+            </CardBody>
+            <CardFooter className="text-right">
+              <Button type="submit" color="success">Save</Button>
+              <Link to={`/course`}><Button type="button">Back</Button></Link>
+            </CardFooter>
+          </Form>
+        </Card>
       </div>
     )
   }

@@ -85,10 +85,10 @@ class ViewComponent extends React.Component {
         <Loading show={this.state.loading} />
         <Card>
           <CardHeader>
-            <h3 className="text-header">จัดการข้อมูลแผนก</h3>
+            <h3 className="text-header">จัดการข้อมูลหมวดวิชา</h3>
               {permission_add == 1 ?
-                <Link to={`/course/insert`} className="btn btn-success float-right">
-                  <i className="fa fa-plus" aria-hidden="true" /> เพิ่มแผนก
+                <Link key={"insert"} to={`/course/insert`} className="btn btn-success float-right">
+                  <i className="fa fa-plus" aria-hidden="true" /> เพิ่มหมวดวิชา
                 </Link>
                 : null }
           </CardHeader>
@@ -103,13 +103,13 @@ class ViewComponent extends React.Component {
               rowKey='newsID'
               columns={[
                 {
-                  title: "รหัสแผนก",
+                  title: "รหัสหมวดวิชา",
                   dataIndex: "courseID",
                   filterAble: true,
                   ellipsis: true,
                 },
                 {
-                  title: "ชื่อแผนก",
+                  title: "ชื่อหมวดวิชา",
                   dataIndex: "course_name",
                   filterAble: true,
                   ellipsis: true,

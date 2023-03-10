@@ -6,11 +6,11 @@ const Update = React.lazy(() => import('./update'))
 const Insert = React.lazy(() => import('./insert'))
 
 const Course = ({ SESSION }) => {
-  const { permission_view,permission_edit,permission_insert } = SESSION.PERMISSION
+  const { permission_view,permission_edit,permission_add } = SESSION.PERMISSION
 
   return (
     <Switch>
-      {permission_insert == 1 ? <Route path={`/course/insert`} render={props => <Insert {...props} {...SESSION} />} /> : null }
+      {permission_add == 1 ? <Route path={`/course/insert`} render={props => <Insert {...props} {...SESSION} />} /> : null }
       {permission_edit == 1 ? <Route path={`/course/update/:code`} render={props => <Update {...props} {...SESSION} />} /> : null }
       <Route path={`/course/view`} render={props => <View {...props} {...SESSION} />} />
       <Route path={`/`} render={props => <View {...props} {...SESSION} />} />
