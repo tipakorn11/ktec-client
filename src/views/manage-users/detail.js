@@ -144,7 +144,7 @@ class Detail extends React.Component {
         loading: false,
         option_years,
         education_year:year + 543
-    },() => console.log(user))
+    },)
   }
 
   render() {
