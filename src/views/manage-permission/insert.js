@@ -327,8 +327,8 @@ class Insert extends React.Component {
               </table>
             </CardBody>
             <CardFooter className="text-right">
-              <Button type="submit" color="success">Save</Button>
-              <Link to={`/manage-permission`}><Button type="button">Back</Button></Link>
+              <Button type="submit" color="success">บันทึก</Button>
+              <Link to={`/manage-permission`}><Button type="button">กลับ</Button></Link>
             </CardFooter>
           </Form>
         </Card>

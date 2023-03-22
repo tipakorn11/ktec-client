@@ -41,11 +41,12 @@ class ViewComponent extends React.Component {
                 pageSize: 15,
               },
             total: '',
-            active_tab: "wait",
+            active_tab: "personal",
             files_wait: [],
             files_approve: [],
             files_cancel: [],
-            files_personal: []            ,
+            files_personal: [],
+            user: JSON.parse(localStorage.getItem('session-user')),
 
             
         }
@@ -79,7 +80,7 @@ class ViewComponent extends React.Component {
       }
       if(section === 'personal'|| section === ''){
         files_personal = await files_model.getFilesBy({
-          personalID: code,
+          personalID: this.state.user.personalID,
         })
       }
 
@@ -102,7 +103,7 @@ class ViewComponent extends React.Component {
           }).then(({ value }) => value && this.setState({ loading: true, }, async () => {
             let total = this.state.total - 1;
            
-            const res = await files_model.deleteFilesByid({ FilesID: code })
+            const res = await files_model.deleteFilesByid({ fileID: code })
             if (res.require) {
               Swal.fire({ title: 'ลบรายการแล้ว !', text: '', icon: 'success' })
               this._fetchData()
@@ -122,7 +123,7 @@ class ViewComponent extends React.Component {
         <Card>
           <CardHeader>
             <h3 className="text-header">จัดการไฟล์ข้อมูล</h3>
-              <Link to={`/manage-users/insert`} className="btn btn-success float-right">
+              <Link to={`/file-approve/insert`} className="btn btn-success float-right">
                 <i className="fa fa-plus" aria-hidden="true" /> อัปโหลดไฟล์
               </Link>
           </CardHeader>
@@ -155,6 +156,12 @@ class ViewComponent extends React.Component {
                   current={this.state.pagination.current}
                   rowKey='newsID'
                   columns={[
+                    {
+                      title: "รหัสไฟล์",
+                      dataIndex: "fileID",
+                      filterAble: true,
+                      ellipsis: true,
+                    },
                     {
                       title: "รหัสบุคลากร",
                       dataIndex: "personalID",
@@ -189,7 +196,7 @@ class ViewComponent extends React.Component {
                           }
                         if (1) {
                           row_accessible.push(
-                            <button key="delete" type="button" className="icon-button color-danger" onClick={() => this._onDelete(cell.personalID)} title="ลบรายการ">
+                            <button key="delete" type="button" className="icon-button color-danger" onClick={() => this._onDelete(cell.fileID)} title="ลบรายการ">
                               <i className="fa fa-trash" aria-hidden="true" />
                             </button>
                           )
@@ -210,8 +217,14 @@ class ViewComponent extends React.Component {
                   dataSource={this.state.files_approve.data}
                   dataTotal={this.state.files_approve.total}
                   current={this.state.pagination.current}
-                  rowKey='newsID'
+                  rowKey='fileID'
                   columns={[
+                    {
+                      title: "รหัสไฟล์",
+                      dataIndex: "fileID",
+                      filterAble: true,
+                      ellipsis: true,
+                    },
                     {
                       title: "รหัสบุคลากร",
                       dataIndex: "personalID",
@@ -237,7 +250,7 @@ class ViewComponent extends React.Component {
                         const row_accessible = []
                         if (1) {
                             row_accessible.push(
-                              <Link key={"detail"} to={`/file-approve/detail/${cell.personalID}`} title="รายละเอียด">
+                              <Link key={"detail"} to={`/file-approve/detail/${cell.fileID}`} title="รายละเอียด">
                                 <button type="button" className="icon-button color-primary">
                                   <i className="fa fa-search" aria-hidden="true" />
                                 </button>
@@ -246,7 +259,7 @@ class ViewComponent extends React.Component {
                           }
                         if (1) {
                           row_accessible.push(
-                            <button key="delete" type="button" className="icon-button color-danger" onClick={() => this._onDelete(cell.newsID)} title="ลบรายการ">
+                            <button key="delete" type="button" className="icon-button color-danger" onClick={() => this._onDelete(cell.fileID)} title="ลบรายการ">
                               <i className="fa fa-trash" aria-hidden="true" />
                             </button>
                           )
@@ -270,6 +283,12 @@ class ViewComponent extends React.Component {
                   rowKey='newsID'
                   columns={[
                     {
+                      title: "รหัสไฟล์",
+                      dataIndex: "fileID",
+                      filterAble: true,
+                      ellipsis: true,
+                    },
+                    {
                       title: "รหัสบุคลากร",
                       dataIndex: "personalID",
                       filterAble: true,
@@ -281,6 +300,13 @@ class ViewComponent extends React.Component {
                       filterAble: true,
                       ellipsis: true,
                     },
+                    {
+                      title: "หมายเหตุ",
+                      dataIndex: "file_note",
+                      filterAble: true,
+                      ellipsis: true,
+                    },
+                    
                     {
                       title: "วันที่",
                       dataIndex: "file_date",
@@ -294,7 +320,7 @@ class ViewComponent extends React.Component {
                         const row_accessible = []
                         if (1) {
                             row_accessible.push(
-                              <Link key={"detail"} to={`/file-approve/detail/${cell.personalID}`} title="รายละเอียด">
+                              <Link key={"detail"} to={`/file-approve/detail/${cell.fileID}`} title="รายละเอียด">
                                 <button type="button" className="icon-button color-primary">
                                   <i className="fa fa-search" aria-hidden="true" />
                                 </button>
@@ -303,7 +329,7 @@ class ViewComponent extends React.Component {
                           }
                         if (1) {
                           row_accessible.push(
-                            <button key="delete" type="button" className="icon-button color-danger" onClick={() => this._onDelete(cell.newsID)} title="ลบรายการ">
+                            <button key="delete" type="button" className="icon-button color-danger" onClick={() => this._onDelete(cell.fileID)} title="ลบรายการ">
                               <i className="fa fa-trash" aria-hidden="true" />
                             </button>
                           )
@@ -327,6 +353,12 @@ class ViewComponent extends React.Component {
                   rowKey='newsID'
                   columns={[
                     {
+                      title: "รหัสไฟล์",
+                      dataIndex: "fileID",
+                      filterAble: true,
+                      ellipsis: true,
+                    },
+                    {
                       title: "รหัสบุคลากร",
                       dataIndex: "personalID",
                       filterAble: true,
@@ -335,6 +367,18 @@ class ViewComponent extends React.Component {
                     {
                       title: "ชื่อไฟล์",
                       dataIndex: "file_name",
+                      filterAble: true,
+                      ellipsis: true,
+                    },
+                    {
+                      title: "หมายเหตุ",
+                      dataIndex: "file_note",
+                      filterAble: true,
+                      ellipsis: true,
+                    },
+                    {
+                      title: "สถานะของไฟล์",
+                      dataIndex: "file_status",
                       filterAble: true,
                       ellipsis: true,
                     },
@@ -351,16 +395,25 @@ class ViewComponent extends React.Component {
                         const row_accessible = []
                         if (1) {
                             row_accessible.push(
-                              <Link key={"detail"} to={`/file-approve/detail/${cell.personalID}`} title="รายละเอียด">
+                              <Link key={"detail"} to={`/file-approve/detail/${cell.fileID}`} title="รายละเอียด">
                                 <button type="button" className="icon-button color-primary">
                                   <i className="fa fa-search" aria-hidden="true" />
                                 </button>
                               </Link>
                             )
                           }
+                          if (cell.file_status != "approve") {
+                            row_accessible.push(
+                              <Link key={"update"} to={`/file-approve/update/${cell.fileID}`} title="แก้ไขรายการ">
+                                <button type="button" className="icon-button color-warning">
+                                  <i className="fa fa-pencil-square-o" aria-hidden="true" />
+                                </button>
+                              </Link>
+                            )
+                          }
                         if (1) {
                           row_accessible.push(
-                            <button key="delete" type="button" className="icon-button color-danger" onClick={() => this._onDelete(cell.newsID)} title="ลบรายการ">
+                            <button key="delete" type="button" className="icon-button color-danger" onClick={() => this._onDelete(cell.fileID)} title="ลบรายการ">
                               <i className="fa fa-trash" aria-hidden="true" />
                             </button>
                           )

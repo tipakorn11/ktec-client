@@ -150,8 +150,8 @@ class Update extends React.Component {
               </Row>
             </CardBody>
             <CardFooter className="text-right">
-              <Button type="submit" color="success">Save</Button>
-              <Link to={`/course`}><Button type="button">Back</Button></Link>
+              <Button type="submit" color="success">บันทึก</Button>
+              <Link to={`/course`}><Button type="button">กลับ</Button></Link>
             </CardFooter>
           </Form>
         </Card>

@@ -14,6 +14,7 @@ import {
 import { Link } from "react-router-dom"
 import Swal from "sweetalert2"
 import { Loading } from "../../component/customComponent"
+import NoteModal from './note.modal'
 import { FilesModel} from "../../models"
 // import { Document, Page } from 'react-pdf/dist/esm/entry.webpack5';
 const files_model = new FilesModel()
@@ -23,7 +24,8 @@ class Detail extends React.Component {
     this.state = {
       loading: true,
       files:[],
-      option_years:[]
+      option_years:[],
+      file_note : ""
     }
   }
 
@@ -55,6 +57,8 @@ class Detail extends React.Component {
       file_status,
       file_date,
       fullname,
+      file_note,
+      file_pdf
     }  = files.data [0]
     //.log(option_years);
     this.setState({
@@ -65,17 +69,59 @@ class Detail extends React.Component {
         file_status,
         file_date,
         fullname,
+        file_note,
+        file_pdf,
         loading: false,
         option_years,
-        education_year:year + 543
+        education_year:year + 543,
+
     })
   }
 
+  _onApprove = () => this.setState({ loading: true, }, async () => {
+    const res = await files_model.updateStatusFiles({
+      fileID : this.state.fileID,
+      file_status: 'approve',
+      file_note: ''
+    })
+
+    if (res.require) {
+      Swal.fire({ title: "อนุมัติข้อมูลแล้ว !", icon: "success", })
+      this.props.history.push(`/file-approve`)
+    } else {
+      this.setState({
+        loading: false,
+      }, () => {
+        Swal.fire({ title: "เกิดข้อผิดพลาด !", text: "ไม่สามารถดำเนินการได้ !", icon: "error", })
+      })
+    }
+  
+  })
+
+  _onCancel = (data) => this.setState({ loading: true, }, async () => {
+    const res = await files_model.updateStatusFiles({
+      fileID : this.state.fileID,
+      file_status: 'cancel',
+      file_note: data.file_note
+    })
+    if (res.require) {
+      Swal.fire({ title: "ไม่อนุมัติเรียบร้อย !", icon: "success", })
+      this.props.history.push(`/file-approve`)
+    } else {
+      this.setState({
+        loading: false,
+      }, () => {
+        Swal.fire({ title: "เกิดข้อผิดพลาด !", text: "ไม่สามารถดำเนินการได้ !", icon: "error", })
+      })
+    }
+  })
   render() {
+    const { permission_approve,permission_cancel } = this.props.PERMISSION
+
     return (
       <div>
         <Loading show={this.state.loading} />
-        <Card>
+        <Card>  
           <CardHeader>
             <h3 className="text-header">รายละเอียดไฟล์</h3>
           </CardHeader>
@@ -109,18 +155,22 @@ class Detail extends React.Component {
                     
                   </Card>
                 </Col>
-                  <object type="application/pdf" data="src\assets\image\bg.jpg" width="60%" height="800">
+                  <object  type="application/pdf" data={this.state.file_pdf} width="60%" height="800">
                   </object>
               </Row>
-            
             </CardBody>
             <CardFooter className="text-right">
-              <Button type="submit" color="success">อนุมัติ</Button>
-              <Button type="submit" color="danger">ไม่อนุมัติ</Button>
+              {this.state.file_status == "wait" && permission_approve == 1 || this.state.file_status == "cancel"&& permission_approve == 1 ? <Button type="submit" color="success"onClick={this._onApprove}>อนุมัติ</Button> : null }
+              {this.state.file_status == "wait" && permission_cancel == 1 ? <Button type="submit" color="danger"onClick={() => this.setState({ show_modal: true })}>ไม่อนุมัติ</Button> : null }
               <Link to={`/file-approve`}><Button type="button">Back</Button></Link>
             </CardFooter>
           </Form>
         </Card>
+        <NoteModal
+          show={this.state.show_modal}
+          onSave={this._onCancel}
+          onClose={() => this.setState({ show_modal: false })}
+        />
       </div>
     )
   }

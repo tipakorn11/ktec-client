@@ -141,8 +141,8 @@ class Insert extends React.Component {
               </Row>
             </CardBody>
             <CardFooter className="text-right">
-              <Button type="submit" color="success">Save</Button>
-              <Link to={`/prefix`}><Button type="button">Back</Button></Link>
+              <Button type="submit" color="success">บันทึก</Button>
+              <Link to={`/prefix`}><Button type="button">กลับ</Button></Link>
             </CardFooter>
           </Form>
         </Card>
