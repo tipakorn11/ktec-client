@@ -14,7 +14,8 @@ import {
 } from 'reactstrap'
 import { Link } from 'react-router-dom'
 import Swal from 'sweetalert2'
-
+import { compareAsc, format } from 'date-fns'
+import dateFormat from '../../utils/date-format'
 import { Loading, SelectSearch, DataTable } from "../../component/customComponent"
 import { FilesModel } from '../../models'
 const color_templates = [
@@ -60,6 +61,7 @@ class ViewComponent extends React.Component {
       let files_approve = []
       let files_cancel = [] 
       let files_personal = [] 
+      console.log();
       let {code} = this.props.match.params
       if(section === 'wait'|| section === ''){
         files_wait = await files_model.getFilesBy({
@@ -154,17 +156,17 @@ class ViewComponent extends React.Component {
                   dataSource={this.state.files_wait.data}
                   dataTotal={this.state.files_wait.total}
                   current={this.state.pagination.current}
-                  rowKey='newsID'
+                  rowKey='fileID'
                   columns={[
                     {
-                      title: "รหัสไฟล์",
-                      dataIndex: "fileID",
+                      title: "ชื่อบุคลากร",
+                      dataIndex: "fullname",
                       filterAble: true,
                       ellipsis: true,
                     },
                     {
-                      title: "รหัสบุคลากร",
-                      dataIndex: "personalID",
+                      title: "ตำแหน่ง",
+                      dataIndex: "fullname",
                       filterAble: true,
                       ellipsis: true,
                     },
@@ -176,7 +178,8 @@ class ViewComponent extends React.Component {
                     },
                     {
                       title: "วันที่",
-                      dataIndex: "file_date",
+                      dataIndex: "file_date_upload",
+                      render: (cell) =>  dateFormat.toFormat(cell,"DD/MM/yyyy"),
                       filterAble: true,
                       ellipsis: true,
                     },
@@ -280,7 +283,7 @@ class ViewComponent extends React.Component {
                   dataSource={this.state.files_cancel.data}
                   dataTotal={this.state.files_cancel.total}
                   current={this.state.pagination.current}
-                  rowKey='newsID'
+                  rowKey='fileID'
                   columns={[
                     {
                       title: "รหัสไฟล์",
@@ -350,7 +353,7 @@ class ViewComponent extends React.Component {
                   dataSource={this.state.files_personal.data}
                   dataTotal={this.state.files_personal.total}
                   current={this.state.pagination.current}
-                  rowKey='newsID'
+                  rowKey='fileID'
                   columns={[
                     {
                       title: "รหัสไฟล์",
