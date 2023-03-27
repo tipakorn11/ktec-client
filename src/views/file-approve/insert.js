@@ -75,7 +75,6 @@ class Insert extends React.Component {
         personalID: this.state.user.personalID,
         file_name: this.state.file_name,
         file_status: "wait",
-        file_date: this.state.file_date,
         file_pdf: this.state.file_pdf,
       })
       console.log(res);
@@ -155,7 +154,6 @@ class Insert extends React.Component {
                             <Input
                               type="file"
                               accept="application/pdf"
-                              value={this.state.file_pdf}
                               onChange={(e) => this.setState({file_pdf: e.target.value})}
                               />
                           </FormGroup>

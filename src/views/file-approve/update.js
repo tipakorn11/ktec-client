@@ -24,13 +24,17 @@ class Update extends React.Component {
     super(props)
     this.state = {
       loading: true,
-      file_pdf: "",
       fileID: "",
       file_name: "",
+      file_pdf: "",
       personalID: "",
       file_date: "",
+      file_note:"",
+      file_status: "",
+      fullname:"",
       option_years:[],
       user:{},
+      file:{},
     }
   }
 
@@ -41,7 +45,6 @@ class Update extends React.Component {
   _fetchData = async () => {
     let {code } = this.props.match.params
     let files = await files_model.getFilesByid({fileID: code})
-
     const d = new Date()
     var year = d.getFullYear();
     const option_years = []
@@ -63,12 +66,12 @@ class Update extends React.Component {
       file_name,
       file_status,
       file_date,
+      file_pdf,
       fullname,
-      file_pdf
-    }  = files.data [0]
+      file_note
+    }  = files.data[0]
     //.log(option_years);
     this.setState({
-       files,
         fileID,
         personalID,
         file_name,
@@ -76,6 +79,7 @@ class Update extends React.Component {
         file_date,
         fullname,
         file_pdf,
+        file_note,
       loading: false,
       option_years,
       education_year:year + 543,
@@ -86,12 +90,10 @@ class Update extends React.Component {
   _handleSubmit = async (event) => {
     event.preventDefault()
     this._checkSubmit() && this.setState({ loading: true, }, async () => {
-      const res = await files_model.insertFiles({
+      const res = await files_model.updateFiles({
         fileID: this.state.fileID,
-        personalID: this.state.user.personalID,
         file_name: this.state.file_name,
         file_status: "wait",
-        file_date: this.state.file_date,
         file_pdf: this.state.file_pdf,
       })
       console.log(res);
@@ -171,7 +173,6 @@ class Update extends React.Component {
                             <Input
                               type="file"
                               accept="application/pdf"
-                              value={this.state.file_pdf}
                               onChange={(e) => this.setState({file_pdf: e.target.value})}
                               />
                           </FormGroup>
