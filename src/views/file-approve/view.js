@@ -16,7 +16,7 @@ import { Link } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import { compareAsc, format } from 'date-fns'
 import dateFormat from '../../utils/date-format'
-import { Loading, SelectSearch, DataTable } from "../../component/customComponent"
+import { Loading,  DataTable } from "../../component/customComponent"
 import { FilesModel } from '../../models'
 const color_templates = [
     '#FF6384',
@@ -166,7 +166,7 @@ class ViewComponent extends React.Component {
                     },
                     {
                       title: "ตำแหน่ง",
-                      dataIndex: "fullname",
+                      dataIndex: "position_name",
                       filterAble: true,
                       ellipsis: true,
                     },
@@ -177,7 +177,7 @@ class ViewComponent extends React.Component {
                       ellipsis: true,
                     },
                     {
-                      title: "วันที่",
+                      title: "วันที่ อัปโหลดไฟล์",
                       dataIndex: "file_date_upload",
                       render: (cell) =>  dateFormat.toFormat(cell,"DD/MM/yyyy"),
                       filterAble: true,
@@ -223,14 +223,14 @@ class ViewComponent extends React.Component {
                   rowKey='fileID'
                   columns={[
                     {
-                      title: "รหัสไฟล์",
-                      dataIndex: "fileID",
+                      title: "ชื่อ",
+                      dataIndex: "fullname",
                       filterAble: true,
                       ellipsis: true,
                     },
                     {
-                      title: "รหัสบุคลากร",
-                      dataIndex: "personalID",
+                      title: "ตำแหน่ง",
+                      dataIndex: "position_name",
                       filterAble: true,
                       ellipsis: true,
                     },
@@ -241,8 +241,14 @@ class ViewComponent extends React.Component {
                       ellipsis: true,
                     },
                     {
-                      title: "วันที่",
-                      dataIndex: "file_date",
+                      title: "วันที่ อัปโหลดไฟล์",
+                      dataIndex: "file_date_upload",
+                      filterAble: true,
+                      ellipsis: true,
+                    },
+                    {
+                      title: "วันที่ อนุมัติ",
+                      dataIndex: "file_date_handle",
                       filterAble: true,
                       ellipsis: true,
                     },
@@ -286,14 +292,14 @@ class ViewComponent extends React.Component {
                   rowKey='fileID'
                   columns={[
                     {
-                      title: "รหัสไฟล์",
-                      dataIndex: "fileID",
+                      title: "ชื่อ",
+                      dataIndex: "fullname",
                       filterAble: true,
                       ellipsis: true,
                     },
                     {
-                      title: "รหัสบุคลากร",
-                      dataIndex: "personalID",
+                      title: "ตำแหน่ง",
+                      dataIndex: "position_name",
                       filterAble: true,
                       ellipsis: true,
                     },
@@ -304,15 +310,20 @@ class ViewComponent extends React.Component {
                       ellipsis: true,
                     },
                     {
-                      title: "หมายเหตุ",
-                      dataIndex: "file_note",
+                      title: "วันที่ อัปโหลดไฟล์",
+                      dataIndex: "file_date_upload",
                       filterAble: true,
                       ellipsis: true,
                     },
-                    
                     {
-                      title: "วันที่",
-                      dataIndex: "file_date",
+                      title: "วันที่ อนุมัติ",
+                      dataIndex: "file_date_handle",
+                      filterAble: true,
+                      ellipsis: true,
+                    },
+                    {
+                      title: "หมายเหตุ",
+                      dataIndex: "file_note",
                       filterAble: true,
                       ellipsis: true,
                     },
@@ -356,14 +367,14 @@ class ViewComponent extends React.Component {
                   rowKey='fileID'
                   columns={[
                     {
-                      title: "รหัสไฟล์",
-                      dataIndex: "fileID",
+                      title: "ชื่อ",
+                      dataIndex: "fullname",
                       filterAble: true,
                       ellipsis: true,
                     },
                     {
-                      title: "รหัสบุคลากร",
-                      dataIndex: "personalID",
+                      title: "ตำแหน่ง",
+                      dataIndex: "position_name",
                       filterAble: true,
                       ellipsis: true,
                     },
@@ -374,20 +385,26 @@ class ViewComponent extends React.Component {
                       ellipsis: true,
                     },
                     {
-                      title: "หมายเหตุ",
-                      dataIndex: "file_note",
-                      filterAble: true,
-                      ellipsis: true,
-                    },
-                    {
                       title: "สถานะของไฟล์",
                       dataIndex: "file_status",
                       filterAble: true,
                       ellipsis: true,
                     },
                     {
-                      title: "วันที่",
+                      title: "วันที่ อัปโหลดไฟล์",
                       dataIndex: "file_date",
+                      filterAble: true,
+                      ellipsis: true,
+                    },
+                    {
+                      title: "วันที่จัดการไฟล์",
+                      dataIndex: "file_date_handle",
+                      filterAble: true,
+                      ellipsis: true,
+                    },
+                    {
+                      title: "หมายเหตุ",
+                      dataIndex: "file_note",
                       filterAble: true,
                       ellipsis: true,
                     },
@@ -397,7 +414,7 @@ class ViewComponent extends React.Component {
                       render: (cell) => {
                         const row_accessible = []
                         if (1) {
-                            row_accessible.push(
+                          row_accessible.push(
                               <Link key={"detail"} to={`/file-approve/detail/${cell.fileID}`} title="รายละเอียด">
                                 <button type="button" className="icon-button color-primary">
                                   <i className="fa fa-search" aria-hidden="true" />

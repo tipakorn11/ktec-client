@@ -5,12 +5,13 @@ import {
     CardHeader,
     Col,
     Row,
+    FormGroup,
 
 } from 'reactstrap'
 import { Link } from 'react-router-dom'
 import Swal from 'sweetalert2'
 
-import { Loading, SelectSearch, DataTable } from "../../component/customComponent"
+import { Loading, DatePicker, DataTable } from "../../component/customComponent"
 import { NewsModel } from '../../models'
 const color_templates = [
     '#FF6384',
@@ -93,6 +94,61 @@ class ViewComponent extends React.Component {
               : null }
           </CardHeader>
           <CardBody>
+          <Row>
+              <Col md={10}>
+                <FormGroup
+                  className="align-bottom d-inline-block"
+                  style={{ marginRight: 8 }}
+                >
+                  <div className="d-inline-block">
+                    <label>วันที่ </label>
+                    <DatePicker
+                      format={"DD/MM/YYYY"}
+                      value={this.state.date_start}
+                      onChange={(e) =>
+                        this.setState({ date_start: e }, () =>
+                          this.props.setDateStart(e)
+                        )
+                      }
+                    />
+                  </div>{" "}
+                  -{" "}
+                  <div className="d-inline-block">
+                    <DatePicker
+                      format={"DD/MM/YYYY"}
+                      value={this.state.date_end}
+                      onChange={(e) =>
+                        this.setState({ date_end: e }, () =>
+                          this.props.setDateEnd(e)
+                        )
+                      }
+                    />
+                  </div>
+                </FormGroup>
+
+                <FormGroup
+                  className="align-bottom d-inline-block"
+                  style={{ marginRight: 8 }}
+                >
+                  <button
+                    className="btn btn-primary"
+                    onClick={() =>
+                      this.setState({ is_filter: true }, this._fetchData())
+                    }
+                  >
+                    ค้นหา
+                  </button>
+                </FormGroup>
+                <FormGroup>{this.state.active_tab === 'unseen' ?   
+                  <button className="btn btn-primary "  onClick={() => this._onCheckAllRead()}>
+                    อ่านทั้งหมด
+                  </button> : "" }
+                  <button className="btn btn-primary " onClick={() => this._onDeleteAllCheck()} >
+                    ลบทั้งหมด
+                </button>
+                </FormGroup>
+              </Col>
+            </Row>
             <DataTable
               onChange={this._fetchData}
               showRowNo={true}
