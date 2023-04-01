@@ -10,21 +10,11 @@ import {
 } from 'reactstrap'
 import { Link } from 'react-router-dom'
 import Swal from 'sweetalert2'
-
+import { connect } from 'react-redux'
 import { Loading, DatePicker, DataTable } from "../../component/customComponent"
+import dateFormat from '../../utils/date-format'
 import { NewsModel } from '../../models'
-const color_templates = [
-    '#FF6384',
-    '#36A2EB',
-    '#FFCE56',
-    '#2ECC71',
-    '#F1C40F',
-    '#3498DB',
-    '#8E44AD',
-    '#E74C3C',
-    '#1ABC9C',
-    '#F0B27A',
-]
+
 const news_model = new NewsModel()
 class ViewComponent extends React.Component {
     constructor(props) {
@@ -37,6 +27,9 @@ class ViewComponent extends React.Component {
                 pageSize: 15,
               },
             total: '',
+            date_end:"",
+            date_start:""
+
 
             
         }
@@ -46,8 +39,10 @@ class ViewComponent extends React.Component {
         this._fetchData()
     }
     _fetchData = (params = { pagination: this.state.pagination }) => this.setState({ loading: true, }, async () => {
-        let news = await news_model.getNewsBy()
-       
+        let news = await news_model.getNewsBy({
+          date_start: dateFormat.toFormat(this.state.date_start,"yyyy-MM-DD"),
+          date_end: dateFormat.toFormat(this.state.date_end,"yyyy-MM-DD")
+        })
         this.setState({
           news,
           total: news.total,
@@ -63,10 +58,7 @@ class ViewComponent extends React.Component {
             icon: "warning",
             showCancelButton: true,
           }).then(({ value }) => value && this.setState({ loading: true, }, async () => {
-            let total = this.state.total - 1;
-           
             const res = await news_model.deleteNewsByid({ newsID: code })
-            console.log(res);
             if (res.require) {
               Swal.fire({ title: 'ลบรายการแล้ว !', text: '', icon: 'success' })
               this._fetchData()
@@ -87,7 +79,7 @@ class ViewComponent extends React.Component {
         <Card>
           <CardHeader>
             <h3 className="text-header">ข่าวประชาสัมพันธ์</h3>
-              {permission_add == 1 ?
+              {permission_add === '1' ?
                 <Link to={`/news/insert`} className="btn btn-success float-right">
                   <i className="fa fa-plus" aria-hidden="true" /> เพิ่มข่าวประชาสัมพันธ์
                 </Link>
@@ -133,19 +125,11 @@ class ViewComponent extends React.Component {
                   <button
                     className="btn btn-primary"
                     onClick={() =>
-                      this.setState({ is_filter: true }, this._fetchData())
+                      this.setState(this._fetchData())
                     }
                   >
                     ค้นหา
                   </button>
-                </FormGroup>
-                <FormGroup>{this.state.active_tab === 'unseen' ?   
-                  <button className="btn btn-primary "  onClick={() => this._onCheckAllRead()}>
-                    อ่านทั้งหมด
-                  </button> : "" }
-                  <button className="btn btn-primary " onClick={() => this._onDeleteAllCheck()} >
-                    ลบทั้งหมด
-                </button>
                 </FormGroup>
               </Col>
             </Row>
@@ -171,11 +155,18 @@ class ViewComponent extends React.Component {
                   ellipsis: true,
                 },
                 {
+                  title: "วันที่",
+                  dataIndex: "news_file_date",
+                  render: (cell) => dateFormat.toFormat(cell,"DD/MM/yyyy"),
+                  filterAble: true,
+                  ellipsis: true,
+                },
+                {
                   title: '',
                   dataIndex: '',
                   render: (cell) => {
                     const row_accessible = []
-                    if (permission_view == 1) {
+                    if (permission_view === '1') {
                         row_accessible.push(
                           <Link key={"detail"} to={`/news/detail/${cell.newsID}`} title="รายละเอียด">
                             <button type="button" className="icon-button color-primary">
@@ -184,7 +175,7 @@ class ViewComponent extends React.Component {
                           </Link>
                         )
                       }
-                    if (permission_edit == 1) {
+                    if (permission_edit === '1') {
                       row_accessible.push(
                         <Link key={"update"} to={`/news/update/${cell.newsID}`} title="แก้ไขรายการ">
                           <button type="button" className="icon-button color-warning">
@@ -193,7 +184,7 @@ class ViewComponent extends React.Component {
                         </Link>
                       )
                     }
-                    if (permission_delete == 1) {
+                    if (permission_delete === '1') {
                       row_accessible.push(
                         <button key="delete" type="button" className="icon-button color-danger" onClick={() => this._onDelete(cell.newsID)} title="ลบรายการ">
                           <i className="fa fa-trash" aria-hidden="true" />
@@ -214,4 +205,14 @@ class ViewComponent extends React.Component {
     }
 }
 
-export default ViewComponent
+const mapStatetoProps = (state) => ({
+  date_start: state.date_start,
+  date_end: state.date_end,
+})
+
+const mapDispatchtoProps = (dispatch) => ({
+  setDateStart: (val) => dispatch({ type: 'set', date_start: val }),
+  setDateEnd: (val) => dispatch({ type: 'set', date_end: val }),
+})
+
+export default connect(mapStatetoProps, mapDispatchtoProps)(ViewComponent)

@@ -13,7 +13,7 @@ import {
 } from "reactstrap"
 import { Link } from "react-router-dom"
 import Swal from "sweetalert2"
-import { Loading, AsyncTypeahead } from "../../component/customComponent"
+import { Loading } from "../../component/customComponent"
 
 
 import { FilesModel} from "../../models"
@@ -93,7 +93,7 @@ class Insert extends React.Component {
   
   _checkSubmit() {
 
-    if (this.state.file_name == '') {
+    if (this.state.file_name === '') {
       Swal.fire({title:"กรุณาระบุชื่อไฟล์", icon: "warning"})
       return false
     }

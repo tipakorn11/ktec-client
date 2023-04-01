@@ -13,7 +13,7 @@ import {
 } from "reactstrap"
 import { Link } from "react-router-dom"
 import Swal from "sweetalert2"
-import { Loading, AsyncTypeahead } from "../../component/customComponent"
+import { Loading } from "../../component/customComponent"
 
 
 import { NewsModel} from "../../models"
@@ -108,7 +108,7 @@ class Insert extends React.Component {
   
   _checkSubmit() {
 
-    if (this.state.news_title == '') {
+    if (this.state.news_title === '') {
       Swal.fire("กรุณาระบุชื่อเรื่อง")
       return false
     }

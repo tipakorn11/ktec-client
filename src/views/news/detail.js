@@ -7,18 +7,10 @@ import {
   CardHeader,
   Col,
   Form,
-  FormGroup,
-  Input,
   Row,
 } from "reactstrap"
 import { Link } from "react-router-dom"
-import Swal from "sweetalert2"
-import { Loading, AsyncTypeahead } from "../../component/customComponent"
-
-
-import { UserModel} from "../../models"
-
-const user_model = new UserModel()
+import { Loading,  } from "../../component/customComponent"
 class Detail extends React.Component {
   constructor(props) {
     super(props)
@@ -34,9 +26,7 @@ class Detail extends React.Component {
   }
 
   _fetchData = async () => {
-    // let { code } = this.props
-    // console.log(code);
-    // let user = await user_model.getUserBy({personalID: code})
+    
     const d = new Date()
     var year = d.getFullYear();
     const option_years = []
@@ -51,9 +41,7 @@ class Detail extends React.Component {
         label:y
       })
     }
-    //.log(option_years);
     this.setState({
-        // user,
         loading: false,
         option_years,
         education_year:year + 543
@@ -67,61 +55,32 @@ class Detail extends React.Component {
         <Loading show={this.state.loading} />
         <Card>
           <CardHeader>
-            <h3 className="text-header">รายละเอียดข้อมูลส่วนตัว</h3>
+            <h3 className="text-header">รายละเอียดข่าวประชาสัมพันธ์</h3>
           </CardHeader>
           <Form onSubmit={this._handleSubmit}>
             <CardBody className="p-5">
               <Row>
-              
-              <Col md={12}>
-                  <Row>
-                    <Col md={2}>
-                      <FormGroup>
-                        <label>รหัสข่าวประชาสัมพันธ์ <font color="#F00"><b>*</b></font></label>
-                        <Input
-                          type="text"
-                          value={this.state.newsID}
-                          onChange={(e) => this.setState({ newsID: e.target.value })}
-                        />
-                      </FormGroup>
-                    </Col>
-                    <Col md={2}>
-                      <FormGroup>
-                        <label>ชื่อเรื่อง <font color="#F00"><b>*</b></font></label>
-                        <Input
-                          type="text"
-                          value={this.state.news_title}
-                          onChange={(e) => this.setState({ news_title: e.target.value })}
-                        />
-                      </FormGroup>
-                    </Col>
-                  </Row>
+              <Col md={8}>
+                  <Card>
+                    <CardBody>
+                      <table>
+                        <tbody>
+                          <tr>
+                            <td><b>ชื่อเรื่อง </b></td>
+                            <td>{this.state.fullname} </td>
+                          </tr>
+                          <tr>
+                            <td ><b>รายละเอียด </b></td>
+                            <td >{this.state.file_name} </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </CardBody>
+                    
+                  </Card>
                 </Col>
-
-                <Col md={12}>
-                  <Row>
-                  <Col md={3}>
-                      <FormGroup>
-                        <label>รายละเอียด<font color="#F00"><b>*</b></font></label>
-                        <Input
-                          type="textbox"
-                          value={this.state.news_description}
-                          onChange={(e) => this.setState({ news_description: e.target.value })}
-                        />
-                      </FormGroup>
-                    </Col>
-                    <Col md={3}>
-                      <FormGroup>
-                        <label>ไฟล์<font color="#F00"><b>*</b></font></label>
-                        <Input
-                          type="file"
-                          value={this.state.news_file}
-                          onChange={(e) => this.setState({ news_file: e.target.value })}
-                        />
-                      </FormGroup>
-                    </Col>
-                  </Row>
-                </Col>
+                  <object  type="application/pdf" data={this.state.file_pdf} width="60%" height="700">
+                  </object>
               </Row>
             </CardBody>
             <CardFooter className="text-right">

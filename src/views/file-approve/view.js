@@ -3,8 +3,6 @@ import {
     Card,
     CardBody,
     CardHeader,
-    Col,
-    Row,
     Nav,
     NavLink,
     TabContent,
@@ -14,22 +12,10 @@ import {
 } from 'reactstrap'
 import { Link } from 'react-router-dom'
 import Swal from 'sweetalert2'
-import { compareAsc, format } from 'date-fns'
 import dateFormat from '../../utils/date-format'
 import { Loading,  DataTable } from "../../component/customComponent"
 import { FilesModel } from '../../models'
-const color_templates = [
-    '#FF6384',
-    '#36A2EB',
-    '#FFCE56',
-    '#2ECC71',
-    '#F1C40F',
-    '#3498DB',
-    '#8E44AD',
-    '#E74C3C',
-    '#1ABC9C',
-    '#F0B27A',
-]
+
 const files_model = new FilesModel()
 class ViewComponent extends React.Component {
     constructor(props) {
@@ -125,9 +111,9 @@ class ViewComponent extends React.Component {
         <Card>
           <CardHeader>
             <h3 className="text-header">จัดการไฟล์ข้อมูล</h3>
-              <Link to={`/file-approve/insert`} className="btn btn-success float-right">
+              {permission_add === "1" ? <Link to={`/file-approve/insert`} className="btn btn-success float-right">
                 <i className="fa fa-plus" aria-hidden="true" /> อัปโหลดไฟล์
-              </Link>
+              </Link> : null}
           </CardHeader>
           <CardBody>
           <Nav tabs>
