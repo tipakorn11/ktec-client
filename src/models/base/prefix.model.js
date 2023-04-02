@@ -1,6 +1,11 @@
 import { BaseFetch } from "../main-model";
 
 export default class PrefixModel extends BaseFetch{
+    generatePrefixLastCode = (data) => this.directFetch({
+        url: 'prefix/generatePrefixLastCode',
+        method: 'POST',
+        body: JSON.stringify(data),
+    })  
     getPrefixBy = (data) => this.directFetch({
         url: 'prefix/getPrefixBy',
         method: 'POST',

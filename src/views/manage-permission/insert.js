@@ -14,7 +14,6 @@ import {
 import { Link } from "react-router-dom"
 import Swal from "sweetalert2"
 import { Loading } from "../../component/customComponent"
-
 import { PositionModel} from "../../models"
 import { PermissionModel} from "../../models"
 const  permission_model = new PermissionModel()
@@ -41,7 +40,7 @@ class Insert extends React.Component {
   }
 
   _fetchData = async () => {
-    const { code } = this.props.match.params
+    const code = await position_model.generatePositionLastCode()
     const permissions = await permission_model.getPermissionBy()
     const menu_permission = []
     permissions.data.forEach(item => {
@@ -73,6 +72,7 @@ class Insert extends React.Component {
     
     //.log(option_years);
     this.setState({
+      positionID: code.data.last_code,
       permissions: menu_permission,
       loading: false,
       option_years,
@@ -83,6 +83,10 @@ class Insert extends React.Component {
   _handleSubmit = async (event) => {
     event.preventDefault()
     this._checkSubmit() && this.setState({ loading: true, }, async () => {
+      const res1 = await position_model.insertPosition({
+        positionID: this.state.positionID,
+        position_name: this.state.position_name
+      })
       
       const res = await permission_model.insertPermission({
         permissions: this.state.permissions.map(item => ({
@@ -97,10 +101,6 @@ class Insert extends React.Component {
         }))
       })
       
-      const res1 = await position_model.insertPosition({
-        positionID: this.state.positionID,
-        position_name: this.state.position_name
-      })
       if (res.require && res1.require) {
         Swal.fire({ title: "บันทึกข้อมูลแล้ว !", icon: "success", })
         this.props.history.push(`/manage-permission`)
@@ -183,12 +183,8 @@ class Insert extends React.Component {
   }
   _checkSubmit() {
 
-    if (this.state.prefix_title == '') {
-      Swal.fire("กรุณาระบุชื่อเรื่อง")
-      return false
-    }
-    else if (this.state.prefix_description === '') {
-      Swal.fire("กรุณาระบุรายละเอียด")
+    if (this.state.positionID === '') {
+      Swal.fire("กรุณาชื่อสิทธิการใช้งาน")
       return false
     }
     else {
@@ -197,13 +193,6 @@ class Insert extends React.Component {
   }
   
   render() {
-    const menu_groups = [
-      { menu_group: '', menu_group_name: '', menu_group_color: '#ddddd' },
-      { menu_group: 'news', menu_group_name: 'หน้าแรก', menu_group_color: '#ffb97b' },
-      { menu_group: 'user', menu_group_name: 'จัดการข้อมูล', menu_group_color: '#8bb4f9' },
-      { menu_group: 'master', menu_group_name: 'จัดการข้อมูลพื้นฐาน', menu_group_color: '#fea213' },
-
-    ]
     return (
       <div>
         <Loading show={this.state.loading} />
@@ -219,11 +208,11 @@ class Insert extends React.Component {
                   <Row>
                     <Col md={2}>
                       <FormGroup>
-                        <label>รหัส <font color="#F00"><b>*</b></font></label>
+                        <label>รหัสสิทธิการใช้งาน <font color="#F00"><b>*</b></font></label>
                         <Input
                           type="text"
                           value={this.state.positionID}
-                          onChange={(e) => this.setState({ positionID: e.target.value })}
+                          readOnly
                         />
                       </FormGroup>
                     </Col>
@@ -245,7 +234,7 @@ class Insert extends React.Component {
                 <thead>
                   <tr>
                     <th className="text-center" width={48}>#</th>
-                    <th className="text-center">เมนู</th>
+                    <th className="text-center">ชื่อการสิทธิใช้งาน</th>
                     <th className="text-center" width={90}>
                       <label className="m-0">
                         <input type="checkbox" onChange={(e) => this._checkedAll(e, 'view')} /> ดู

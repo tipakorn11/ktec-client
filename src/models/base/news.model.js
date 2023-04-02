@@ -1,6 +1,11 @@
 import { BaseFetch } from "../main-model";
 
 export default class NewsModel extends BaseFetch{
+    generateNewsLastCode = (data) => this.directFetch({
+        url: 'news/generateNewsLastCode',
+        method: 'POST',
+        body: JSON.stringify(data),
+    })  
     getNewsBy = (data) => this.directFetch({
         url: 'news/getNewsBy',
         method: 'POST',

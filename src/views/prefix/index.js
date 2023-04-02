@@ -10,9 +10,9 @@ const Prefix = ({ SESSION }) => {
 
   return (
     <Switch>
-      {permission_add == 1 ? <Route path={`/prefix/insert`} render={props => <Insert {...props} {...SESSION} />} /> : null }
-      {permission_edit == 1 ? <Route path={`/prefix/update/:code`} render={props => <Update {...props} {...SESSION} />} /> : null }
-      {permission_add == 1 ?<Route path={`/prefix/view`} render={props => <View {...props} {...SESSION} />} /> : null }
+      {permission_add === '1' ? <Route path={`/prefix/insert`} render={props => <Insert {...props} {...SESSION} />} /> : null }
+      {permission_edit === '1' ? <Route path={`/prefix/update/:code`} render={props => <Update {...props} {...SESSION} />} /> : null }
+      {permission_add === '1' ?<Route path={`/prefix/view`} render={props => <View {...props} {...SESSION} />} /> : null }
       <Route path={`/`} render={props => <View {...props} {...SESSION} />} />
 
     </Switch>

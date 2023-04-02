@@ -15,7 +15,6 @@ import { Link } from "react-router-dom"
 import Swal from "sweetalert2"
 import { Loading } from "../../component/customComponent"
 
-
 import { PrefixModel} from "../../models"
 
 const prefix_model = new PrefixModel()
@@ -41,7 +40,6 @@ class Update extends React.Component {
 
   _fetchData = async () => {
     const { code } = this.props.match.params
-
     let prefix = await prefix_model.getPrefixByid({ prefixID: code })
     const d = new Date()
     var year = d.getFullYear();
@@ -62,7 +60,6 @@ class Update extends React.Component {
       prefix_name
 
     }=prefix.data[0]
-    //.log(option_years);
     this.setState({
       prefix,
       prefixID,
@@ -76,7 +73,6 @@ class Update extends React.Component {
   _handleSubmit = async (event) => {
     event.preventDefault()
     this._checkSubmit() && this.setState({ loading: true, }, async () => {
-      //console.log(this.state);
       const res = await prefix_model.updatePrefix({
         prefixID: this.state.prefixID,
         prefix_name: this.state.prefix_name,
@@ -97,12 +93,8 @@ class Update extends React.Component {
   
   _checkSubmit() {
 
-    if (this.state.prefix_title == '') {
-      Swal.fire("กรุณาระบุชื่อเรื่อง")
-      return false
-    }
-    else if (this.state.prefix_description === '') {
-      Swal.fire("กรุณาระบุรายละเอียด")
+    if (this.state.prefix_name === '') {
+      Swal.fire("กรุณาระบุชื่อคำนำหน้า")
       return false
     }
     else {

@@ -11,10 +11,18 @@ import {
 } from "reactstrap"
 import { Link } from "react-router-dom"
 import { Loading,  } from "../../component/customComponent"
+import { NewsModel} from "../../models"
+import dateFormat from '../../utils/date-format'
+
+const news_model = new NewsModel()
 class Detail extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      news_titles: "", 
+      news_description: "",
+      news_file_date: "",
+      news_file: "",
       loading: true,
       user:[],
       option_years:[]
@@ -24,9 +32,16 @@ class Detail extends React.Component {
   componentDidMount() {
     this._fetchData()
   }
-
   _fetchData = async () => {
-    
+    let { code } = this.props.match.params
+    let news = await news_model.getNewsByid({ newsID: code })
+
+    const {
+      news_title, 
+      news_description,
+      news_file_date,
+      news_file,
+    } = news.data[0]
     const d = new Date()
     var year = d.getFullYear();
     const option_years = []
@@ -42,6 +57,10 @@ class Detail extends React.Component {
       })
     }
     this.setState({
+      news_title, 
+      news_description,
+      news_file_date : dateFormat.toFormat(news_file_date,"DD/MM/yyyy"),
+      news_file,
         loading: false,
         option_years,
         education_year:year + 543
@@ -49,7 +68,6 @@ class Detail extends React.Component {
   }
 
   render() {
-    
     return (
       <div>
         <Loading show={this.state.loading} />
@@ -67,11 +85,15 @@ class Detail extends React.Component {
                         <tbody>
                           <tr>
                             <td><b>ชื่อเรื่อง </b></td>
-                            <td>{this.state.fullname} </td>
+                            <td>{this.state.news_title} </td>
                           </tr>
                           <tr>
                             <td ><b>รายละเอียด </b></td>
-                            <td >{this.state.file_name} </td>
+                            <td >{this.state.news_description} </td>
+                          </tr>
+                          <tr>
+                            <td ><b>วันที </b></td>
+                            <td >{this.state.news_file_date } </td>
                           </tr>
                         </tbody>
                       </table>
@@ -79,7 +101,7 @@ class Detail extends React.Component {
                     
                   </Card>
                 </Col>
-                  <object  type="application/pdf" data={this.state.file_pdf} width="60%" height="700">
+                  <object  type="application/pdf" data={this.state.news_file} width="60%" height="700">
                   </object>
               </Row>
             </CardBody>

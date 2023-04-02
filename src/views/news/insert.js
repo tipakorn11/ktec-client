@@ -24,6 +24,10 @@ class Insert extends React.Component {
     super(props)
     this.state = {
       loading: true,
+      newsID: "",
+      news_title:"",
+      news_description:"",
+      news_file:"",
       news:[],
       option_years:[]
     }
@@ -34,6 +38,8 @@ class Insert extends React.Component {
   }
 
   _fetchData = async () => {
+  const code = await news_model.generateNewsLastCode()
+
     const d = new Date()
     var year = d.getFullYear();
     const option_years = []
@@ -50,6 +56,7 @@ class Insert extends React.Component {
     }
     //.log(option_years);
     this.setState({
+      newsID: code.data.last_code,
       loading: false,
       option_years,
       education_year:year + 543
@@ -116,7 +123,7 @@ class Insert extends React.Component {
                         <Input
                           type="text"
                           value={this.state.newsID}
-                          onChange={(e) => this.setState({ newsID: e.target.value })}
+                          readOnly
                         />
                       </FormGroup>
                     </Col>

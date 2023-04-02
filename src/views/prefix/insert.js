@@ -40,7 +40,8 @@ class Insert extends React.Component {
   }
 
   _fetchData = async () => {
-    const { code } = this.props.match.params
+    const code = await prefix_model.generatePrefixLastCode()
+    console.log(code.data);
     const d = new Date()
     var year = d.getFullYear();
     const option_years = []
@@ -55,9 +56,8 @@ class Insert extends React.Component {
         label:y
       })
     }
-    //.log(option_years);
     this.setState({
-     
+      prefixID: code.data.last_code,
       loading: false,
       option_years,
       education_year:year + 543
@@ -88,12 +88,8 @@ class Insert extends React.Component {
   
   _checkSubmit() {
 
-    if (this.state.prefix_title == '') {
-      Swal.fire("กรุณาระบุชื่อเรื่อง")
-      return false
-    }
-    else if (this.state.prefix_description === '') {
-      Swal.fire("กรุณาระบุรายละเอียด")
+    if (this.state.prefix_name === '') {
+      Swal.fire("กรุณาระบุชื่อคำหน้า")
       return false
     }
     else {
@@ -121,7 +117,6 @@ class Insert extends React.Component {
                         <Input
                           type="text"
                           value={this.state.prefixID}
-                          onChange={(e) => this.setState({ prefixID: e.target.value })}
                           readOnly
                         />
                       </FormGroup>

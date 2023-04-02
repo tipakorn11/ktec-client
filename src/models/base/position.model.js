@@ -1,6 +1,11 @@
 import { BaseFetch } from "../main-model";
 
 export default class PositionModel extends BaseFetch{
+    generatePositionLastCode = (data) => this.directFetch({
+        url: 'position/generatePositionLastCode',
+        method: 'POST',
+        body: JSON.stringify(data),
+    })  
     getPositionBy = (data) => this.directFetch({
         url: 'position/getPositionBy',
         method: 'POST',

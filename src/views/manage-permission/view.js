@@ -3,28 +3,14 @@ import {
     Card,
     CardBody,
     CardHeader,
-    Col,
-    Row,
 
 } from 'reactstrap'
 import { Link } from 'react-router-dom'
 import Swal from 'sweetalert2'
 
-import { Loading, SelectSearch, DataTable } from "../../component/customComponent"
+import { Loading,  DataTable } from "../../component/customComponent"
 import { PositionModel } from '../../models'
-const color_templates = [
-    '#FF6384',
-    '#36A2EB',
-    '#FFCE56',
-    '#2ECC71',
-    '#F1C40F',
-    '#3498DB',
-    '#8E44AD',
-    '#E74C3C',
-    '#1ABC9C',
-    '#F0B27A',
-]
-// const { permission_view,permission_add,permission_edit } = this.props.matach.params
+
 const position_model = new PositionModel()
 class ViewComponent extends React.Component {
     constructor(props) {
@@ -62,7 +48,6 @@ class ViewComponent extends React.Component {
             icon: "warning",
             showCancelButton: true,
           }).then(({ value }) => value && this.setState({ loading: true, }, async () => {
-            let total = this.state.total - 1;
            
             const res = await position_model.deletePositionByid({ positionID: code })
             if (res.require) {
@@ -84,7 +69,7 @@ class ViewComponent extends React.Component {
         <Card>
           <CardHeader>
             <h3 className="text-header">จัดการสิทธ์เข้าใช้งาน</h3>
-              {permission_add == 1 ?
+              {permission_add === '1' ?
                 <Link to={`/manage-permission/insert`} className="btn btn-success float-right">
                   <i className="fa fa-plus" aria-hidden="true" /> เพิ่มสิทธ์เข้าใช้งาน
                 </Link> 
@@ -101,7 +86,7 @@ class ViewComponent extends React.Component {
               rowKey=''
               columns={[
                 {
-                  title: "รหัส",
+                  title: "รหัสสิทธิการใช้งาน",
                   dataIndex: "positionID",
                   filterAble: true,
                   ellipsis: true,
@@ -119,7 +104,7 @@ class ViewComponent extends React.Component {
                   render: (cell) => {
                     const row_accessible = []
                   
-                    if (permission_edit == 1) {
+                    if (permission_edit === '1') {
                       row_accessible.push(
                         <Link key={"update"} to={`/manage-permission/update/${cell.positionID}`} title="แก้ไขรายการ">
                           <button type="button" className="icon-button color-warning">
@@ -128,7 +113,7 @@ class ViewComponent extends React.Component {
                         </Link>
                       )
                     }
-                    if (permission_delete == 1) {
+                    if (permission_delete === '1') {
                       row_accessible.push(
                         <button key="delete" type="button" className="icon-button color-danger" onClick={() => this._onDelete(cell.positionID)} title="ลบรายการ">
                           <i className="fa fa-trash" aria-hidden="true" />
