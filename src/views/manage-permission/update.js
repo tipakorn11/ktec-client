@@ -243,7 +243,7 @@ class Update extends React.Component {
                 <thead>
                   <tr>
                     <th className="text-center" width={48}>#</th>
-                    <th className="text-center">ชื่อการสิทธิใช้งาน</th>
+                    <th className="text-center">ชื่อสิทธิการใช้งาน</th>
                     <th className="text-center" width={90}>
                       <label className="m-0">
                         <input type="checkbox" onChange={(e) => this._checkedAll(e, 'view')} /> ดู

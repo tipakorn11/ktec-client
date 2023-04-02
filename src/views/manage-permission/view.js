@@ -68,10 +68,10 @@ class ViewComponent extends React.Component {
         <Loading show={this.state.loading} />
         <Card>
           <CardHeader>
-            <h3 className="text-header">จัดการสิทธ์เข้าใช้งาน</h3>
+            <h3 className="text-header">จัดการสิทธิเข้าใช้งาน</h3>
               {permission_add === '1' ?
                 <Link to={`/manage-permission/insert`} className="btn btn-success float-right">
-                  <i className="fa fa-plus" aria-hidden="true" /> เพิ่มสิทธ์เข้าใช้งาน
+                  <i className="fa fa-plus" aria-hidden="true" /> เพิ่มสิทธิเข้าใช้งาน
                 </Link> 
               : null}
           </CardHeader>
@@ -92,7 +92,7 @@ class ViewComponent extends React.Component {
                   ellipsis: true,
                 },
                 {
-                  title: "สิทธ์การใช้งาน",
+                  title: "ชื่อสิทธิการใช้งาน",
                   dataIndex: "position_name",
                   filterAble: true,
                   ellipsis: true,

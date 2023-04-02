@@ -229,12 +229,14 @@ class ViewComponent extends React.Component {
                     {
                       title: "วันที่ อัปโหลดไฟล์",
                       dataIndex: "file_date_upload",
+                      render: (cell) =>  dateFormat.toFormat(cell,"DD/MM/yyyy"),
                       filterAble: true,
                       ellipsis: true,
                     },
                     {
                       title: "วันที่ อนุมัติ",
                       dataIndex: "file_date_handle",
+                      render: (cell) =>  dateFormat.toFormat(cell,"DD/MM/yyyy"),
                       filterAble: true,
                       ellipsis: true,
                     },
@@ -298,12 +300,14 @@ class ViewComponent extends React.Component {
                     {
                       title: "วันที่ อัปโหลดไฟล์",
                       dataIndex: "file_date_upload",
+                      render: (cell) =>  dateFormat.toFormat(cell,"DD/MM/yyyy"),
                       filterAble: true,
                       ellipsis: true,
                     },
                     {
                       title: "วันที่ อนุมัติ",
                       dataIndex: "file_date_handle",
+                      render: (cell) =>  dateFormat.toFormat(cell,"DD/MM/yyyy"),
                       filterAble: true,
                       ellipsis: true,
                     },
@@ -378,13 +382,15 @@ class ViewComponent extends React.Component {
                     },
                     {
                       title: "วันที่ อัปโหลดไฟล์",
-                      dataIndex: "file_date",
+                      dataIndex: "file_date_upload",
+                      render: (cell) =>  dateFormat.toFormat(cell,"DD/MM/yyyy"),
                       filterAble: true,
                       ellipsis: true,
                     },
                     {
                       title: "วันที่จัดการไฟล์",
                       dataIndex: "file_date_handle",
+                      render: (cell) =>  dateFormat.toFormat(cell,"DD/MM/yyyy"),
                       filterAble: true,
                       ellipsis: true,
                     },

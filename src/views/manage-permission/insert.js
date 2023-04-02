@@ -183,8 +183,8 @@ class Insert extends React.Component {
   }
   _checkSubmit() {
 
-    if (this.state.positionID === '') {
-      Swal.fire("กรุณาชื่อสิทธิการใช้งาน")
+    if (this.state.position_name === '') {
+      Swal.fire("กรุณากรอกชื่อสิทธิการใช้งาน")
       return false
     }
     else {
@@ -218,7 +218,7 @@ class Insert extends React.Component {
                     </Col>
                     <Col md={2}>
                       <FormGroup>
-                        <label>ชื่อสิทธ์การใช้งาน <font color="#F00"><b>*</b></font></label>
+                        <label>ชื่อสิทธิการใช้งาน <font color="#F00"><b>*</b></font></label>
                         <Input
                           type="text"
                           value={this.state.position_name}
@@ -234,7 +234,7 @@ class Insert extends React.Component {
                 <thead>
                   <tr>
                     <th className="text-center" width={48}>#</th>
-                    <th className="text-center">ชื่อการสิทธิใช้งาน</th>
+                    <th className="text-center">ชื่อเมนูการใช้งาน</th>
                     <th className="text-center" width={90}>
                       <label className="m-0">
                         <input type="checkbox" onChange={(e) => this._checkedAll(e, 'view')} /> ดู
