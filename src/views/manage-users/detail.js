@@ -54,7 +54,6 @@ class Detail extends React.Component {
   _fetchData = async () => {
     let { code } = this.props.match.params
     let user = await user_model.getUserByid({ personalID: code})
-    console.log(user);
     const d = new Date()
     var year = d.getFullYear();
     const option_years = []

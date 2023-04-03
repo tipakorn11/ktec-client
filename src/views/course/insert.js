@@ -22,8 +22,6 @@ class Insert extends React.Component {
     super(props)
     this.state = {
       loading: true,
-      course:[],
-      option_years:[],
       courseID:'',
       course_name:'',
 
@@ -35,24 +33,10 @@ class Insert extends React.Component {
   }
 
   _fetchData = async () => {
-    const d = new Date()
-    var year = d.getFullYear();
-    const option_years = []
-    option_years.push({
-      value:year + 543,
-      label:year + 543
-    })
-    for(let i = 1;i<=20;i++){
-      const y = (year + 543) - i;
-      option_years.push({
-        value:y,
-        label:y
-      })
-    }
+    let code = await course_model.generateCourseLastCode()
     this.setState({
+      courseID: code.data.last_code,
       loading: false,
-      option_years,
-      education_year:year + 543
     })
   }
 
@@ -63,7 +47,6 @@ class Insert extends React.Component {
         courseID: this.state.courseID,
         course_name: this.state.course_name,
       })
-      console.log(res);
       if (res.require) {
         Swal.fire({ title: "บันทึกข้อมูลแล้ว !", icon: "success", })
         this.props.history.push(`/course`)
@@ -112,7 +95,7 @@ class Insert extends React.Component {
                         <Input
                           type="text"
                           value={this.state.courseID}
-                          onChange={(e) => this.setState({ courseID: e.target.value })}
+                          readOnly
                         />
                       </FormGroup>
                     </Col>

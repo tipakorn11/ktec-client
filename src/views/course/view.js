@@ -13,18 +13,7 @@ import Swal from 'sweetalert2'
 import { Loading, SelectSearch, DataTable } from "../../component/customComponent"
 import { CourseModel } from '../../models'
 
-const color_templates = [
-    '#FF6384',
-    '#36A2EB',
-    '#FFCE56',
-    '#2ECC71',
-    '#F1C40F',
-    '#3498DB',
-    '#8E44AD',
-    '#E74C3C',
-    '#1ABC9C',
-    '#F0B27A',
-]
+
 const course_model = new CourseModel()
 class ViewComponent extends React.Component {
     constructor(props) {
@@ -100,7 +89,7 @@ class ViewComponent extends React.Component {
               dataSource={this.state.courses.data}
               dataTotal={this.state.courses.total}
               current={this.state.pagination.current}
-              rowKey='newsID'
+              rowKey='courseID'
               columns={[
                 {
                   title: "รหัสหมวดวิชา",

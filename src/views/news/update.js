@@ -79,20 +79,18 @@ class Insert extends React.Component {
       loading: false,
       option_years,
       education_year:year + 543
-    },() => console.log('hee',news))
+    })
   }
 
   _handleSubmit = async (event) => {
     event.preventDefault()
     this._checkSubmit() && this.setState({ loading: true, }, async () => {
-      //console.log(this.state);
       const res = await news_model.updateNews({
         newsID: this.state.newsID,
         news_title: this.state.news_title,
         news_description: this.state.news_description,
         news_file_date: this.state.news_file_date,
       })
-      console.log(res);
       if (res.require) {
         Swal.fire({ title: "บันทึกข้อมูลแล้ว !", icon: "success", })
         this.props.history.push(`/news`)

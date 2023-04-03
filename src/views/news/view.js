@@ -124,9 +124,16 @@ class ViewComponent extends React.Component {
                 >
                   <button
                     className="btn btn-primary"
-                    onClick={() =>
-                      this.setState(this._fetchData())
-                    }
+                    onClick={() => {
+                      if (this.state.date_start && this.state.date_end && this.state.date_start < this.state.date_end) {
+                        this.setState(this._fetchData());
+                      } else {
+                        Swal.fire({
+                          title: "กรุณากรอกวันที่ที่ถูกต้อง",
+                          icon: "warning",
+                        })
+                      }
+                    }}
                   >
                     ค้นหา
                   </button>
@@ -170,7 +177,7 @@ class ViewComponent extends React.Component {
                         row_accessible.push(
                           <Link key={"detail"} to={`/news/detail/${cell.newsID}`} title="รายละเอียด">
                             <button type="button" className="icon-button color-primary">
-                              <i className="fa fa-search" aria-hidden="true" />
+                              <i className="fa fa-eye" aria-hidden="true" />
                             </button>
                           </Link>
                         )

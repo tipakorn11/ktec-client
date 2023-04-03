@@ -13,7 +13,7 @@ import {
 } from "reactstrap"
 import { Link } from "react-router-dom"
 import Swal from "sweetalert2"
-import { Loading, AsyncTypeahead } from "../../component/customComponent"
+import { Loading, SelectSearch } from "../../component/customComponent"
 
 
 import { FilesModel} from "../../models"
@@ -96,7 +96,6 @@ class Update extends React.Component {
         file_status: "wait",
         file_pdf: this.state.file_pdf,
       })
-      console.log(res);
       if (res.require) {
         Swal.fire({ title: "บันทึกข้อมูลแล้ว !", icon: "success", })
         this.props.history.push(`/file-approve`)
@@ -122,7 +121,18 @@ class Update extends React.Component {
   }
   
   render() {
-    
+    const options = [
+      { value: 'ใบอนุญาตให้เป็นครู (ร๘ข)', label: 'ใบอนุญาตให้เป็นครู (ร๘ข)' },
+      { value: 'ใบอนุญาตให้เป็นครู (สช.๑๑)', label: 'ใบอนุญาตให้เป็นครู (สช.๑๑)' },
+      { value: 'ใบประกอบวิชาชีพครู', label: 'ใบประกอบวิชาชีพครู' },
+      { value: 'หนังสือแต่งตั้ง', label: 'หนังสือแต่งตั้ง' },
+      { value: 'ใบอนุญาตให้จำหน่ายครู (ร.๑๒)', label: 'ใบอนุญาตให้จำหน่ายครู (ร.๑๒)' },
+      { value: ' ใบประกาศอบรม ', label: ' ใบประกาศอบรม ' },
+      { value: 'ใบอนุญาตให้เป็นครูใหญ่ (สช.๘)', label: 'ใบอนุญาตให้เป็นครูใหญ่ (สช.๘)' },
+      { value: 'ใเกียรติประวัติวันรับเครื่องราชอิสริยาภรณ์', label: 'เกียรติประวัติวันรับเครื่องราชอิสริยาภรณ์' },
+      { value: ' ใบประกาศเกียรติบัตร', label: ' ใบประกาศเกียรติบัตร' },
+      { value: ' ผลงาน', label: ' ผลงาน' }, 
+    ]
     return (
       <div>
         <Loading show={this.state.loading} />
@@ -159,11 +169,11 @@ class Update extends React.Component {
                       <Row>
                         <Col md={2}>
                           <FormGroup>
-                            <label>ชื่อไฟล์<font color="#F00"><b>*</b></font></label>
-                            <Input
-                              type="text"
-                              value={this.state.file_name}
-                              onChange={(e) => this.setState({ file_name: e.target.value })}
+                            <label>หัวข้อ<font color="#F00"><b>*</b></font></label>
+                            <SelectSearch
+                              options={options}
+                              value={{ value: this.state.file_name }}
+                              onChange={(val) => this._changeSelected(val, 'file_name')}
                             />
                           </FormGroup>
                         </Col>

@@ -20,7 +20,7 @@ import {
 const TheHeader = () => {
   const dispatch = useDispatch()
   const sidebarShow = useSelector(state => state.sidebarShow)
-
+  let user = JSON.parse(localStorage.getItem('session-user'));
   const toggleSidebar = () => {
     const val = [true, 'responsive'].includes(sidebarShow) ? false : 'responsive'
     dispatch({ type: 'set', sidebarShow: val })
@@ -38,6 +38,7 @@ const TheHeader = () => {
       <CHeaderBrand className="mx-auto d-lg-none" to={`/`} />
       <CHeaderNav className="d-md-down-none mr-auto"></CHeaderNav>
       <CHeaderNav className="px-3">
+        <>{user.thai_fname + " " + user.thai_lname}</>
         <AuthConsumer>
         {({ _handleLogout }) => (
           <div>

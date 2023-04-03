@@ -70,18 +70,16 @@ class Update extends React.Component {
       loading: false,
       option_years,
       education_year:year + 543
-    },() => console.log('hee',course))
+    })
   }
 
   _handleSubmit = async (event) => {
     event.preventDefault()
     this._checkSubmit() && this.setState({ loading: true, }, async () => {
-      //console.log(this.state);
       const res = await course_model.updateCourse({
         courseID: this.state.courseID,
         course_name: this.state.course_name,
       })
-      console.log(res);
       if (res.require) {
         Swal.fire({ title: "บันทึกข้อมูลแล้ว !", icon: "success", })
         this.props.history.push(`/course`)

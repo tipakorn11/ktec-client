@@ -84,6 +84,7 @@ class ViewComponent extends React.Component {
               dataTotal={this.state.positions.total}
               current={this.state.pagination.current}
               rowKey=''
+              
               columns={[
                 {
                   title: "รหัสสิทธิการใช้งาน",

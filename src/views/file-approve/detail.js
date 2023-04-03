@@ -155,7 +155,7 @@ class Detail extends React.Component {
                     
                   </Card>
                 </Col>
-                  <object  type="application/pdf" data={this.state.file_pdf} width="60%" height="800">
+                  <object  type="application/pdf" data={"https://www.africau.edu/images/default/sample.pdf"} width="60%" height="800">
                   </object>
               </Row>
             </CardBody>

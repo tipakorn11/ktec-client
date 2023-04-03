@@ -46,7 +46,6 @@ class ViewComponent extends React.Component {
     }
     _fetchData = (params = { pagination: this.state.pagination }) => this.setState({ loading: true, }, async () => {
         let prefixs = await prefix_model.getPrefixBy()
-        console.log(prefixs);
 
         this.setState({
           prefixs,

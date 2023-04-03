@@ -67,7 +67,7 @@ class Update extends React.Component {
       loading: false,
       option_years,
       education_year:year + 543
-    },() => console.log('hee',prefix))
+    })
   }
 
   _handleSubmit = async (event) => {
@@ -77,7 +77,6 @@ class Update extends React.Component {
         prefixID: this.state.prefixID,
         prefix_name: this.state.prefix_name,
       })
-      console.log(res);
       if (res.require) {
         Swal.fire({ title: "บันทึกข้อมูลแล้ว !", icon: "success", })
         this.props.history.push(`/prefix`)

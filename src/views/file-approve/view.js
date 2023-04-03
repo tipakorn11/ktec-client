@@ -47,13 +47,11 @@ class ViewComponent extends React.Component {
       let files_approve = []
       let files_cancel = [] 
       let files_personal = [] 
-      console.log();
       let {code} = this.props.match.params
       if(section === 'wait'|| section === ''){
         files_wait = await files_model.getFilesBy({
           file_status: 'wait',
         })
-        console.log("1",files_wait);
 
       }
       if(section === 'approve'|| section === ''){
@@ -130,7 +128,7 @@ class ViewComponent extends React.Component {
                         ไม่อนุมัติ
               </NavLink> : null }
               <NavLink active={this.state.active_tab === 'personal'} onClick={() => this.setState({ active_tab: 'personal' })}>
-                        ไฟล์ที่อัปโหลด
+                        ประวัติการอัปโหลดเอกสาร
               </NavLink> 
             </Nav>
             <TabContent activeTab={this.state.active_tab}>
@@ -157,7 +155,7 @@ class ViewComponent extends React.Component {
                       ellipsis: true,
                     },
                     {
-                      title: "ชื่อไฟล์",
+                      title: "หัวข้อ",
                       dataIndex: "file_name",
                       filterAble: true,
                       ellipsis: true,
@@ -178,7 +176,7 @@ class ViewComponent extends React.Component {
                             row_accessible.push(
                               <Link key={"detail"} to={`/file-approve/detail/${cell.fileID}`} title="รายละเอียด">
                                 <button type="button" className="icon-button color-primary">
-                                  <i className="fa fa-search" aria-hidden="true" />
+                                  <i className="fa fa-eye" aria-hidden="true" />
                                 </button>
                               </Link>
                             )
@@ -221,7 +219,7 @@ class ViewComponent extends React.Component {
                       ellipsis: true,
                     },
                     {
-                      title: "ชื่อไฟล์",
+                      title: "หัวข้อ",
                       dataIndex: "file_name",
                       filterAble: true,
                       ellipsis: true,
@@ -249,7 +247,7 @@ class ViewComponent extends React.Component {
                             row_accessible.push(
                               <Link key={"detail"} to={`/file-approve/detail/${cell.fileID}`} title="รายละเอียด">
                                 <button type="button" className="icon-button color-primary">
-                                  <i className="fa fa-search" aria-hidden="true" />
+                                  <i className="fa fa-eye" aria-hidden="true" />
                                 </button>
                               </Link>
                             )
@@ -292,7 +290,7 @@ class ViewComponent extends React.Component {
                       ellipsis: true,
                     },
                     {
-                      title: "ชื่อไฟล์",
+                      title: "หัวข้อ",
                       dataIndex: "file_name",
                       filterAble: true,
                       ellipsis: true,
@@ -305,7 +303,7 @@ class ViewComponent extends React.Component {
                       ellipsis: true,
                     },
                     {
-                      title: "วันที่ อนุมัติ",
+                      title: "วันที่ ไม่อนุมัติ",
                       dataIndex: "file_date_handle",
                       render: (cell) =>  dateFormat.toFormat(cell,"DD/MM/yyyy"),
                       filterAble: true,
@@ -326,7 +324,7 @@ class ViewComponent extends React.Component {
                             row_accessible.push(
                               <Link key={"detail"} to={`/file-approve/detail/${cell.fileID}`} title="รายละเอียด">
                                 <button type="button" className="icon-button color-primary">
-                                  <i className="fa fa-search" aria-hidden="true" />
+                                  <i className="fa fa-eye" aria-hidden="true" />
                                 </button>
                               </Link>
                             )
@@ -369,7 +367,7 @@ class ViewComponent extends React.Component {
                       ellipsis: true,
                     },
                     {
-                      title: "ชื่อไฟล์",
+                      title: "หัวข้อ",
                       dataIndex: "file_name",
                       filterAble: true,
                       ellipsis: true,
@@ -377,19 +375,15 @@ class ViewComponent extends React.Component {
                     {
                       title: "สถานะของไฟล์",
                       dataIndex: "file_status",
+                      render: (cell) => cell ==="cancel"? <p style ={{color: "red"}}>ไม่อนุมัติ</p>:
+                                        cell ==="approve"?<p style ={{color: "green"}}>อนุมัติ</p>:
+                                        <p style ={{color: "gold"}}>รอการอนุมัติ</p>,
                       filterAble: true,
                       ellipsis: true,
                     },
                     {
                       title: "วันที่ อัปโหลดไฟล์",
                       dataIndex: "file_date_upload",
-                      render: (cell) =>  dateFormat.toFormat(cell,"DD/MM/yyyy"),
-                      filterAble: true,
-                      ellipsis: true,
-                    },
-                    {
-                      title: "วันที่จัดการไฟล์",
-                      dataIndex: "file_date_handle",
                       render: (cell) =>  dateFormat.toFormat(cell,"DD/MM/yyyy"),
                       filterAble: true,
                       ellipsis: true,
@@ -409,7 +403,7 @@ class ViewComponent extends React.Component {
                           row_accessible.push(
                               <Link key={"detail"} to={`/file-approve/detail/${cell.fileID}`} title="รายละเอียด">
                                 <button type="button" className="icon-button color-primary">
-                                  <i className="fa fa-search" aria-hidden="true" />
+                                  <i className="fa fa-eye" aria-hidden="true" />
                                 </button>
                               </Link>
                             )

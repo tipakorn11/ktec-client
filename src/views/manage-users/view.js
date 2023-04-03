@@ -46,7 +46,6 @@ class ViewComponent extends React.Component {
     }
     _fetchData = (params = { pagination: this.state.pagination }) => this.setState({ loading: true, }, async () => {
         let users = await users_model.getUserBy()
-        console.log(users);
         this.setState({
           users,
           total: users.total,
@@ -65,7 +64,6 @@ class ViewComponent extends React.Component {
             let total = this.state.total - 1;
            
             const res = await users_model.deleteUsersByid({ personalID: code })
-            console.log(res);
             if (res.require) {
               Swal.fire({ title: 'ลบรายการแล้ว !', text: '', icon: 'success' })
               this._fetchData()
@@ -130,7 +128,7 @@ class ViewComponent extends React.Component {
                         row_accessible.push(
                           <Link key={"detail"} to={`/manage-users/detail/${cell.personalID}`} title="รายละเอียด">
                             <button type="button" className="icon-button color-primary">
-                              <i className="fa fa-search" aria-hidden="true" />
+                              <i className="fa fa-eye" aria-hidden="true" />
                             </button>
                           </Link>
                         )

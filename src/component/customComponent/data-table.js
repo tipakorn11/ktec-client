@@ -30,13 +30,11 @@ export default class DataTable extends React.Component {
     }, () => {
       const { filters } = this.state
       let props_filters = {}
-      //console.log(pagination);
       this.props.columns.forEach(item => {
         if (filters[item.dataIndex]) {
           props_filters[item.dataIndex] = item.filterAble && filters[item.dataIndex].length ? filters[item.dataIndex][0] : filters[item.dataIndex]
         }
       })
-      //console.log(props_filters);
       if (this.props.onChange) {
         this.props.onChange({
           pagination: this.state.pagination,

@@ -125,14 +125,13 @@ class Detail extends React.Component {
         loading: false,
         option_years,
         education_year:year + 543
-    },() => console.log(user))
+    })
   }
 
   render() {
 
       const pos= this.state.position.filter(item => item.positionID != 'pos1' && item.positionID != 'pos2')
       let position = pos.map(item => item.position_name)
-      console.log(differenceInDays(new Date(2022, 1, 2) ,new Date( 2022,1, 7)))
     return (
       <div>
        <Loading show={this.state.loading} />

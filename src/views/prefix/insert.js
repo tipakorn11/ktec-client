@@ -41,7 +41,6 @@ class Insert extends React.Component {
 
   _fetchData = async () => {
     const code = await prefix_model.generatePrefixLastCode()
-    console.log(code.data);
     const d = new Date()
     var year = d.getFullYear();
     const option_years = []
@@ -67,12 +66,10 @@ class Insert extends React.Component {
   _handleSubmit = async (event) => {
     event.preventDefault()
     this._checkSubmit() && this.setState({ loading: true, }, async () => {
-      //console.log(this.state);
       const res = await prefix_model.insertPrefix({
         prefixID: this.state.prefixID,
         prefix_name: this.state.prefix_name,
       })
-      console.log(res);
       if (res.require) {
         Swal.fire({ title: "บันทึกข้อมูลแล้ว !", icon: "success", })
         this.props.history.push(`/prefix`)
