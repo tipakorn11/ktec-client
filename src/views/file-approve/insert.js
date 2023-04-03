@@ -10,7 +10,6 @@ import {
   FormGroup,
   Input,
   Row,
-  Select
 } from "reactstrap"
 import { Link } from "react-router-dom"
 import Swal from "sweetalert2"

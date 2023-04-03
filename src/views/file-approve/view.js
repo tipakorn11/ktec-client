@@ -47,7 +47,6 @@ class ViewComponent extends React.Component {
       let files_approve = []
       let files_cancel = [] 
       let files_personal = [] 
-      let {code} = this.props.match.params
       if(section === 'wait'|| section === ''){
         files_wait = await files_model.getFilesBy({
           file_status: 'wait',
@@ -87,7 +86,6 @@ class ViewComponent extends React.Component {
             icon: "warning",
             showCancelButton: true,
           }).then(({ value }) => value && this.setState({ loading: true, }, async () => {
-            let total = this.state.total - 1;
            
             const res = await files_model.deleteFilesByid({ fileID: code })
             if (res.require) {
@@ -115,15 +113,15 @@ class ViewComponent extends React.Component {
           </CardHeader>
           <CardBody>
           <Nav tabs>
-              {permission_approve == 1  || permission_cancel == 1 ?
+              {permission_approve === '1'  || permission_cancel === '1' ?
               <NavLink active={this.state.active_tab === 'wait'} onClick={() => this.setState({ active_tab: 'wait' })}>
                         รออนุมัติ
               </NavLink> : null}
-              {permission_approve == 1  || permission_cancel== 1 ?
+              {permission_approve === '1'  || permission_cancel=== '1' ?
               <NavLink active={this.state.active_tab === 'approve'} onClick={() => this.setState({ active_tab: 'approve' })}>
                         อนุมัติแล้ว 
               </NavLink> : null}
-              {permission_approve == 1  || permission_cancel == 1 ?
+              {permission_approve === '1'  || permission_cancel === '1' ?
               <NavLink active={this.state.active_tab === 'cancel'} onClick={() => this.setState({ active_tab: 'cancel' })}>
                         ไม่อนุมัติ
               </NavLink> : null }
@@ -375,9 +373,9 @@ class ViewComponent extends React.Component {
                     {
                       title: "สถานะของไฟล์",
                       dataIndex: "file_status",
-                      render: (cell) => cell ==="cancel"? <p style ={{color: "red"}}>ไม่อนุมัติ</p>:
-                                        cell ==="approve"?<p style ={{color: "green"}}>อนุมัติ</p>:
-                                        <p style ={{color: "gold"}}>รอการอนุมัติ</p>,
+                      render: (cell) => cell ==="cancel"? <p style ={{color: "white" ,backgroundColor:"red", width: "3.5rem",borderRadius: '1.5rem',textAlign: 'center'}}>ไม่อนุมัติ</p>:
+                                        cell ==="approve"?<p style ={{color: "white" ,backgroundColor:"green", width: "3.5rem",borderRadius: '1.5rem',textAlign: 'center'}}>อนุมัติ</p>:
+                                        <p style ={{color: "white" ,backgroundColor:"gold", width: "5rem",borderRadius: '1.5rem',textAlign: 'center'}}>รอการอนุมัติ</p>,
                       filterAble: true,
                       ellipsis: true,
                     },
@@ -408,7 +406,7 @@ class ViewComponent extends React.Component {
                               </Link>
                             )
                           }
-                          if (cell.file_status != "approve") {
+                          if (cell.file_status !== "approve") {
                             row_accessible.push(
                               <Link key={"update"} to={`/file-approve/update/${cell.fileID}`} title="แก้ไขรายการ">
                                 <button type="button" className="icon-button color-warning">

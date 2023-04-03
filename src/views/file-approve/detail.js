@@ -142,12 +142,16 @@ class Detail extends React.Component {
                             <td>{this.state.fullname} </td>
                           </tr>
                           <tr>
-                            <td ><b>ชื่อไฟล์ </b></td>
+                            <td ><b>หัวข้อ </b></td>
                             <td >{this.state.file_name} </td>
                           </tr>
                           <tr>
                             <td><b>สถานะของไฟล์ </b></td>
-                            <td>{this.state.file_status} </td>
+                            <td>{this.state.file_status ==="wait"?"รอการอนุมัติ":this.state.file_status === "approve"?"อนุมัติ":"ไม่อนุมัติ"} </td>
+                          </tr>
+                          <tr>
+                            <td ><b>หมายเหตุ </b></td>
+                            <td >{this.state.file_note} </td>
                           </tr>
                         </tbody>
                       </table>
