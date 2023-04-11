@@ -139,31 +139,96 @@ class Detail extends React.Component {
 
   _handleEducation = (name, e, idx) => {
     let { education } = this.state
-    education[idx][name] = e.target.value
+    if(name == "graduate_date")
+      education[idx][name] = e
+    else
+      education[idx][name] = e.target.value
     this.setState({ education })
   }
 
   _handleEducationSub = (name, e, idx) => {
     let { education_sub } = this.state
-    education_sub[idx][name] = e.target.value
+    if(name == "graduate_date")
+      education_sub[idx][name] = e
+    else
+      education_sub[idx][name] = e.target.value
     this.setState({ education_sub })
   }
 
   _handleEtc = (name, e, idx) => {
     let { etc } = this.state
-    etc[idx][name] = e.target.value
+    if(name === "graduate_date")
+     etc[idx][name] = e
+    else
+      etc[idx][name] = e.target.value
     this.setState({ etc })
   }
 
   _handleTraining = (name, e, idx) => {
     let { training } = this.state
-    training[idx][name] = e.target.value
+    if(name === "training_date")
+      training[idx][name] = e
+    else if (name === "training_end_date")
+      training[idx][name] = e
+    else
+      training[idx][name] = e.target.value
     this.setState({ training })
   }
+
   _handleTeacherLicense = (name, e, idx) => {
     let { teacher_license } = this.state
-    teacher_license[idx][name] = e.target.value
+    if(name === "tl_date")
+      teacher_license[idx][name] = e
+    else if (name === "tl_since")
+      teacher_license[idx][name] = e
+    else
+      teacher_license[idx][name] = e.target.value
     this.setState({ teacher_license })
+  }
+
+  _handleTeacherPermissionLicense = (name, e, idx) => {
+    let { tpl } = this.state
+    if(name === "tpl_date")
+      tpl[idx][name] = e
+    else if (name === "tpl_since")
+      tpl[idx][name] = e
+    else if (name === "tpl_discharge_since")
+      tpl[idx][name] = e
+    else if (name === "tpl_discharge_date")
+      tpl[idx][name] = e
+    else
+     tpl[idx][name] = e.target.value
+    this.setState({ tpl })
+  }
+
+  _handleHeadTeacher = (name, e, idx) => {
+    let { ht_license } = this.state
+    if(name === "HT_date")
+     ht_license[idx][name] = e
+    else if (name === "HT_date_since")
+     ht_license[idx][name] = e
+    else if (name === "HT_discharge_since")
+      ht_license[idx][name] = e
+    else if (name === "HT_discharge_date")
+     ht_license[idx][name] = e
+    else
+      ht_license[idx][name] = e.target.value
+    this.setState({ ht_license })
+  }
+
+  _handleAppiontment = (name, e, idx) => {
+    let { app } = this.state
+    if(name === "app_date")
+      app[idx][name] = e
+    else if (name === "app_since")
+      app[idx][name] = e
+    else if (name === "app_discharge_since")
+      app[idx][name] = e
+    else if (name === "app_discharge_date")
+      app[idx][name] = e
+    else
+      app[idx][name] = e.target.value
+    this.setState({ app })
   }
 
   render() {
@@ -252,10 +317,9 @@ class Detail extends React.Component {
                           <DatePicker
                             format={"DD/MM/YYYY"}
                             value={this.state.bdate}
-                            onChange={(e) => this.setState({ bdate: e.target.value })}
+                            onChange={(e) => this.setState({ bdate: e })}
                             placeholder = {this.state.bdate}
                             style={{borderRadius: '0.25rem'}}
-
                           />
                         </FormGroup>
                       </Col>
@@ -662,8 +726,12 @@ class Detail extends React.Component {
                           <Col md={4}>
                             <FormGroup>
                               <label>ตั้งแต่วันที่ </label>
-                              <Input
+                              <DatePicker
+                                format={"DD/MM/YYYY"}
                                 value={item.tl_since}
+                                onChange={(e) => this._handleTeacherLicense('tl_since', e, idx)}
+                                placeholder = {item.tl_since}
+                                style={{borderRadius: '0.25rem'}}
                               />
                             </FormGroup>
                           </Col>
@@ -673,14 +741,14 @@ class Detail extends React.Component {
                               <Input
                                 type="text"
                                 value={item.tl_teaching_subject}
-
+                                onChange={(e) => this._handleTeacherLicense('tl_teaching_subject', e, idx)}
                               />
                             </FormGroup>
                           </Col>
                         </Row>
                       </div>
                     )): null}
-              {this.state.tpl.length ? this.state.tpl.map (item => (
+              {this.state.tpl.length ? this.state.tpl.map ((item,idx)=> (
                     <div>
                       <Row>
                         <Col md={4}>
@@ -688,6 +756,8 @@ class Detail extends React.Component {
                             <label>ใบอนุญาติให้บรรจุ </label>
                             <Input
                               value={item.teacher_permission_licenseID}
+                                onChange={(e) => this._handleTeacherPermissionLicense('teacher_permission_licenseID', e, idx)}
+
                             />
                           </FormGroup>
                         </Col>
@@ -697,18 +767,20 @@ class Detail extends React.Component {
                             <Input
                               type="text"
                               value={item.teacher_pemissionNO}
-
+                              onChange={(e) => this._handleTeacherPermissionLicense('teacher_pemissionNO', e, idx)}
                             />
                           </FormGroup>
                         </Col>
                         <Col md={4}>
                           <FormGroup>
                             <label>ลงวันที่ </label>
-                            <Input
-                              type="text"
-                              value={item.tpl_date}
-
-                            />
+                             <DatePicker
+                                format={"DD/MM/YYYY"}
+                                value={item.tpl_date}
+                                onChange={(e) => this._handleTeacherPermissionLicense('tpl_date', e, idx)}
+                                placeholder = {item.tpl_date}
+                                style={{borderRadius: '0.25rem'}}
+                              />
                           </FormGroup>
                         </Col>
                       </Row>
@@ -716,9 +788,13 @@ class Detail extends React.Component {
                         <Col md={4}>
                           <FormGroup>
                             <label>ตั้งแต่วันที่ </label>
-                            <Input
-                              value={item.tpl_since}
-                            />
+                            <DatePicker
+                                format={"DD/MM/YYYY"}
+                                value={item.tpl_since}
+                                onChange={(e) => this._handleTeacherPermissionLicense('tpl_since', e, idx)}
+                                placeholder = {item.tpl_since}
+                                style={{borderRadius: '0.25rem'}}
+                              />
                           </FormGroup>
                         </Col>
                         <Col md={4}>
@@ -727,7 +803,7 @@ class Detail extends React.Component {
                             <Input
                               type="text"
                               value={item.tpl_currenly_work}
-
+                              onChange={(e) => this._handleTeacherPermissionLicense('tpl_currenly_work', e, idx)}
                             />
                           </FormGroup>
                         </Col>
@@ -737,7 +813,7 @@ class Detail extends React.Component {
                             <Input
                               type="text"
                               value={item.tpl_teacher_type}
-
+                              onChange={(e) => this._handleTeacherPermissionLicense('tpl_teacher_type', e, idx)}
                             />
                           </FormGroup>
                         </Col> 
@@ -749,7 +825,7 @@ class Detail extends React.Component {
                             <Input
                               type="text"
                               value={item.tpl_district}
-
+                              onChange={(e) => this._handleTeacherPermissionLicense('tpl_district', e, idx)}
                             />
                           </FormGroup>
                         </Col>
@@ -759,7 +835,7 @@ class Detail extends React.Component {
                             <Input
                               type="text"
                               value={item.country}
-
+                              onChange={(e) => this._handleTeacherPermissionLicense('country', e, idx)}
                             />
                           </FormGroup>
                         </Col> 
@@ -769,7 +845,7 @@ class Detail extends React.Component {
                             <Input
                               type="text"
                               value={item.educational}
-
+                              onChange={(e) => this._handleTeacherPermissionLicense('educational', e, idx)}
                             />
                           </FormGroup>
                           </Col> 
@@ -781,6 +857,7 @@ class Detail extends React.Component {
                             <Input
                               type="text"
                               value={item.tl_teaching_subject}
+                              onChange={(e) => this._handleTeacherPermissionLicense('tl_teaching_subject', e, idx)}
 
                             />
                           </FormGroup>
@@ -791,18 +868,20 @@ class Detail extends React.Component {
                             <Input
                               type="text"
                               value={item.tpl_dischargeNO}
-
+                              onChange={(e) => this._handleTeacherPermissionLicense('tpl_dischargeNO', e, idx)}
                             />
                           </FormGroup>
                         </Col>
                         <Col md={4}>
                           <FormGroup>
                             <label> ลงวันที่</label>
-                            <Input
-                              type="text"
-                              value={item.tpl_discharge_date}
-
-                            />
+                            <DatePicker
+                                format={"DD/MM/YYYY"}
+                                value={item.tpl_discharge_date}
+                                onChange={(e) => this._handleTeacherPermissionLicense('tpl_discharge_date', e, idx)}
+                                placeholder = {item.tpl_discharge_date}
+                                style={{borderRadius: '0.25rem'}}
+                              />
                           </FormGroup>
                         </Col>
                       </Row>
@@ -810,11 +889,13 @@ class Detail extends React.Component {
                         <Col md={4}>
                           <FormGroup>
                             <label> ตั้งแต่วันที่</label>
-                            <Input
-                              type="text"
-                              value={item.tpl_discharge_since}
-
-                            />
+                             <DatePicker
+                                format={"DD/MM/YYYY"}
+                                value={item.tpl_discharge_since}
+                                onChange={(e) => this._handleTeacherPermissionLicense('tpl_discharge_since', e, idx)}
+                                placeholder = {item.tpl_discharge_since}
+                                style={{borderRadius: '0.25rem'}}
+                              />
                           </FormGroup>
                         </Col>
                         <Col md={4}>
@@ -823,14 +904,14 @@ class Detail extends React.Component {
                             <Input
                               type="text"
                               value={item.tpl_discharge_motive}
-
+                              onChange={(e) => this._handleTeacherPermissionLicense('tpl_discharge_motive', e, idx)}
                             />
                           </FormGroup>
                         </Col>
                     </Row>
                     </div>
                   )): null}
-              {this.state.ht_license.length ? this.state.ht_license.map (item => (
+              {this.state.ht_license.length ? this.state.ht_license.map ((item,idx) => (
                 <div>
                   <Row>
                     <Col md={4}>
@@ -838,6 +919,7 @@ class Detail extends React.Component {
                         <label>ใบอนุญาติให้เป็นครูใหญ่</label>
                         <Input
                           value={item.HT_licenseID}
+                          onChange={(e) => this._handleHeadTeacher('HT_licenseID', e, idx)}
                         />
                       </FormGroup>
                     </Col>
@@ -847,60 +929,85 @@ class Detail extends React.Component {
                         <Input
                           type="text"
                           value={item.HT_licenseNO}
-
+                          onChange={(e) => this._handleHeadTeacher('HT_licenseNO', e, idx)}
                         />
                       </FormGroup>
                     </Col>
                     <Col md={4}>
                       <FormGroup>
                         <label>ลงวันที่ </label>
-                        <Input
-                          type="text"
-                          value={item.HT_license_date}
-
-                        />
+                        <DatePicker
+                                format={"DD/MM/YYYY"}
+                                value={item.HT_date}
+                                onChange={(e) => this._handleHeadTeacher('HT_date', e, idx)}
+                                placeholder = {item.HT_date}
+                                style={{borderRadius: '0.25rem'}}
+                              />
                       </FormGroup>
                     </Col>
                   </Row>
                   <Row>
                     <Col md={4}>
                       <FormGroup>
+                        <label>ตั้งแต่วันที </label>
+                        <DatePicker
+                                format={"DD/MM/YYYY"}
+                                value={item.HT_date_since}
+                                onChange={(e) => this._handleHeadTeacher('HT_date_since', e, idx)}
+                                placeholder = {item.HT_date_since}
+                                style={{borderRadius: '0.25rem'}}
+                              />
+                      </FormGroup>
+                    </Col>
+                    <Col md={4}>
+                      <FormGroup>
                         <label>ใบอนุญาติให้จำหน่ายครูใหญ่ เลขที่ </label>
                         <Input
                           value={item.HT_dischargeNO}
+                          onChange={(e) => this._handleHeadTeacher('HT_dischargeNO', e, idx)}
                         />
                       </FormGroup>
                     </Col>
                     <Col md={4}>
                       <FormGroup>
                         <label> ลงวันที่</label>
-                        <Input
-                          type="text"
-                          value={item.HT_discharge_date}
-
-                        />
+                         <DatePicker
+                                format={"DD/MM/YYYY"}
+                                value={item.HT_discharge_date}
+                                onChange={(e) => this._handleHeadTeacher('HT_discharge_date', e, idx)}
+                                placeholder = {item.HT_discharge_date}
+                                style={{borderRadius: '0.25rem'}}
+                              />
                       </FormGroup>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col md={4}>
                       <FormGroup>
                         <label> ตั้งแต่วันที่</label>
-                        <Input
-                          type="text"
-                          value={item.HT_discharge_since}
-
-                        />
+                         <DatePicker
+                                format={"DD/MM/YYYY"}
+                                value={item.HT_discharge_since}
+                                onChange={(e) => this._handleHeadTeacher('HT_discharge_since', e, idx)}
+                                placeholder = {item.HT_discharge_since}
+                                style={{borderRadius: '0.25rem'}}
+                              />
                       </FormGroup>
+                    </Col>
+                    <Col md={4}>
                       <FormGroup>
                         <label> สาเหตุ</label>
                         <Input
                           type="text"
                           value={item.HT_discharge_motive}
+                          onChange={(e) => this._handleHeadTeacher('HT_discharge_motive', e, idx)}
                         />
                       </FormGroup>
-
                     </Col>
                   </Row>
                 </div>
               )): null}
-               {this.state.app.length ? this.state.app.map (item => (
+               {this.state.app.length ? this.state.app.map ((item,idx) => (
                 <div>
                   <Row>
                     <Col md={4}>
@@ -908,15 +1015,20 @@ class Detail extends React.Component {
                         <label>บรรจุเป็นผู้จัดการ ใบอนุญาติ เลขที่</label>
                         <Input
                           value={item.appointmentNO}
+                          onChange={(e) => this._handleAppiontment('appointmentNO', e, idx)}
                         />
                       </FormGroup>
                     </Col>
                     <Col md={4}>
                       <FormGroup>
                         <label>ลงวันที่</label>
-                        <Input
-                          value={item.app_date}
-                        />
+                         <DatePicker
+                                format={"DD/MM/YYYY"}
+                                value={item.app_date}
+                                onChange={(e) => this._handleAppiontment('app_date', e, idx)}
+                                placeholder = {item.app_date}
+                                style={{borderRadius: '0.25rem'}}
+                              />
                       </FormGroup>
                     </Col>
                     <Col md={4}>
@@ -924,6 +1036,7 @@ class Detail extends React.Component {
                         <label>ตั้งแต่วันที่</label>
                         <Input
                           value={item.app_since}
+                          onChange={(e) => this._handleAppiontment('app_since', e, idx)}
                         />
                       </FormGroup>
                     </Col>
@@ -935,6 +1048,7 @@ class Detail extends React.Component {
                         <label>โรงเรียน</label>
                         <Input
                           value={item.app_currently_work}
+                          onChange={(e) => this._handleAppiontment('app_currently_work', e, idx)}
                         />
                       </FormGroup>
                     </Col>
@@ -943,6 +1057,7 @@ class Detail extends React.Component {
                         <label>ประเภท</label>
                         <Input
                           value={item.app_teacher_type}
+                          onChange={(e) => this._handleAppiontment('app_teacher_type', e, idx)}
                         />
                       </FormGroup>
                     </Col>
@@ -951,6 +1066,7 @@ class Detail extends React.Component {
                         <label>เขต/อำเภอ</label>
                         <Input
                           value={item.app_district}
+                          onChange={(e) => this._handleAppiontment('app_district', e, idx)}
                         />
                       </FormGroup>
                       </Col>
@@ -962,6 +1078,7 @@ class Detail extends React.Component {
                         <label>จังหวัด</label>
                         <Input
                           value={item.app_country}
+                          onChange={(e) => this._handleAppiontment('app_country', e, idx)}
                           />
                       </FormGroup>
                     </Col>
@@ -970,6 +1087,7 @@ class Detail extends React.Component {
                         <label>วุฒิ</label>
                         <Input
                           value={item.app_educational}
+                          onChange={(e) => this._handleAppiontment('app_educational', e, idx)}
                           />
                       </FormGroup>
                     </Col>
@@ -978,6 +1096,7 @@ class Detail extends React.Component {
                         <label>ใบอนุญาติให้จำหน่าย เลขที่</label>
                         <Input
                           value={item.app_dischargeNO}
+                          onChange={(e) => this._handleAppiontment('app_dischargeNO', e, idx)}
                           />
                       </FormGroup>
                     </Col>
@@ -987,17 +1106,25 @@ class Detail extends React.Component {
                    <Col md={4}>
                      <FormGroup>
                         <label>ลงวันที่</label>
-                        <Input
-                          value={item.app_discharge_date}
-                          />
+                          <DatePicker
+                              format={"DD/MM/YYYY"}
+                              value={item.app_discharge_date}
+                              onChange={(e) => this._handleAppiontment('app_discharge_date', e, idx)}
+                              placeholder = {item.app_discharge_date}
+                              style={{borderRadius: '0.25rem'}}
+                            />
                       </FormGroup>
                     </Col>
                    <Col md={4}>
                       <FormGroup>
                         <label>ตั้งแต่วันที่</label>
-                        <Input
+                        <DatePicker
+                          format={"DD/MM/YYYY"}
                           value={item.app_discharge_since}
-                          />
+                          onChange={(e) => this._handleAppiontment('app_discharge_since', e, idx)}
+                          placeholder = {item.app_discharge_since}
+                          style={{borderRadius: '0.25rem'}}
+                        />
                       </FormGroup>
                     </Col>
                    <Col md={4}>
@@ -1005,6 +1132,7 @@ class Detail extends React.Component {
                         <label>สาเหตุ</label>
                         <Input
                           value={item.app_discharge_motive}
+                          onChange={(e) => this._handleAppiontment('app_discharge_motive', e, idx)}
                           />
                       </FormGroup>
                     </Col>
