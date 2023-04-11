@@ -16,13 +16,10 @@ import {
   TabPane,
 } from "reactstrap"
 import { Link } from "react-router-dom"
-import Swal from "sweetalert2"
+import JsPDF from 'jspdf';
 import { Loading ,SelectSearch,DatePicker} from "../../component/customComponent"
-import { differenceInDays } from 'date-fns'
-import { UserModel,PrefixModel} from "../../models"
-
+import { UserModel} from "../../models"
 const user_model = new UserModel()
-const prefix_model = new PrefixModel()
 class Detail extends React.Component {
   constructor(props) {
     super(props)
