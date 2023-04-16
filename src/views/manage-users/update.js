@@ -17,8 +17,11 @@ import {
 } from "reactstrap"
 import { Link } from "react-router-dom"
 import { Loading ,SelectSearch,DatePicker} from "../../component/customComponent"
-import dateFormat from '../../utils/date-format'
 import { UserModel,PrefixModel} from "../../models"
+import Swal from "sweetalert2"
+
+
+
 const user_model = new UserModel()
 const prefix_model = new PrefixModel()
 class Detail extends React.Component {
@@ -231,6 +234,45 @@ class Detail extends React.Component {
     this.setState({ app })
   }
 
+  _handlePortfolio = (name, e, idx) => {
+    let { portfolio } = this.state
+    portfolio[idx][name] = e.target.value
+    this.setState({ portfolio })
+  }
+
+  _handleInsignia = (name, e, idx) => {
+    let { insignia } = this.state
+    insignia[idx][name] = e.target.value
+    this.setState({ insignia })
+  }
+
+  _handlePunishment = (name, e, idx) => {
+    let { punishment } = this.state
+    punishment[idx][name] = e.target.value
+    this.setState({ punishment })
+  }
+
+  _handleSubmit = async (event) => {
+    event.preventDefault()
+    this._checkSubmit() && this.setState({ loading: true, }, async () => {
+      // const res = await news_model.insertNews({
+      //   newsID: this.state.newsID,
+      //   news_title: this.state.news_title,
+      //   news_description: this.state.news_description,
+      //   news_file_date: this.state.news_file,
+      // })
+      // if (res.require) {
+      //   Swal.fire({ title: "บันทึกข้อมูลแล้ว !", icon: "success", })
+      //   this.props.history.push(`/news`)
+      // } else {
+      //   this.setState({
+      //     loading: false,
+      //   }, () => {
+      //     Swal.fire({ title: "เกิดข้อผิดพลาด !", text: "ไม่สามารถดำเนินการได้ !", icon: "error", })
+      //   })
+      // }
+    })
+  }
   render() {
       const prefix_option = this.state.prefix.map(item => ({ value: item.prefixID, label: item.prefix_name }))
       const pos= this.state.position.filter(item => item.positionID !== 'pos1' && item.positionID !== 'pos2')
@@ -1139,7 +1181,7 @@ class Detail extends React.Component {
                   </Row>
                 </div>
               )): null}
-              {this.state.portfolio.length ? this.state.portfolio.map (item => (
+              {this.state.portfolio.length ? this.state.portfolio.map ((item,idx) => (
                 <div>
                   <Row>
                     <Col md={12}>
@@ -1147,27 +1189,29 @@ class Detail extends React.Component {
                         <label>ผลงาน</label>
                         <Input
                           value={item.portfolio_name}
+                          onChange={(e) => this._handlePortfolio('portfolio_name', e, idx)}
                         />
                       </FormGroup>
                     </Col>
                   </Row>
                 </div>
               )): null}
-              {this.state.insignia.length ? this.state.insignia.map (item => (
+              {this.state.insignia.length ? this.state.insignia.map ((item,idx) => (
                 <div>
                   <Row>
                     <Col md={12}>
                       <FormGroup>
                         <label>เครื่องราชอิสริยาภรณ์</label>
                         <Input
-                          value={item.portfolio_name}
+                          value={item.insignia_name}
+                          onChange={(e) => this._handleInsignia('insignia_name', e, idx)}
                         />
                       </FormGroup>
                     </Col>
                   </Row>
                 </div>
               )): null}
-              {this.state.punishment.length ? this.state.pusnisment.map (item => (
+              {this.state.punishment.length ? this.state.pusnisment.map ((item,idx) => (
                 <div>
                   <Row>
                     <Col md={12}>
@@ -1175,6 +1219,7 @@ class Detail extends React.Component {
                         <label>การลงโทษ</label>
                         <Input
                           value={item.pusnisment_name}
+                          onChange={(e) => this._handlePunishment('pusnisment_name', e, idx)}
                         />
                       </FormGroup>
                     </Col>
