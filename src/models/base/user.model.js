@@ -25,19 +25,24 @@ export default class UserModel extends BaseFetch{
     })
 
     insertUser = (data) =>this.authFetch({
-        url: 'building/insertUser',
+        url: 'user/insertUser',
         method: 'POST',
         body: JSON.stringify(data),
     })
 
     updateUser = (data) =>this.authFetch({
-        url: 'building/updateUser',
+        url: 'user/updateUser',
+        method: 'POST',
+        body: JSON.stringify(data),
+    })
+    updateUserByid = (data) =>this.authFetch({
+        url: 'user/updateUserByid',
         method: 'POST',
         body: JSON.stringify(data),
     })
 
     deleteUserByid = (data) =>this.directFetch({
-        url: 'building/deleteUserByid',
+        url: 'user/deleteUserByid',
         method: 'POST',
         body: JSON.stringify(data),
     })

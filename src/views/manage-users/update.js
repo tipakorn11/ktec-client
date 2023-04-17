@@ -24,7 +24,7 @@ import Swal from "sweetalert2"
 
 const user_model = new UserModel()
 const prefix_model = new PrefixModel()
-class Detail extends React.Component {
+class Update extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -57,6 +57,7 @@ class Detail extends React.Component {
   _fetchData = async () => {
     let { code } = this.props.match.params
     let user = await user_model.getUserByid({ personalID: code})
+    console.log(user);
     let prefix = await prefix_model.getPrefixBy()
     const{
       citizenID,
@@ -254,23 +255,53 @@ class Detail extends React.Component {
 
   _handleSubmit = async (event) => {
     event.preventDefault()
-    this._checkSubmit() && this.setState({ loading: true, }, async () => {
-      // const res = await news_model.insertNews({
-      //   newsID: this.state.newsID,
-      //   news_title: this.state.news_title,
-      //   news_description: this.state.news_description,
-      //   news_file_date: this.state.news_file,
-      // })
-      // if (res.require) {
-      //   Swal.fire({ title: "บันทึกข้อมูลแล้ว !", icon: "success", })
-      //   this.props.history.push(`/news`)
-      // } else {
-      //   this.setState({
-      //     loading: false,
-      //   }, () => {
-      //     Swal.fire({ title: "เกิดข้อผิดพลาด !", text: "ไม่สามารถดำเนินการได้ !", icon: "error", })
-      //   })
-      // }
+    const all_education = [...this.state.education,...this.state.education_sub,...this.state.etc]
+    this.setState({ loading: true, }, async () => {
+      const res = await user_model.updateUserByid({
+        personalID: this.state.personalID,
+        thai_fname: this.state.thai_fname,
+        thai_lname: this.state.thai_lname,
+        eng_fname: this.state.eng_fname,
+        eng_lname: this.state.eng_lname,
+        nationality: this.state.nationality,
+        bdate: this.state.bdate,
+        father_fname: this.state.father_fname,
+        father_lname: this.state.father_lname,
+        mother_fname: this.state.mother_lname,
+        courseID: this.state.courseID,
+        prefixID: this.state.prefixID,
+        addressID: this.state.addressID,
+        village_no: this.state.village_no,
+        house_no: this.state.house_no,
+        alley: this.state.alley,
+        road: this.state.road,
+        sub_district: this.state.sub_district,
+        sub_area: this.state.sub_area,
+        country: this.state.country,
+        postal_code: this.state.postal_code,
+        tel: this.state.tel,
+        educations: all_education.map((item) => ({
+          educational_typeID: item.educational_typeID,
+          personalID: item.personalID,
+          educational_name: item.educational_name,
+          educational_major: item.educational_major,
+          institution_name: item.institution_name,
+          graduate_country: item.graduate_country,
+          graduate_date: item.graduate_date,
+        }))
+
+        
+      })
+      if (res.require) {
+        Swal.fire({ title: "บันทึกข้อมูลแล้ว !", icon: "success", })
+        this.props.history.push(`/manage-users`)
+      } else {
+        this.setState({
+          loading: false,
+        }, () => {
+          Swal.fire({ title: "เกิดข้อผิดพลาด !", text: "ไม่สามารถดำเนินการได้ !", icon: "error", })
+        })
+      }
     })
   }
   render() {
@@ -1231,6 +1262,7 @@ class Detail extends React.Component {
 
             </CardBody>
             <CardFooter className="text-right">
+              <Button type="submit" color="success">บันทึก</Button>
               <Link to={`/manage-users`}><Button type="button">Back</Button></Link>
             </CardFooter>
             </Form>
@@ -1240,4 +1272,4 @@ class Detail extends React.Component {
   }
 }
 
-export default Detail
+export default Update
