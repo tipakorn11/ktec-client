@@ -92,8 +92,11 @@ class Update extends React.Component {
     let education = user.education.filter(item => item.educational_typeID === 'ED1001')
     let education_sub = user.education.filter(item => item.educational_typeID === 'ED1002')
     let etc = user.education.filter(item => item.educational_typeID === 'ED1003')
+    let pos= user.position.filter(item => item.positionID !== 'pos1' && item.positionID !== 'pos2')
+    let position_name = pos.map(item => item.position_name)
     this.setState({
         user,
+        position_name,
         prefix: prefix.data,
         position: user.position,
         teacher_license: user.tl,
@@ -263,11 +266,13 @@ class Update extends React.Component {
         thai_lname: this.state.thai_lname,
         eng_fname: this.state.eng_fname,
         eng_lname: this.state.eng_lname,
+        citizenID: this.state.citizenID,
         nationality: this.state.nationality,
         bdate: this.state.bdate,
         father_fname: this.state.father_fname,
         father_lname: this.state.father_lname,
-        mother_fname: this.state.mother_lname,
+        mother_fname: this.state.mother_fname,
+        mother_lname: this.state.mother_lname,
         courseID: this.state.courseID,
         prefixID: this.state.prefixID,
         addressID: this.state.addressID,
@@ -288,7 +293,83 @@ class Update extends React.Component {
           institution_name: item.institution_name,
           graduate_country: item.graduate_country,
           graduate_date: item.graduate_date,
-        }))
+        })),
+        trainings: this.state.training.map((item) => ({
+          trainningID: item.trainningID,
+          personalID: item.personalID,
+          training_topic: item.training_topic,
+          training_agency: item.training_agency,
+          country_agency: item.country_agency,
+          training_date: item.training_date,
+          training_end_date: item.training_end_date,
+        })),
+        teacher_licenses: this.state.teacher_license.map((item) => ({
+          teacher_license: item.teacher_license,
+          personalID: item.personalID,
+          tl_date: item.tl_date,
+          tl_since: item.tl_since,
+          tl_teaching_subject: item.tl_teaching_subject,
+        })) ,
+        teacher_permission_licenses: this.state.tpl.map((item) => ({
+          teacher_permission_licenseID: item.teacher_permission_licenseID,
+          personalID: item.personalID,
+          teacher_permissionNO: item.teacher_permissionNO,
+          tpl_date: item.tpl_date,
+          tpl_since: item.tpl_since,
+          tpl_currently_work: item.tpl_currently_work,
+          tpl_teacher_type: item.tpl_teacher_type,
+          tpl_district: item.tpl_district,
+          tpl_country: item.tpl_country,
+          tpl_teaching_subject: item.tpl_teaching_subject,
+          tpl_dischargeNO: item.tpl_dischargeNO,
+          tpl_discharge_date: item.tpl_discharge_date,
+          tpl_discharge_since: item.tpl_discharge_since,
+          tpl_discharge_motive: item.tpl_discharge_motive,
+          tpl_educational: item.tpl_educational,
+        })) ,
+        ht_licenses: this.state.ht_license.map((item) => ({
+          HT_licenseID: item.HT_licenseID,
+          personalID: item.personalID,
+          HT_licenseNO: item.HT_licenseNO,
+          HT_date: item.HT_date,
+          HT_date_since: item.HT_date_since,
+          HT_dischargeNO: item.HT_dischargeNO,
+          HT_discharge_date: item.HT_discharge_date,
+          HT_discharge_since: item.HT_discharge_since,
+          HT_discharge_motive: item.HT_discharge_motive,
+        })) ,
+        apps: this.state.app.map((item) => ({
+          appointmentID: item.appointmentID,
+          personalID: item.personalID,
+          appointmentNO: item.appointmentNO,
+          app_date: item.app_date,
+          app_since: item.app_since,
+          app_currently_work: item.app_currently_work,
+          app_teacher_type: item.app_teacher_type,
+          app_district: item.app_district,
+          app_country: item.app_country,
+          app_educational: item.app_educational,
+          app_teaching_subject: item.app_teaching_subject,
+          app_dischargeNO: item.app_dischargeNO,
+          app_discharge_date: item.app_discharge_date,
+          app_discharge_since: item.app_discharge_since,
+          app_discharge_motive: item.app_discharge_motive,
+        })) ,
+        portfolios: this.state.portfolio.map((item) => ({
+          portfolioID: item.portfolioID,
+          personalID: item.personalID,
+          portfolio_name: item.portfolio_name,
+        })) ,
+        insignias: this.state.insignias.map((item) => ({
+          insigniaID: item.insigniaID,
+          personalID: item.personalID,
+          insignia_name: item.insignia_name,
+        })) ,
+        punishments: this.state.punishment.map((item) => ({
+          punishmentID: item.punishmentID,
+          personalID: item.personalID,
+          punishment_name: item.punishment_name,
+        })) ,
 
         
       })
@@ -306,8 +387,7 @@ class Update extends React.Component {
   }
   render() {
       const prefix_option = this.state.prefix.map(item => ({ value: item.prefixID, label: item.prefix_name }))
-      const pos= this.state.position.filter(item => item.positionID !== 'pos1' && item.positionID !== 'pos2')
-      let position = pos.map(item => item.position_name)
+      
     return (
       <div>
        <Loading show={this.state.loading} />
@@ -413,7 +493,7 @@ class Update extends React.Component {
                         <FormGroup>
                           <label>ชื่อบิดา </label>
                           <Input
-                            value={"นาย "+this.state.father_fname}
+                            value={this.state.father_fname}
                             onChange={(e) => this.setState({ father_fname: e.target.value })}
 
                           />
@@ -433,7 +513,7 @@ class Update extends React.Component {
                           <label>ชื่อมารดา </label>
                           <Input
                             type="text"
-                            value={"นาง "+this.state.mother_fname}
+                            value={this.state.mother_fname}
                             onChange={(e) => this.setState({ mother_fname: e.target.value })}
                           />
                         </FormGroup>
@@ -474,10 +554,10 @@ class Update extends React.Component {
                     </Row>
                     <Row>
                       <Col md={12}>
-                        {position == 'ผู้อำนวยการ'?<FormGroup>
+                        {this.state.position_name == 'ผู้อำนวยการ'?<FormGroup>
                           <label>ตำแหน่ง </label>
                           <Input
-                            value={position}
+                            value={this.state.position_name}
                           />
                         </FormGroup>:''}
                       </Col>
@@ -760,7 +840,14 @@ class Update extends React.Component {
                 </Row>
               </TabPane>
               <TabPane tabId="second">
-              {this.state.teacher_license.length && position == "ผู้อำนวยการ" ? this.state.teacher_license.map ((item,idx) => (
+              {this.state.teacher_license.length ?
+                <Row>
+                    <Col md={12}>
+                        <label>ใบอนุญาติให้เป็นครู</label>
+                        <hr></hr>
+                    </Col>
+                </Row> :null  }   
+              {this.state.teacher_license.length && this.state.position_name == "ผู้อำนวยการ" ? this.state.teacher_license.map ((item,idx) => (
                       <div>
                         <Row>
                           <Col md={4}>
@@ -821,26 +908,23 @@ class Update extends React.Component {
                         </Row>
                       </div>
                     )): null}
+              {this.state.tpl.length ?
+                <Row>
+                    <Col md={12}>
+                        <label>ใบอนุญาติให้บรรจุครู</label>
+                        <hr></hr>
+                    </Col>
+                </Row> :null  }   
               {this.state.tpl.length ? this.state.tpl.map ((item,idx)=> (
                     <div>
                       <Row>
                         <Col md={4}>
                           <FormGroup>
-                            <label>ใบอนุญาติให้บรรจุ </label>
-                            <Input
-                              value={item.teacher_permission_licenseID}
-                                onChange={(e) => this._handleTeacherPermissionLicense('teacher_permission_licenseID', e, idx)}
-
-                            />
-                          </FormGroup>
-                        </Col>
-                        <Col md={4}>
-                          <FormGroup>
-                            <label>เลขที่ใบอณุญาติให้เป็นครู </label>
+                            <label>เลขที่ใบอนุญาติให้บรรจุครู </label>
                             <Input
                               type="text"
-                              value={item.teacher_pemissionNO}
-                              onChange={(e) => this._handleTeacherPermissionLicense('teacher_pemissionNO', e, idx)}
+                              value={item.teacher_permissionNO}
+                              onChange={(e) => this._handleTeacherPermissionLicense('teacher_permissionNO', e, idx)}
                             />
                           </FormGroup>
                         </Col>
@@ -856,8 +940,6 @@ class Update extends React.Component {
                               />
                           </FormGroup>
                         </Col>
-                      </Row>
-                      <Row>
                         <Col md={4}>
                           <FormGroup>
                             <label>ตั้งแต่วันที่ </label>
@@ -870,13 +952,15 @@ class Update extends React.Component {
                               />
                           </FormGroup>
                         </Col>
+                      </Row>
+                      <Row>
                         <Col md={4}>
                           <FormGroup>
                             <label> ปัจจุบันบรรจุเป็นครูโรงเรียน</label>
                             <Input
                               type="text"
-                              value={item.tpl_currenly_work}
-                              onChange={(e) => this._handleTeacherPermissionLicense('tpl_currenly_work', e, idx)}
+                              value={item.tpl_currently_work}
+                              onChange={(e) => this._handleTeacherPermissionLicense('tpl_currently_work', e, idx)}
                             />
                           </FormGroup>
                         </Col>
@@ -890,8 +974,6 @@ class Update extends React.Component {
                             />
                           </FormGroup>
                         </Col> 
-                      </Row>
-                      <Row>
                         <Col md={4}>
                           <FormGroup>
                             <label> เขต/อำเภอ</label>
@@ -902,13 +984,15 @@ class Update extends React.Component {
                             />
                           </FormGroup>
                         </Col>
+                      </Row>
+                      <Row>
                         <Col md={4}>
                           <FormGroup>
                             <label> จังหวัด</label>
                             <Input
                               type="text"
-                              value={item.country}
-                              onChange={(e) => this._handleTeacherPermissionLicense('country', e, idx)}
+                              value={item.tpl_country}
+                              onChange={(e) => this._handleTeacherPermissionLicense('tpl_country', e, idx)}
                             />
                           </FormGroup>
                         </Col> 
@@ -917,24 +1001,24 @@ class Update extends React.Component {
                             <label> วุฒิที่ใช้บรรจุ</label>
                             <Input
                               type="text"
-                              value={item.educational}
-                              onChange={(e) => this._handleTeacherPermissionLicense('educational', e, idx)}
+                              value={item.tpl_educational}
+                              onChange={(e) => this._handleTeacherPermissionLicense('tpl_educational', e, idx)}
                             />
                           </FormGroup>
                           </Col> 
-                      </Row>
-                      <Row>
-                        <Col md={4}>
+                          <Col md={4}>
                           <FormGroup>
                             <label> สอนวิชา-ชั้น</label>
                             <Input
                               type="text"
-                              value={item.tl_teaching_subject}
-                              onChange={(e) => this._handleTeacherPermissionLicense('tl_teaching_subject', e, idx)}
-
+                              value={item.tpl_teaching_subject}
+                              onChange={(e) => this._handleTeacherPermissionLicense('tpl_teaching_subject', e, idx)}
                             />
                           </FormGroup>
                         </Col> 
+                      </Row>
+                      <Row>
+                        
                         <Col md={4}>
                           <FormGroup>
                             <label> ใบอนุญาติให้จำหน่ายครู</label>
@@ -957,8 +1041,6 @@ class Update extends React.Component {
                               />
                           </FormGroup>
                         </Col>
-                      </Row>
-                      <Row>
                         <Col md={4}>
                           <FormGroup>
                             <label> ตั้งแต่วันที่</label>
@@ -971,6 +1053,9 @@ class Update extends React.Component {
                               />
                           </FormGroup>
                         </Col>
+                      </Row>
+                      <Row>
+                        
                         <Col md={4}>
                           <FormGroup>
                             <label> สาเหตุ</label>
@@ -984,18 +1069,16 @@ class Update extends React.Component {
                     </Row>
                     </div>
                   )): null}
+              {this.state.ht_license.length ?
+                <Row>
+                    <Col md={12}>
+                        <label>ใบอนุญาติให้เป็นครูใหญ่</label>
+                        <hr></hr>
+                    </Col>
+                </Row> :null }  
               {this.state.ht_license.length ? this.state.ht_license.map ((item,idx) => (
                 <div>
                   <Row>
-                    <Col md={4}>
-                      <FormGroup>
-                        <label>ใบอนุญาติให้เป็นครูใหญ่</label>
-                        <Input
-                          value={item.HT_licenseID}
-                          onChange={(e) => this._handleHeadTeacher('HT_licenseID', e, idx)}
-                        />
-                      </FormGroup>
-                    </Col>
                     <Col md={4}>
                       <FormGroup>
                         <label>เลขที่ </label>
@@ -1018,8 +1101,6 @@ class Update extends React.Component {
                               />
                       </FormGroup>
                     </Col>
-                  </Row>
-                  <Row>
                     <Col md={4}>
                       <FormGroup>
                         <label>ตั้งแต่วันที </label>
@@ -1032,6 +1113,8 @@ class Update extends React.Component {
                               />
                       </FormGroup>
                     </Col>
+                  </Row>
+                  <Row>
                     <Col md={4}>
                       <FormGroup>
                         <label>ใบอนุญาติให้จำหน่ายครูใหญ่ เลขที่ </label>
@@ -1053,8 +1136,6 @@ class Update extends React.Component {
                               />
                       </FormGroup>
                     </Col>
-                  </Row>
-                  <Row>
                     <Col md={4}>
                       <FormGroup>
                         <label> ตั้งแต่วันที่</label>
@@ -1067,6 +1148,9 @@ class Update extends React.Component {
                               />
                       </FormGroup>
                     </Col>
+                  </Row>
+                  <Row>
+                   
                     <Col md={4}>
                       <FormGroup>
                         <label> สาเหตุ</label>
@@ -1080,6 +1164,13 @@ class Update extends React.Component {
                   </Row>
                 </div>
               )): null}
+              {this.state.app.length ?
+                <Row>
+                    <Col md={12}>
+                        <label>หนังสือแต่งตั้งครู</label>
+                        <hr></hr>
+                    </Col>
+                </Row> :null }  
                {this.state.app.length ? this.state.app.map ((item,idx) => (
                 <div>
                   <Row>
@@ -1107,10 +1198,13 @@ class Update extends React.Component {
                     <Col md={4}>
                       <FormGroup>
                         <label>ตั้งแต่วันที่</label>
-                        <Input
-                          value={item.app_since}
-                          onChange={(e) => this._handleAppiontment('app_since', e, idx)}
-                        />
+                        <DatePicker
+                              format={"DD/MM/YYYY"}
+                              value={item.app_since}
+                              onChange={(e) => this._handleAppiontment('app_since', e, idx)}
+                              placeholder = {item.app_date}
+                              style={{borderRadius: '0.25rem'}}
+                            />
                       </FormGroup>
                     </Col>
                   </Row>
@@ -1212,6 +1306,13 @@ class Update extends React.Component {
                   </Row>
                 </div>
               )): null}
+              {this.state.portfolio.length ?
+                <Row>
+                    <Col md={12}>
+                        <label>ผลงาน</label>
+                        <hr></hr>
+                    </Col>
+                </Row> :null }  
               {this.state.portfolio.length ? this.state.portfolio.map ((item,idx) => (
                 <div>
                   <Row>
@@ -1227,6 +1328,13 @@ class Update extends React.Component {
                   </Row>
                 </div>
               )): null}
+              {this.state.insignia.length ?
+              <Row>
+                  <Col md={12}>
+                      <label>เครื่องราชอิสริยาภรณ์</label>
+                      <hr></hr>
+                  </Col>
+              </Row> :null }  
               {this.state.insignia.length ? this.state.insignia.map ((item,idx) => (
                 <div>
                   <Row>
@@ -1242,6 +1350,13 @@ class Update extends React.Component {
                   </Row>
                 </div>
               )): null}
+              {this.state.punishment.length ?
+              <Row>
+                  <Col md={12}>
+                      <label>การลงโทษ</label>
+                      <hr></hr>
+                  </Col>
+              </Row> :null }  
               {this.state.punishment.length ? this.state.pusnisment.map ((item,idx) => (
                 <div>
                   <Row>
