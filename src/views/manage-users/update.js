@@ -57,7 +57,6 @@ class Update extends React.Component {
   _fetchData = async () => {
     let { code } = this.props.match.params
     let user = await user_model.getUserByid({ personalID: code})
-    console.log(user);
     let prefix = await prefix_model.getPrefixBy()
     const{
       citizenID,
@@ -188,6 +187,8 @@ class Update extends React.Component {
       teacher_license[idx][name] = e
     else if (name === "tl_since")
       teacher_license[idx][name] = e
+    else if (name === "teacher_licenseID")
+      teacher_license[idx][name] = e.value
     else
       teacher_license[idx][name] = e.target.value
     this.setState({ teacher_license })
@@ -304,7 +305,8 @@ class Update extends React.Component {
           training_end_date: item.training_end_date,
         })),
         teacher_licenses: this.state.teacher_license.map((item) => ({
-          teacher_license: item.teacher_license,
+          teacher_licenseID: 1,
+          tl_licenseNO:1,
           personalID: item.personalID,
           tl_date: item.tl_date,
           tl_since: item.tl_since,
@@ -360,7 +362,7 @@ class Update extends React.Component {
           personalID: item.personalID,
           portfolio_name: item.portfolio_name,
         })) ,
-        insignias: this.state.insignias.map((item) => ({
+        insignias: this.state.insignia.map((item) => ({
           insigniaID: item.insigniaID,
           personalID: item.personalID,
           insignia_name: item.insignia_name,
@@ -387,6 +389,7 @@ class Update extends React.Component {
   }
   render() {
       const prefix_option = this.state.prefix.map(item => ({ value: item.prefixID, label: item.prefix_name }))
+      // const tl_option = [{ value: 'ร.๘ข',label: 'ร.๘ข'},{ value: 'สช.๑๑',label: 'สช.๑๑'}]
       
     return (
       <div>
@@ -856,7 +859,15 @@ class Update extends React.Component {
                               <Input
                                 value={item.teacher_licenseID}
                                 onChange={(e) => this._handleTeacherLicense('teacher_licenseID', e, idx)}
+                                readOnly
                               />
+                              {/* <SelectSearch
+                              options={tl_option}
+                              value={item.teacher_licenseID}
+                              onChange={(e) => this._handleTeacherLicense( 'teacher_licenseID',e,idx)}
+                              placeholder= {item.teacher_licenseID}
+                              style={{borderRadius: '0.25rem'}}
+                              /> */}
                             </FormGroup>
                           </Col>
                           <Col md={4}>
@@ -1357,15 +1368,15 @@ class Update extends React.Component {
                       <hr></hr>
                   </Col>
               </Row> :null }  
-              {this.state.punishment.length ? this.state.pusnisment.map ((item,idx) => (
+              {this.state.punishment.length ? this.state.punishment.map ((item,idx) => (
                 <div>
                   <Row>
                     <Col md={12}>
                       <FormGroup>
                         <label>การลงโทษ</label>
                         <Input
-                          value={item.pusnisment_name}
-                          onChange={(e) => this._handlePunishment('pusnisment_name', e, idx)}
+                          value={item.punishment_name}
+                          onChange={(e) => this._handlePunishment('punishment_name', e, idx)}
                         />
                       </FormGroup>
                     </Col>

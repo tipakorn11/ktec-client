@@ -1,6 +1,11 @@
 import { BaseFetch } from "../main-model";
 
 export default class UserModel extends BaseFetch{
+    generateUserLastCode = (data) => this.directFetch({
+        url: 'user/generateUserLastCode',
+        method: 'POST',
+        body: JSON.stringify(data),
+    })
     getUserBy = (data) => this.directFetch({
         url: 'user/getUserBy',
         method: 'POST',
