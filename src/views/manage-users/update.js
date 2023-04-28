@@ -76,7 +76,7 @@ class Update extends React.Component {
     }=user.data[0] 
     const{
       house_no,
-      village_name,
+      village_no,
       alley,
       road,
       sub_district,
@@ -123,7 +123,7 @@ class Update extends React.Component {
         prefixID,
         prefix_name,
         house_no,
-        village_name,
+        village_no,
         alley,
         road,
         sub_district,
@@ -539,7 +539,7 @@ class Update extends React.Component {
                           <Input
                             type="textarea"
                             row={3}
-                            value={this.state.house_no +" ซอย "+this.state.alley+" ถนน "+this.state.road+" แขวง/ตำบล "+ this.state.sub_area + " \nเขต/อำเภอ "+ this.state.sub_district+ " จังหวัด "+this.state.country }
+                            value={this.state.house_no +" ซอย "+this.state.alley+" ถนน "+this.state.road+" แขวง/ตำบล "+ this.state.sub_area + " \nเขต/อำเภอ "+ this.state.sub_district+" หมู่ที่ "+this.state.village_no+ " จังหวัด "+this.state.country }
                             readOnly
                           />
                         </FormGroup>

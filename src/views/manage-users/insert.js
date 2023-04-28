@@ -148,6 +148,19 @@ class Update extends React.Component {
       },
     ],
   }))
+  _addRowHeadTeacherLicenses = () => this.setState(state => ({
+    ht_license: [
+      ...state.ht_license, {
+        teacher_licenseID: '',
+        tl_licenseNO: '',
+        tl_date: '',
+        tl_since: '',
+        tl_teaching_subject: '',
+        personalID: this.state.personalID,
+      },
+    ],
+  }))
+  _addRowHeadTeacherLicenses
   _changeSelected(val, name) {
     var state = this.state;
     state[name] = val.value;
@@ -272,7 +285,7 @@ class Update extends React.Component {
     event.preventDefault()
     const all_education = [...this.state.education,...this.state.education_sub,...this.state.etc]
     this.setState({ loading: true, }, async () => {
-      const res = await user_model.updateUserByid({
+      const res = await user_model.insertUser({
         personalID: this.state.personalID,
         thai_fname: this.state.thai_fname,
         thai_lname: this.state.thai_lname,
@@ -544,24 +557,95 @@ class Update extends React.Component {
                       </Col>
                     </Row>
                     <Row>
-                      <Col md={8}>
-                        <FormGroup>
+                      <Col md={12}>
                           <label>ที่อยู่ </label>
+                          <hr></hr>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col md={3}>
+                        <FormGroup>
+                         <label> หมายเลขบ้าน </label>
                           <Input
-                            type="textarea"
+                            type="input"
                             row={3}
-                            value={this.state.house_no +" ซอย "+this.state.alley+" ถนน "+this.state.road+" แขวง/ตำบล "+ this.state.sub_area + " \nเขต/อำเภอ "+ this.state.sub_district+ " จังหวัด "+this.state.country }
-                            readOnly
+                            value = {this.state.addressID}
+                            onChange={(e) => this.setState({ addressID: e.target.value })}
                           />
                         </FormGroup>
                       </Col>
-                      <Col md={4}>
+                      <Col md={3}>
+                        <FormGroup>
+                         <label> บ้านเลขที่ </label>
+                          <Input
+                            type="input"
+                            row={3}
+                            value = {this.state.house_no}
+                            onChange={(e) => this.setState({ house_no: e.target.value })}
+                          />
+                        </FormGroup>
+                      </Col>
+                      <Col md={3}>
+                        <FormGroup>
+                          <label>ซอย </label>
+                          <Input
+                            type="input"
+                            value={this.state.alley}
+                            onChange={(e) => this.setState({ alley: e.target.value })}
+
+                          />
+                        </FormGroup>
+                      </Col>
+                      <Col md={3}>
+                        <FormGroup>
+                          <label>แขวง/ตำบล </label>
+                          <Input
+                            type="input"
+                            value={this.state.sub_area}
+                            onChange={(e) => this.setState({ sub_area: e.target.value })}
+
+                          />
+                        </FormGroup>
+                      </Col>
+                      </Row>
+                      <Row>
+                      <Col md={3}>
+                        <FormGroup>
+                          <label>หมู่ที่</label>
+                          <Input
+                            type="input"
+                            value={this.state.village_no}
+                            onChange={(e) => this.setState({ village_no: e.target.value })}
+                          />
+                        </FormGroup>
+                      </Col>
+                      <Col md={3}>
+                        <FormGroup>
+                          <label>เขต/อำเภอ </label>
+                          <Input
+                            type="input"
+                            value={this.state.sub_district}
+                            onChange={(e) => this.setState({ sub_district: e.target.value })}
+                          />
+                        </FormGroup>
+                      </Col>
+                      <Col md={3}>
+                        <FormGroup>
+                          <label>จังหวัด </label>
+                          <Input
+                            type="input"
+                            value={this.state.country}
+                            onChange={(e) => this.setState({ country: e.target.value })}
+                          />
+                        </FormGroup>
+                      </Col>
+                      <Col md={3}>
                         <FormGroup>
                           <label>เลขไปรษณีย์ </label>
                           <Input
-                            type="text"
+                            type="input"
                             value={this.state.postal_code}
-                            readOnly
+                            onChange={(e) => this.setState({ postal_code: e.target.value })}
                           />
                         </FormGroup>
                       </Col>
@@ -1214,6 +1298,13 @@ class Update extends React.Component {
                   </Row>
                 </div>
               )): null}
+              <Row>
+                    <Col md={12}>
+                    <hr></hr>
+                      <Button className="btn btn-success" onClick={()=>this._addRowHeadTeacherLicenses()}> <i className="fa fa-plus" aria-hidden="true" /> เพิ่มใบอนุญาติให้บรรจุครู </Button>
+                      <hr></hr>
+                    </Col>
+              </Row>
               {this.state.app.length ?
                 <Row>
                     <Col md={12}>
