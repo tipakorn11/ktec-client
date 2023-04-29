@@ -11,6 +11,16 @@ export default class UserModel extends BaseFetch{
         method: 'POST',
         body: JSON.stringify(data),
     })
+    getUserByUsername = (data) => this.directFetch({
+        url: 'user/getUserByUsername',
+        method: 'POST',
+        body: JSON.stringify(data),
+    })
+    getUserCitizenid = (data) => this.directFetch({
+        url: 'user/getUserCitizenid',
+        method: 'POST',
+        body: JSON.stringify(data),
+    })
     getUserByid = (data) => this.directFetch({
         url: 'user/getUserByid',
         method: 'POST',
@@ -45,7 +55,11 @@ export default class UserModel extends BaseFetch{
         method: 'POST',
         body: JSON.stringify(data),
     })
-
+    updateUserByCitizenid = (data) =>this.authFetch({
+        url: 'user/updateUserByCitizenid',
+        method: 'POST',
+        body: JSON.stringify(data),
+    })
     deleteUserByid = (data) =>this.directFetch({
         url: 'user/deleteUserByid',
         method: 'POST',

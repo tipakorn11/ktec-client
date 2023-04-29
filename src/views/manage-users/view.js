@@ -63,7 +63,7 @@ class ViewComponent extends React.Component {
           }).then(({ value }) => value && this.setState({ loading: true, }, async () => {
             let total = this.state.total - 1;
            
-            const res = await users_model.deleteUsersByid({ personalID: code })
+            const res = await users_model.deleteUserByid({ personalID: code })
             if (res.require) {
               Swal.fire({ title: 'ลบรายการแล้ว !', text: '', icon: 'success' })
               this._fetchData()
@@ -103,19 +103,13 @@ class ViewComponent extends React.Component {
                 {
                   title: "ชื่อ",
                   dataIndex: "",
-                  render: (cell) => `${cell.thai_fname}  ${cell.thai_lname}`,
+                  render: (cell) => `${cell.prefix_name} ${cell.thai_fname}  ${cell.thai_lname}`,
                   filterAble: true,
                   ellipsis: true,
                 },
                 { 
-                  title: "แผนก",
-                  dataIndex: "",
-                  render: (cell) => {
-                    if(cell.courseID === '30001')
-                      return 'ช่าง'
-                    else if(cell.courseID === '30002')
-                      return 'บริหาร'
-                  } ,
+                  title: "หมวดวิชา",
+                  dataIndex: "course_name",
                   filterAble: true,
                   ellipsis: true,
                 },
@@ -140,6 +134,13 @@ class ViewComponent extends React.Component {
                             <i className="fa fa-pencil-square-o" aria-hidden="true" />
                           </button>
                         </Link>
+                      )
+                    }
+                    if (permission_delete == 1) {
+                      row_accessible.push(
+                        <button key="delete" type="button" className="icon-button color-danger" onClick={() => this._onDelete(cell.personalID)} title="ลบรายการ">
+                        <i className="fa fa-trash" aria-hidden="true" />
+                      </button>
                       )
                     }
                     return row_accessible

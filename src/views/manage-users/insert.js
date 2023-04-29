@@ -17,7 +17,7 @@ import {
 } from "reactstrap"
 import { Link } from "react-router-dom"
 import { Loading ,SelectSearch,DatePicker} from "../../component/customComponent"
-import { UserModel,PrefixModel,PositionModel} from "../../models"
+import { UserModel,PrefixModel,PositionModel,CourseModel} from "../../models"
 import Swal from "sweetalert2"
 
 
@@ -25,6 +25,7 @@ import Swal from "sweetalert2"
 const user_model = new UserModel()
 const prefix_model = new PrefixModel()
 const position_model = new PositionModel()
+const course_model = new CourseModel()
 class Update extends React.Component {
   constructor(props) {
     super(props)
@@ -45,6 +46,7 @@ class Update extends React.Component {
       portfolio:[],
       insignia:[],
       punishment:[],
+      course:[],
       active_tab: "first",
       citizenID:"",
       thai_fname:"",
@@ -60,7 +62,7 @@ class Update extends React.Component {
       prefixID:"",
       prefix_name:"",
       house_no:"",
-      village_name:"",
+      village_no:"",
       alley:"",
       road:"",
       sub_district:"",
@@ -69,6 +71,7 @@ class Update extends React.Component {
       postal_code:"",
       tel:"",
       positionID:"",
+      courseID:"",
       
 
     }
@@ -82,7 +85,9 @@ class Update extends React.Component {
     let prefix = await prefix_model.getPrefixBy()
     let code = await user_model.generateUserLastCode()
     let position = await position_model.getPositionBy()
+    let course = await course_model.getCourseBy()
     this.setState({
+        course: course.data,
         position: position.data,
         personalID: code.data.last_code,
         prefix: prefix.data,
@@ -160,7 +165,54 @@ class Update extends React.Component {
       },
     ],
   }))
-  _addRowHeadTeacherLicenses
+  _addRowAppointment = () => this.setState(state => ({
+    app: [
+      ...state.app, {
+        appointmentID: '',
+        appointmentNO: '',
+        app_date: '',
+        app_since: '',
+        app_currently_work: '',
+        app_teacher_type: '',
+        app_district: '',
+        app_country: '',
+        app_teaching_subject: '',
+        app_dischargeNO: '',
+        app_discharge_date: '',
+        app_discharge_since: '',
+        app_discharge_motive: '',
+        personalID: this.state.personalID,
+      },
+    ],
+  }))
+  
+  _addRowPortfolio = () => this.setState(state => ({
+    portfolio: [
+      ...state.portfolio, {
+        portfolioID: '',
+        portfolio_name: '',
+        personalID: this.state.personalID,
+      },
+    ],
+  }))
+  _addRowInsignia = () => this.setState(state => ({
+    insignia: [
+      ...state.insignia, {
+        insigniaID: '',
+        insignia_name: '',
+        personalID: this.state.personalID,
+      },
+    ],
+  }))
+  _addRowPunishment = () => this.setState(state => ({
+    punishment: [
+      ...state.punishment, {
+        punishmentID: '',
+        punishment_name: '',
+        personalID: this.state.personalID,
+      },
+    ],
+  }))
   _changeSelected(val, name) {
     var state = this.state;
     state[name] = val.value;
@@ -213,6 +265,8 @@ class Update extends React.Component {
       teacher_license[idx][name] = e
     else if (name === "tl_since")
       teacher_license[idx][name] = e
+    else if (name === "teacher_licenseID")
+      teacher_license[idx][name] = e.value
     else
       teacher_license[idx][name] = e.target.value
     this.setState({ teacher_license })
@@ -283,7 +337,6 @@ class Update extends React.Component {
 
   _handleSubmit = async (event) => {
     event.preventDefault()
-    const all_education = [...this.state.education,...this.state.education_sub,...this.state.etc]
     this.setState({ loading: true, }, async () => {
       const res = await user_model.insertUser({
         personalID: this.state.personalID,
@@ -310,7 +363,8 @@ class Update extends React.Component {
         country: this.state.country,
         postal_code: this.state.postal_code,
         tel: this.state.tel,
-        educations: all_education.map((item) => ({
+        positionID: this.state.positionID,
+        educations: this.state.education.map((item) => ({
           educational_typeID: item.educational_typeID,
           personalID: item.personalID,
           educational_name: item.educational_name,
@@ -413,6 +467,7 @@ class Update extends React.Component {
   render() {
       const prefix_option = this.state.prefix.map(item => ({ value: item.prefixID, label: item.prefix_name }))
       const position_option = this.state.position.map(item => ({value: item.positionID, label: item.position_name}))
+      const course_option = this.state.course.map(item => ({value: item.courseID, label: item.course_name}))
       const tl_option = [{ value: 'ร.๘ข',label: 'ร.๘ข'},{ value: 'สช.๑๑',label: 'สช.๑๑'}]
 
     return (
@@ -651,13 +706,25 @@ class Update extends React.Component {
                       </Col>
                     </Row>
                     <Row>
-                      <Col md={12}>
+                      <Col md={6}>
                        <FormGroup>
                           <label>ตำแหน่ง </label>
                            <SelectSearch
                               options={position_option}
                               value={{ value: this.state.positionID }}
                               onChange={(val) => this._changeSelected(val, 'positionID')}
+
+                            />
+                        </FormGroup>
+                      </Col>
+                      <Col md={6}>
+                       <FormGroup>
+                          <label>หมวดวิชา </label>
+                           <SelectSearch
+                              options={course_option}
+                              value={{ value: this.state.courseID }}
+                              onChange={(val) => this._changeSelected(val, 'courseID')}
+
                             />
                         </FormGroup>
                       </Col>
@@ -1447,6 +1514,13 @@ class Update extends React.Component {
                   </Row>
                 </div>
               )): null}
+              <Row>
+                    <Col md={12}>
+                    <hr></hr>
+                      <Button className="btn btn-success" onClick={()=>this._addRowAppointment()}> <i className="fa fa-plus" aria-hidden="true" /> เพิ่มใบอนุญาติให้เป็นครูใหญ่ </Button>
+                      <hr></hr>
+                    </Col>
+              </Row>
               {this.state.portfolio.length ?
                 <Row>
                     <Col md={12}>
@@ -1456,6 +1530,7 @@ class Update extends React.Component {
                 </Row> :null }  
               {this.state.portfolio.length ? this.state.portfolio.map ((item,idx) => (
                 <div>
+                  
                   <Row>
                     <Col md={12}>
                       <FormGroup>
@@ -1469,6 +1544,13 @@ class Update extends React.Component {
                   </Row>
                 </div>
               )): null}
+              <Row>
+                    <Col md={12}>
+                    <hr></hr>
+                      <Button className="btn btn-success" onClick={()=>this._addRowPortfolio()}> <i className="fa fa-plus" aria-hidden="true" /> เพิ่มผลงาน </Button>
+                      <hr></hr>
+                    </Col>
+              </Row>
               {this.state.insignia.length ?
               <Row>
                   <Col md={12}>
@@ -1491,6 +1573,13 @@ class Update extends React.Component {
                   </Row>
                 </div>
               )): null}
+              <Row>
+                    <Col md={12}>
+                    <hr></hr>
+                      <Button className="btn btn-success" onClick={()=>this._addRowInsignia()}> <i className="fa fa-plus" aria-hidden="true" /> เพิ่มเครื่องราชอิสริยาภรณ์ </Button>
+                      <hr></hr>
+                    </Col>
+              </Row>
               {this.state.punishment.length ?
               <Row>
                   <Col md={12}>
@@ -1513,6 +1602,13 @@ class Update extends React.Component {
                   </Row>
                 </div>
               )): null}
+              <Row>
+                    <Col md={12}>
+                    <hr></hr>
+                      <Button className="btn btn-success" onClick={()=>this._addRowPunishment()}> <i className="fa fa-plus" aria-hidden="true" /> เพิ่มการลงโทษ </Button>
+                      <hr></hr>
+                    </Col>
+              </Row>
               </TabPane>
             </TabContent>
 

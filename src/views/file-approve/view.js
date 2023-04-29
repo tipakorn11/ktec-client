@@ -373,9 +373,9 @@ class ViewComponent extends React.Component {
                     {
                       title: "สถานะของไฟล์",
                       dataIndex: "file_status",
-                      render: (cell) => cell ==="cancel"? <p style ={{color: "white" ,backgroundColor:"red", width: "3.5rem",borderRadius: '1.5rem',textAlign: 'center'}}>ไม่อนุมัติ</p>:
-                                        cell ==="approve"?<p style ={{color: "white" ,backgroundColor:"green", width: "3.5rem",borderRadius: '1.5rem',textAlign: 'center'}}>อนุมัติ</p>:
-                                        <p style ={{color: "white" ,backgroundColor:"gold", width: "5rem",borderRadius: '1.5rem',textAlign: 'center'}}>รอการอนุมัติ</p>,
+                      render: (cell) => cell ==="cancel"? <p style ={{color: "#c63737" ,backgroundColor:"#ffcdd2", width: "3.5rem",borderRadius: '1.5rem',textAlign: 'center'}}>ไม่อนุมัติ</p>:
+                                        cell ==="approve"?<p style ={{color: "#256029" ,backgroundColor:"#c8e6c9", width: "3.5rem",borderRadius: '1.5rem',textAlign: 'center'}}>อนุมัติ</p>:
+                                        <p style ={{color: "#805b36" ,backgroundColor:"#ffd8b2", width: "5rem",borderRadius: '1.5rem',textAlign: 'center'}}>รอการอนุมัติ</p>,
                       filterAble: true,
                       ellipsis: true,
                     },
@@ -415,7 +415,7 @@ class ViewComponent extends React.Component {
                               </Link>
                             )
                           }
-                        if (1) {
+                        if (cell.file_status !== "approve") {
                           row_accessible.push(
                             <button key="delete" type="button" className="icon-button color-danger" onClick={() => this._onDelete(cell.fileID)} title="ลบรายการ">
                               <i className="fa fa-trash" aria-hidden="true" />
