@@ -13,13 +13,14 @@ import { Link } from "react-router-dom"
 import { Loading,  } from "../../component/customComponent"
 import { NewsModel} from "../../models"
 import dateFormat from '../../utils/date-format'
-
+import axios from "axios"
+import GROBAL from "../../GLOBAL"
 const news_model = new NewsModel()
 class Detail extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      news_titles: "", 
+      news_title: "", 
       news_description: "",
       news_file_date: "",
       news_file: "",
@@ -35,12 +36,11 @@ class Detail extends React.Component {
   _fetchData = async () => {
     let { code } = this.props.match.params
     let news = await news_model.getNewsByid({ newsID: code })
-
+    this.DownloadFile()
     const {
       news_title, 
       news_description,
       news_file_date,
-      news_file,
     } = news.data[0]
     const d = new Date()
     var year = d.getFullYear();
@@ -60,13 +60,30 @@ class Detail extends React.Component {
       news_title, 
       news_description,
       news_file_date : dateFormat.toFormat(news_file_date,"DD/MM/yyyy"),
-      news_file,
         loading: false,
         option_years,
         education_year:year + 543
     })
   }
-
+  DownloadFile = async () => {
+    const { code } = this.props.match.params
+    const data = new FormData()
+    data.append('fileID', code)
+    await axios.post(GROBAL.BASE_SERVER.URL + 'files/downloadFile', data, {
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }, responseType: 'blob'
+    })
+      .then((response) => {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'ข่าวประชาสัมพันธ์.pdf'); 
+        document.body.appendChild(link);
+        link.click();
+      });
+  }
   render() {
     return (
       <div>
@@ -101,8 +118,8 @@ class Detail extends React.Component {
                     
                   </Card>
                 </Col>
-                  <object  type="application/pdf" data={this.state.news_file} width="60%" height="700">
-                  </object>
+                  {/* <object  type="application/pdf" data={this.state.news_file} width="60%" height="700">
+                  </object> */}
               </Row>
             </CardBody>
             <CardFooter className="text-right">

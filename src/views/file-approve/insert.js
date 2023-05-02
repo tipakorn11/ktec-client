@@ -14,8 +14,8 @@ import {
 import { Link } from "react-router-dom"
 import Swal from "sweetalert2"
 import { Loading,SelectSearch } from "../../component/customComponent"
-
-
+import axios from "axios"
+import GROBAL from "../../GLOBAL"
 import { FilesModel} from "../../models"
 
 const files_model = new FilesModel()
@@ -55,7 +55,6 @@ class Insert extends React.Component {
         label:y
       })
     }
-    //.log(option_years);
     this.setState({
       fileID :code.data.last_code,
       loading: false,
@@ -80,9 +79,14 @@ class Insert extends React.Component {
         personalID: this.state.user.personalID,
         file_name: this.state.file_name,
         file_status: "wait",
-        file_pdf: this.state.file_pdf,
       })
-      if (res.require) {
+      
+      const data = new FormData()
+      data.append('fileID', this.state.fileID)
+      data.append('file_pdf', this.state.file_pdf)
+      const response = await axios.post(GROBAL.BASE_SERVER.URL + 'files/insertFilesDir',data, { headers: { "Content-Type": "multipart/form-data;charset=utf-8", 'x-access-token': GROBAL.ACCESS_TOKEN["x-access-token"] } })
+
+      if (res.require && response.data.require) {
         Swal.fire({ title: "บันทึกข้อมูลแล้ว !", icon: "success", })
         this.props.history.push(`/file-approve`)
       } else {
@@ -119,7 +123,6 @@ class Insert extends React.Component {
       { value: ' ใบประกาศเกียรติบัตร', label: ' ใบประกาศเกียรติบัตร' },
       { value: ' ผลงาน', label: ' ผลงาน' }, 
     ]
-    console.log(options);
     return (
       <div>
         <Loading show={this.state.loading} />
@@ -171,7 +174,7 @@ class Insert extends React.Component {
                             <Input
                               type="file"
                               accept="application/pdf"
-                              onChange={(e) => this.setState({file_pdf: e.target.value})}
+                              onChange={(e) => e.target.value.length > 0?this.setState({file_pdf: e.target.files[0]}):null}
                               />
                           </FormGroup>
                         </Col>

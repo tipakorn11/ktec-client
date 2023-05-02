@@ -32,7 +32,6 @@ const TheContent = (props) => {
           <Switch>
             {routes.map((route, idx) => {
               let PERMISSION = _generatePermission({ key: route.key, })
-              console.log(PERMISSION)
               return  route.component && PERMISSION.permission_view == "1"  &&(
               <Route
                 key={idx}

@@ -14,8 +14,8 @@ import {
 import { Link } from "react-router-dom"
 import Swal from "sweetalert2"
 import { Loading } from "../../component/customComponent"
-
-
+import axios from "axios"
+import GROBAL from "../../GLOBAL"
 import { NewsModel} from "../../models"
 
 const news_model = new NewsModel()
@@ -72,7 +72,12 @@ class Insert extends React.Component {
         news_description: this.state.news_description,
         news_file_date: this.state.news_file,
       })
-      if (res.require) {
+      const data = new FormData()
+      data.append('newsID', this.state.newsID)
+      data.append('news_file', this.state.news_file)
+      const response = await axios.post(GROBAL.BASE_SERVER.URL + 'news/insertFilesDir',data, { headers: { "Content-Type": "multipart/form-data;charset=utf-8", 'x-access-token': GROBAL.ACCESS_TOKEN["x-access-token"] } })
+
+      if (res.require && response.data.require) {
         Swal.fire({ title: "บันทึกข้อมูลแล้ว !", icon: "success", })
         this.props.history.push(`/news`)
       } else {
@@ -155,8 +160,8 @@ class Insert extends React.Component {
                         <label>ไฟล์<font color="#F00"><b>*</b></font></label>
                         <Input
                           type="file"
-                          value={this.state.news_file}
-                          onChange={(e) => this.setState({ news_file: e.target.value })}
+                          accept="application/pdf"
+                          onChange={(e) => e.target.value.length > 0?this.setState({ news_file: e.target.files[0] }):null}
                         />
                       </FormGroup>
                     </Col>

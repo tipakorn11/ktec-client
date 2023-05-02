@@ -22,6 +22,12 @@ export default class FilesModel extends BaseFetch{
         body: JSON.stringify(data),
     })
 
+    downloadFile = (data) =>this.directFetch({
+        url: 'files/downloadFile',
+        method: 'POST',
+        body: JSON.stringify(data),
+    })
+
     updateFiles = (data) =>this.directFetch({
         url: 'files/updateFiles',
         method: 'POST',

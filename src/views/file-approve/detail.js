@@ -14,6 +14,9 @@ import Swal from "sweetalert2"
 import { Loading } from "../../component/customComponent"
 import NoteModal from './note.modal'
 import { FilesModel} from "../../models"
+import Pdf from '../../assets/file/default-team.jpg'
+import axios from "axios"
+import GROBAL from "../../GLOBAL"
 // import { Document, Page } from 'react-pdf/dist/esm/entry.webpack5';
 const files_model = new FilesModel()
 class Detail extends React.Component {
@@ -23,7 +26,8 @@ class Detail extends React.Component {
       loading: true,
       files:[],
       option_years:[],
-      file_note : ""
+      file_note : "",
+      file_pdf:""
     }
   }
 
@@ -48,6 +52,7 @@ class Detail extends React.Component {
         label:y
       })
     }
+    this.DownloadFile()
     const   {
       fileID,
       personalID,
@@ -56,8 +61,7 @@ class Detail extends React.Component {
       file_date,
       fullname,
       file_note,
-      file_pdf
-    }  = files.data [0]
+    }=files.data[0]
     //.log(option_years);
     this.setState({
         files,
@@ -68,7 +72,6 @@ class Detail extends React.Component {
         file_date,
         fullname,
         file_note,
-        file_pdf,
         loading: false,
         option_years,
         education_year:year + 543,
@@ -113,9 +116,28 @@ class Detail extends React.Component {
       })
     }
   })
+  DownloadFile = async () => {
+    const { code } = this.props.match.params
+    const data = new FormData()
+    data.append('fileID', code)
+    await axios.post(GROBAL.BASE_SERVER.URL + 'files/downloadFile', data, {
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }, responseType: 'blob'
+    })
+      .then((response) => {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'ไฟล์.pdf'); 
+        document.body.appendChild(link);
+        link.click();
+      });
+  }
   render() {
     const { permission_approve,permission_cancel } = this.props.PERMISSION
-
+    
     return (
       <div>
         <Loading show={this.state.loading} />
@@ -157,8 +179,12 @@ class Detail extends React.Component {
                     
                   </Card>
                 </Col>
-                  <object  type="application/pdf" data={"https://www.africau.edu/images/default/sample.pdf"} width="60%" height="800">
-                  </object>
+                  {/* <object 
+                   type="application" 
+                   data={url} 
+                   width="60%" 
+                   height="800">
+                  </object> */}
               </Row>
             </CardBody>
             <CardFooter className="text-right">

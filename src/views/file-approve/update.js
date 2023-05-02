@@ -14,7 +14,8 @@ import {
 import { Link } from "react-router-dom"
 import Swal from "sweetalert2"
 import { Loading, SelectSearch } from "../../component/customComponent"
-
+import axios from "axios"
+import GROBAL from "../../GLOBAL"
 
 import { FilesModel} from "../../models"
 
@@ -96,7 +97,11 @@ class Update extends React.Component {
         file_status: "wait",
         file_pdf: this.state.file_pdf,
       })
-      if (res.require) {
+      const data = new FormData()
+      data.append('fileID', this.state.fileID)
+      data.append('file_pdf', this.state.file_pdf)
+      const response = await axios.post(GROBAL.BASE_SERVER.URL + 'files/insertFilesDir',data, { headers: { "Content-Type": "multipart/form-data;charset=utf-8", 'x-access-token': GROBAL.ACCESS_TOKEN["x-access-token"] } })
+      if (res.require && response.data.require) {
         Swal.fire({ title: "บันทึกข้อมูลแล้ว !", icon: "success", })
         this.props.history.push(`/file-approve`)
       } else {
@@ -183,7 +188,7 @@ class Update extends React.Component {
                             <Input
                               type="file"
                               accept="application/pdf"
-                              onChange={(e) => this.setState({file_pdf: e.target.value})}
+                              onChange={(e) => this.setState({file_pdf: e.target.files[0]})}
                               />
                           </FormGroup>
                         </Col>

@@ -1,8 +1,9 @@
+
 {
   "name": "ktec-client-build",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://localhost/",
+  "homepage": "http://dev.cpe.rmuti.ac.th/ktec/ktec-client",
   "dependencies": {
     "3": "^2.1.0",
     "@coreui/chartjs": "^2.0.0",
