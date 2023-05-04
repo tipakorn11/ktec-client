@@ -14,7 +14,6 @@ import Swal from "sweetalert2"
 import { Loading } from "../../component/customComponent"
 import NoteModal from './note.modal'
 import { FilesModel} from "../../models"
-import Pdf from '../../assets/file/default-team.jpg'
 import axios from "axios"
 import GROBAL from "../../GLOBAL"
 // import { Document, Page } from 'react-pdf/dist/esm/entry.webpack5';
@@ -27,7 +26,8 @@ class Detail extends React.Component {
       files:[],
       option_years:[],
       file_note : "",
-      file_pdf:""
+      file_pdf:"",
+      show_modal: false,
     }
   }
 
@@ -52,7 +52,7 @@ class Detail extends React.Component {
         label:y
       })
     }
-    // this.DownloadFile()
+    this.DownloadFile()
     const   {
       fileID,
       personalID,
@@ -64,7 +64,6 @@ class Detail extends React.Component {
     }=files.data[0]
     //.log(option_years);
     this.setState({
-        files,
         fileID,
         personalID,
         file_name,
@@ -79,7 +78,8 @@ class Detail extends React.Component {
     })
   }
 
-  _onApprove = () => this.setState({ loading: true, }, async () => {
+  _onApprove = (e) => this.setState({ loading: true, }, async () => {
+    e.preventDefault()
     const res = await files_model.updateStatusFiles({
       fileID : this.state.fileID,
       file_status: 'approve',
@@ -137,7 +137,14 @@ class Detail extends React.Component {
   }
   render() {
     const { permission_approve,permission_cancel } = this.props.PERMISSION
-    
+    const approve_button = []
+
+    if (permission_approve ==='1'&& permission_cancel === '1') {
+      if (this.state.file_status === 'wait' || this.state.file_status === 'cancel') {
+        approve_button.push(<Button key="approve" type="button" color="success" onClick={this._onApprove}>อนุมัติ</Button>)
+        approve_button.push(<Button key="not-approve" type="button" color="danger" onClick={() => this.setState({ show_modal: true })}>ไม่อนุมัติ</Button>)
+      } 
+    }
     return (
       <div>
         <Loading show={this.state.loading} />
@@ -145,7 +152,6 @@ class Detail extends React.Component {
           <CardHeader>
             <h3 className="text-header">รายละเอียดไฟล์</h3>
           </CardHeader>
-          <Form onSubmit={this._handleSubmit}>
             <CardBody className="p-5">
               <Row>
                 <Col md={8}>
@@ -179,21 +185,17 @@ class Detail extends React.Component {
                     
                   </Card>
                 </Col>
-                  {/* <object 
-                   type="application" 
-                   data={url} 
-                   width="60%" 
-                   height="800">
-                  </object> */}
+                  
               </Row>
             </CardBody>
             <CardFooter className="text-right">
-              {this.state.file_status == "wait" && permission_approve == '1' || this.state.file_status == "cancel"&& permission_approve == '1' ? 
-              <Button type="submit" color="success"onClick={this._onApprove}>อนุมัติ</Button> : null }
-              {this.state.file_status == "wait" && permission_cancel == 1 ? <Button type="submit" color="danger"onClick={() => this.setState({ show_modal: true })}>ไม่อนุมัติ</Button> : null }
+             {/* {(this.state.file_status === "wait" && permission_approve === '1') || (this.state.file_status === "cancel" && permission_approve === '1') ? 
+              <Button type="submit" color="success"onClick={ (e)=> this._onApprove(e)}>อนุมัติ</Button> 
+              : null }
+              {this.state.file_status === "wait" && permission_cancel === '1' ? <Button type="submit" color="danger"onClick={() => this.setState({ show_modal: true })}>ไม่อนุมัติ</Button> : null } */}
               <Link to={`/file-approve`}><Button type="button">Back</Button></Link>
+              {approve_button}
             </CardFooter>
-          </Form>
         </Card>
         <NoteModal
           show={this.state.show_modal}
