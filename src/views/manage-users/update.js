@@ -772,7 +772,7 @@ class Update extends React.Component {
                                 <Input
                                   type="text"
                                   value={item.training_agency}
-                                  onChange={(e) => this._handleTraining('training_topic', e, idx)}
+                                  onChange={(e) => this._handleTraining('training_agency', e, idx)}
                                 />
                               </FormGroup>
                             </Col>

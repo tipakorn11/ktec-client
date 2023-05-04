@@ -14,25 +14,22 @@ import {
 import { Link } from "react-router-dom"
 import Swal from "sweetalert2"
 import { Loading } from "../../component/customComponent"
-import { PositionModel} from "../../models"
-import { PermissionModel} from "../../models"
-const  permission_model = new PermissionModel()
-const  position_model = new PositionModel()
+import { PositionModel } from "../../models"
+import { PermissionModel } from "../../models"
+const permission_model = new PermissionModel()
+const position_model = new PositionModel()
 
 class Insert extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       loading: true,
-      permissions:[],
-      option_years:[],
-      menu:[],
-      positionID: '',
-      position_name: '',
+      permissions: [],
+      option_years: [],
+      menu: [],
+      positionID: "",
+      position_name: "",
     }
-
-
-
   }
 
   componentDidMount() {
@@ -43,82 +40,89 @@ class Insert extends React.Component {
     const code = await position_model.generatePositionLastCode()
     const permissions = await permission_model.getPermissionBy()
     const menu_permission = []
-    permissions.data.forEach(item => {
-            menu_permission.push({
-                ...item,
-                permission_add: false,
-                permission_edit: false,
-                permission_delete: false,
-                permission_view: false,
-                permission_approve: false,
-                permission_cancel: false
-
-            })
-        });
+    permissions.data.forEach((item) => {
+      menu_permission.push({
+        ...item,
+        permission_add: false,
+        permission_edit: false,
+        permission_delete: false,
+        permission_view: false,
+        permission_approve: false,
+        permission_cancel: false,
+      })
+    })
     const d = new Date()
-    var year = d.getFullYear();
+    var year = d.getFullYear()
     const option_years = []
     option_years.push({
-      value:year + 543,
-      label:year + 543
+      value: year + 543,
+      label: year + 543,
     })
-    for(let i = 1;i<=20;i++){
-      const y = (year + 543) - i;
+    for (let i = 1; i <= 20; i++) {
+      const y = year + 543 - i
       option_years.push({
-        value:y,
-        label:y
+        value: y,
+        label: y,
       })
     }
-    
+
     //.log(option_years);
     this.setState({
       positionID: code.data.last_code,
       permissions: menu_permission,
       loading: false,
       option_years,
-      education_year:year + 543
+      education_year: year + 543,
     })
   }
 
   _handleSubmit = async (event) => {
     event.preventDefault()
-    this._checkSubmit() && this.setState({ loading: true, }, async () => {
-      const res1 = await position_model.insertPosition({
-        positionID: this.state.positionID,
-        position_name: this.state.position_name
-      })
-      
-      const res = await permission_model.insertPermission({
-        permissions: this.state.permissions.map(item => ({
-          menuID: item.menuID,
+    this._checkSubmit() &&
+      this.setState({ loading: true }, async () => {
+        const res1 = await position_model.insertPosition({
           positionID: this.state.positionID,
-          permission_view: item.permission_view ? 1 : 0,
-          permission_add: item.permission_add ? 1 : 0,
-          permission_edit: item.permission_edit ? 1 : 0,
-          permission_approve: item.permission_approve ? 1 : 0,
-          permission_cancel: item.permission_cancel ? 1 : 0,
-          permission_delete: item.permission_delete ? 1 : 0,
-        }))
-      })
-      
-      if (res.require && res1.require) {
-        Swal.fire({ title: "บันทึกข้อมูลแล้ว !", icon: "success", })
-        this.props.history.push(`/manage-permission`)
-      } else {
-        this.setState({
-          loading: false,
-        }, () => {
-          Swal.fire({ title: "เกิดข้อผิดพลาด !", text: "ไม่สามารถดำเนินการได้ !", icon: "error", })
+          position_name: this.state.position_name,
         })
-      }
-    })
+
+        const res = await permission_model.insertPermission({
+          permissions: this.state.permissions.map((item) => ({
+            menuID: item.menuID,
+            positionID: this.state.positionID,
+            permission_view: item.permission_view ? 1 : 0,
+            permission_add: item.permission_add ? 1 : 0,
+            permission_edit: item.permission_edit ? 1 : 0,
+            permission_approve: item.permission_approve ? 1 : 0,
+            permission_cancel: item.permission_cancel ? 1 : 0,
+            permission_delete: item.permission_delete ? 1 : 0,
+          })),
+        })
+
+        if (res.require && res1.require) {
+          Swal.fire({ title: "บันทึกข้อมูลแล้ว !", icon: "success" })
+          this.props.history.push(`/manage-permission`)
+        } else {
+          this.setState(
+            {
+              loading: false,
+            },
+            () => {
+              Swal.fire({
+                title: "เกิดข้อผิดพลาด !",
+                text: "ไม่สามารถดำเนินการได้ !",
+                icon: "error",
+              })
+            }
+          )
+        }
+      })
   }
 
   _checkedAll = (e, permission) => {
     const { checked } = e.target
 
-    this.setState(state => {
-      state.permissions.forEach(item => {
+    this.setState((state) => {
+      state.permissions.forEach((item) => {
         if (permission === "view") {
           item.permission_view = checked
 
@@ -142,7 +146,7 @@ class Insert extends React.Component {
             item.permission_cancel = checked
           } else if (permission === "delete") {
             item.permission_delete = checked
-          } 
+          }
         }
       })
       return { permissions: state.permissions }
@@ -151,7 +155,7 @@ class Insert extends React.Component {
   _checkedItem = (e, idx, permission) => {
     const { checked } = e.target
 
-    this.setState(state => {
+    this.setState((state) => {
       if (permission === "view") {
         state.permissions[idx].permission_view = checked
 
@@ -175,23 +179,21 @@ class Insert extends React.Component {
           state.permissions[idx].permission_cancel = checked
         } else if (permission === "delete") {
           state.permissions[idx].permission_delete = checked
-        } 
+        }
       }
 
       return { permissions: state.permissions }
     })
   }
   _checkSubmit() {
-
-    if (this.state.position_name === '') {
+    if (this.state.position_name === "") {
       Swal.fire("กรุณากรอกชื่อสิทธิการใช้งาน")
       return false
-    }
-    else {
+    } else {
       return true
     }
   }
-  
+
   render() {
     return (
       <div>
@@ -203,12 +205,16 @@ class Insert extends React.Component {
           <Form onSubmit={this._handleSubmit}>
             <CardBody className="p-5">
               <Row>
-              
-              <Col md={12}>
+                <Col md={12}>
                   <Row>
                     <Col md={2}>
                       <FormGroup>
-                        <label>รหัสสิทธิการใช้งาน <font color="#F00"><b>*</b></font></label>
+                        <label>
+                          รหัสสิทธิการใช้งาน{" "}
+                          <font color="#F00">
+                            <b>*</b>
+                          </font>
+                        </label>
                         <Input
                           type="text"
                           value={this.state.positionID}
@@ -218,11 +224,18 @@ class Insert extends React.Component {
                     </Col>
                     <Col md={2}>
                       <FormGroup>
-                        <label>ชื่อสิทธิการใช้งาน <font color="#F00"><b>*</b></font></label>
+                        <label>
+                          ชื่อสิทธิการใช้งาน{" "}
+                          <font color="#F00">
+                            <b>*</b>
+                          </font>
+                        </label>
                         <Input
                           type="text"
                           value={this.state.position_name}
-                          onChange={(e) => this.setState({ position_name: e.target.value })}
+                          onChange={(e) =>
+                            this.setState({ position_name: e.target.value })
+                          }
                         />
                       </FormGroup>
                     </Col>
@@ -233,50 +246,85 @@ class Insert extends React.Component {
               <table className="table table-bordered">
                 <thead>
                   <tr>
-                    <th className="text-center" width={48}>#</th>
+                    <th className="text-center" width={48}>
+                      #
+                    </th>
                     <th className="text-center">ชื่อเมนูการใช้งาน</th>
                     <th className="text-center" width={90}>
                       <label className="m-0">
-                        <input type="checkbox" onChange={(e) => this._checkedAll(e, 'view')} /> ดู
+                        <input
+                          type="checkbox"
+                          onChange={(e) => this._checkedAll(e, "view")}
+                        />{" "}
+                        ดู
                       </label>
                     </th>
                     <th className="text-center" width={90}>
                       <label className="m-0">
-                        <input type="checkbox" onChange={(e) => this._checkedAll(e, 'add')} /> เพิ่ม
+                        <input
+                          type="checkbox"
+                          onChange={(e) => this._checkedAll(e, "add")}
+                        />{" "}
+                        เพิ่ม
                       </label>
                     </th>
                     <th className="text-center" width={90}>
                       <label className="m-0">
-                        <input type="checkbox" onChange={(e) => this._checkedAll(e, 'edit')} /> เเก้ไข
+                        <input
+                          type="checkbox"
+                          onChange={(e) => this._checkedAll(e, "edit")}
+                        />{" "}
+                        เเก้ไข
                       </label>
                     </th>
                     <th className="text-center" width={90}>
                       <label className="m-0">
-                        <input type="checkbox" onChange={(e) => this._checkedAll(e, 'approve')} /> อนุมัติ
+                        <input
+                          type="checkbox"
+                          onChange={(e) => this._checkedAll(e, "approve")}
+                        />{" "}
+                        อนุมัติ
                       </label>
                     </th>
                     <th className="text-center" width={90}>
                       <label className="m-0">
-                        <input type="checkbox" onChange={(e) => this._checkedAll(e, 'cancel')} /> ยกเลิก
+                        <input
+                          type="checkbox"
+                          onChange={(e) => this._checkedAll(e, "cancel")}
+                        />{" "}
+                        ยกเลิก
                       </label>
                     </th>
                     <th className="text-center" width={90}>
                       <label className="m-0">
-                        <input type="checkbox" onChange={(e) => this._checkedAll(e, 'delete')} /> ลบ
+                        <input
+                          type="checkbox"
+                          onChange={(e) => this._checkedAll(e, "delete")}
+                        />{" "}
+                        ลบ
                       </label>
                     </th>
                   </tr>
                 </thead>
                 <tbody>
-                  {
-                  this.state.permissions.map((item, idx) => {
+                  {this.state.permissions.map((item, idx) => {
                     let display_menus = []
-                    if (idx && item.menu_group && item.menu_group !== this.state.permissions[idx - 1].menu_group ) {
-                      let menu_group 
-                      
+                    if (
+                      idx &&
+                      item.menu_group &&
+                      item.menu_group !==
+                        this.state.permissions[idx - 1].menu_group
+                    ) {
+                      let menu_group
+
                       if (menu_group) {
                         display_menus.push(
-                          <tr key={menu_group.menu_group} style={{ backgroundColor: menu_group.menu_group_color }}>
+                          <tr
+                            key={menu_group.menu_group}
+                            style={{
+                              backgroundColor: menu_group.menu_group_color,
+                            }}
+                          >
                             <td colSpan={9}>{menu_group.menu_group_name}</td>
                           </tr>
                         )
@@ -285,39 +333,71 @@ class Insert extends React.Component {
 
                     display_menus.push(
                       <tr key={idx}>
-                        <td className="text-center">{idx + 1 }</td>
+                        <td className="text-center">{idx + 1}</td>
                         <td>{item.menu_name}</td>
                         <td className="text-center">
-                          <input type="checkbox" checked={item.permission_view} onChange={(e) => this._checkedItem(e, idx, 'view')} />
+                          <input
+                            type="checkbox"
+                            checked={item.permission_view}
+                            onChange={(e) => this._checkedItem(e, idx, "view")}
+                          />
                         </td>
                         <td className="text-center">
-                          <input type="checkbox" checked={item.permission_add} onChange={(e) => this._checkedItem(e, idx, 'add')} />
+                          <input
+                            type="checkbox"
+                            checked={item.permission_add}
+                            onChange={(e) => this._checkedItem(e, idx, "add")}
+                          />
                         </td>
                         <td className="text-center">
-                          <input type="checkbox" checked={item.permission_edit} onChange={(e) => this._checkedItem(e, idx, 'edit')} />
+                          <input
+                            type="checkbox"
+                            checked={item.permission_edit}
+                            onChange={(e) => this._checkedItem(e, idx, "edit")}
+                          />
                         </td>
                         <td className="text-center">
-                          <input type="checkbox" checked={item.permission_approve} onChange={(e) => this._checkedItem(e, idx, 'approve')} />
+                          <input
+                            type="checkbox"
+                            checked={item.permission_approve}
+                            onChange={(e) =>
+                              this._checkedItem(e, idx, "approve")
+                            }
+                          />
                         </td>
                         <td className="text-center">
-                          <input type="checkbox" checked={item.permission_cancel} onChange={(e) => this._checkedItem(e, idx, 'cancel')} />
+                          <input
+                            type="checkbox"
+                            checked={item.permission_cancel}
+                            onChange={(e) =>
+                              this._checkedItem(e, idx, "cancel")
+                            }
+                          />
                         </td>
                         <td className="text-center">
-                          <input type="checkbox" checked={item.permission_delete} onChange={(e) => this._checkedItem(e, idx, 'delete')} />
+                          <input
+                            type="checkbox"
+                            checked={item.permission_delete}
+                            onChange={(e) =>
+                              this._checkedItem(e, idx, "delete")
+                            }
+                          />
                         </td>
                       </tr>
                     )
 
                     return display_menus
-
-                  })
-                }
+                  })}
                 </tbody>
               </table>
             </CardBody>
             <CardFooter className="text-right">
-              <Button type="submit" color="success">บันทึก</Button>
-              <Link to={`/manage-permission`}><Button type="button">กลับ</Button></Link>
+              <Button type="submit" color="success">
+                บันทึก
+              </Button>
+              <Link to={`/manage-permission`}>
+                <Button type="button">กลับ</Button>
+              </Link>
             </CardFooter>
           </Form>
         </Card>
