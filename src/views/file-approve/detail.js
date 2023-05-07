@@ -193,8 +193,8 @@ class Detail extends React.Component {
               <Button type="submit" color="success"onClick={ (e)=> this._onApprove(e)}>อนุมัติ</Button> 
               : null }
               {this.state.file_status === "wait" && permission_cancel === '1' ? <Button type="submit" color="danger"onClick={() => this.setState({ show_modal: true })}>ไม่อนุมัติ</Button> : null } */}
-              <Link to={`/file-approve`}><Button type="button">Back</Button></Link>
               {approve_button}
+              <Link to={`/file-approve`}><Button type="button">Back</Button></Link>
             </CardFooter>
         </Card>
         <NoteModal

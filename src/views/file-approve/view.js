@@ -162,7 +162,6 @@ class ViewComponent extends React.Component {
                       title: "วันที่ อัปโหลดไฟล์",
                       dataIndex: "file_date_upload",
                       render: (cell) =>  dateFormat.toFormat(cell,"DD/MM/yyyy"),
-                      filterAble: true,
                       ellipsis: true,
                     },
                     {
@@ -226,14 +225,12 @@ class ViewComponent extends React.Component {
                       title: "วันที่ อัปโหลดไฟล์",
                       dataIndex: "file_date_upload",
                       render: (cell) =>  dateFormat.toFormat(cell,"DD/MM/yyyy"),
-                      filterAble: true,
                       ellipsis: true,
                     },
                     {
                       title: "วันที่ อนุมัติ",
                       dataIndex: "file_date_handle",
                       render: (cell) =>  dateFormat.toFormat(cell,"DD/MM/yyyy"),
-                      filterAble: true,
                       ellipsis: true,
                     },
                     {
@@ -297,20 +294,17 @@ class ViewComponent extends React.Component {
                       title: "วันที่ อัปโหลดไฟล์",
                       dataIndex: "file_date_upload",
                       render: (cell) =>  dateFormat.toFormat(cell,"DD/MM/yyyy"),
-                      filterAble: true,
                       ellipsis: true,
                     },
                     {
                       title: "วันที่ ไม่อนุมัติ",
                       dataIndex: "file_date_handle",
                       render: (cell) =>  dateFormat.toFormat(cell,"DD/MM/yyyy"),
-                      filterAble: true,
                       ellipsis: true,
                     },
                     {
                       title: "หมายเหตุ",
                       dataIndex: "file_note",
-                      filterAble: true,
                       ellipsis: true,
                     },
                     {
@@ -383,13 +377,11 @@ class ViewComponent extends React.Component {
                       title: "วันที่ อัปโหลดไฟล์",
                       dataIndex: "file_date_upload",
                       render: (cell) =>  dateFormat.toFormat(cell,"DD/MM/yyyy"),
-                      filterAble: true,
                       ellipsis: true,
                     },
                     {
                       title: "หมายเหตุ",
                       dataIndex: "file_note",
-                      filterAble: true,
                       ellipsis: true,
                     },
                     {

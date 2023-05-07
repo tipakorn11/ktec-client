@@ -1,85 +1,108 @@
-import React from 'react'
+import React from "react"
+import { Card, CardBody, CardHeader, Col, Row } from "reactstrap"
+import { Link } from "react-router-dom"
+import Swal from "sweetalert2"
+
 import {
-    Card,
-    CardBody,
-    CardHeader,
-    Col,
-    Row,
-
-} from 'reactstrap'
-import { Link } from 'react-router-dom'
-import Swal from 'sweetalert2'
-
-import { Loading, SelectSearch, DataTable } from "../../component/customComponent"
-import { CourseModel } from '../../models'
-
+  Loading,
+  SelectSearch,
+  DataTable,
+} from "../../component/customComponent"
+import { CourseModel } from "../../models"
 
 const course_model = new CourseModel()
 class ViewComponent extends React.Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            courses: [],
-            loading: true,
-            pagination: {
-                current: 1,
-                pageSize: 15,
-              },
-            total: '',
-
-            
-        }
+  constructor(props) {
+    super(props)
+    this.state = {
+      courses: [],
+      loading: true,
+      pagination: {
+        current: 1,
+        pageSize: 15,
+      },
+      total: "",
     }
+  }
 
-    async componentDidMount() {
-        this._fetchData()
-    }
-    _fetchData = (params = { pagination: this.state.pagination }) => this.setState({ loading: true, }, async () => {
-        let courses = await course_model.getCourseBy()
+  async componentDidMount() {
+    this._fetchData()
+  }
+  _fetchData = (params = { pagination: this.state.pagination }) =>
+    this.setState({ loading: true }, async () => {
+      let courses = await course_model.getCourseBy()
 
-        this.setState({
-          courses,
-          total: courses.total,
-          loading: false,
-           
-            })
-  
-        })
-    
-        _onDelete = (code) => Swal.fire({
-            title: "คุณแน่ใจหรือไม่ ?",
-            text: "ยืนยันลบรายการนี้",
-            icon: "warning",
-            showCancelButton: true,
-          }).then(({ value }) => value && this.setState({ loading: true, }, async () => {
-            let total = this.state.total - 1;
-           
-            const res = await course_model.deleteCourseByid({ courseID: code })
-            if (res.require) {
-              Swal.fire({ title: 'ลบรายการแล้ว !', text: '', icon: 'success' })
-              this._fetchData()
-            } else {
-              this.setState({
+      this.setState({
+        courses,
+        total: courses.total,
+        loading: false,
+      })
+    })
+
+  _onDelete = (code) =>
+    Swal.fire({
+      title: "คุณแน่ใจหรือไม่ ?",
+      text: "ยืนยันลบรายการนี้",
+      icon: "warning",
+      showCancelButton: true,
+    }).then(
+      ({ value }) =>
+        value &&
+        this.setState({ loading: true }, async () => {
+          let total = this.state.total - 1
+
+          const res = await course_model.deleteCourseByid({ courseID: code })
+          if (res.data.length === 0 && res.require) {
+            Swal.fire({ title: "ลบรายการแล้ว !", text: "", icon: "success" })
+            this._fetchData()
+          } else if (res.data.length > 0 && res.require)
+            this.setState(
+              {
                 loading: false,
-              }, () => {
-                Swal.fire({ title: "เกิดข้อผิดพลาด !", text: "ไม่สามารถดำเนินการได้ !", icon: "error", })
-              })
-            }
-          }))
-    render() {
-        const { permission_add, permission_edit, permission_delete } = this.props.PERMISSION
-        
-        return (
-             <div>
+              },
+              () => {
+                Swal.fire({
+                  title: "เกิดข้อผิดพลาด !",
+                  text: "ไม่สามารถดำเนินการได้เนื่องจากข้อมูลถูกใช้อยู่",
+                  icon: "warning",
+                })
+              }
+            )
+          else {
+            this.setState(
+              {
+                loading: false,
+              },
+              () => {
+                Swal.fire({
+                  title: "เกิดข้อผิดพลาด !",
+                  text: "ไม่สามารถดำเนินการได้ !",
+                  icon: "error",
+                })
+              }
+            )
+          }
+        })
+    )
+  render() {
+    const { permission_add, permission_edit, permission_delete } =
+      this.props.PERMISSION
+
+    return (
+      <div>
         <Loading show={this.state.loading} />
         <Card>
           <CardHeader>
             <h3 className="text-header">จัดการข้อมูลหมวดวิชา</h3>
-              {permission_add == 1 ?
-                <Link key={"insert"} to={`/course/insert`} className="btn btn-success float-right">
-                  <i className="fa fa-plus" aria-hidden="true" /> เพิ่มหมวดวิชา
-                </Link>
-                : null }
+            {permission_add == 1 ? (
+              <Link
+                key={"insert"}
+                to={`/course/insert`}
+                className="btn btn-success float-right"
+              >
+                <i className="fa fa-plus" aria-hidden="true" /> เพิ่มหมวดวิชา
+              </Link>
+            ) : null}
           </CardHeader>
           <CardBody>
             <DataTable
@@ -89,7 +112,7 @@ class ViewComponent extends React.Component {
               dataSource={this.state.courses.data}
               dataTotal={this.state.courses.total}
               current={this.state.pagination.current}
-              rowKey='courseID'
+              rowKey="courseID"
               columns={[
                 {
                   title: "รหัสหมวดวิชา",
@@ -103,25 +126,41 @@ class ViewComponent extends React.Component {
                   filterAble: true,
                   ellipsis: true,
                 },
-                
+
                 {
-                  title: '',
-                  dataIndex: '',
+                  title: "",
+                  dataIndex: "",
                   render: (cell) => {
                     const row_accessible = []
-                  
+
                     if (permission_edit == 1) {
                       row_accessible.push(
-                        <Link key={"update"} to={`/course/update/${cell.courseID}`} title="แก้ไขรายการ">
-                          <button type="button" className="icon-button color-warning">
-                            <i className="fa fa-pencil-square-o" aria-hidden="true" />
+                        <Link
+                          key={"update"}
+                          to={`/course/update/${cell.courseID}`}
+                          title="แก้ไขรายการ"
+                        >
+                          <button
+                            type="button"
+                            className="icon-button color-warning"
+                          >
+                            <i
+                              className="fa fa-pencil-square-o"
+                              aria-hidden="true"
+                            />
                           </button>
                         </Link>
                       )
                     }
                     if (permission_delete == 1) {
                       row_accessible.push(
-                        <button key="delete" type="button" className="icon-button color-danger" onClick={() => this._onDelete(cell.courseID)} title="ลบรายการ">
+                        <button
+                          key="delete"
+                          type="button"
+                          className="icon-button color-danger"
+                          onClick={() => this._onDelete(cell.courseID)}
+                          title="ลบรายการ"
+                        >
                           <i className="fa fa-trash" aria-hidden="true" />
                         </button>
                       )
@@ -129,15 +168,15 @@ class ViewComponent extends React.Component {
 
                     return row_accessible
                   },
-                  width: 80
+                  width: 80,
                 },
               ]}
             />
           </CardBody>
         </Card>
       </div>
-        )
-    }
+    )
+  }
 }
 
 export default ViewComponent

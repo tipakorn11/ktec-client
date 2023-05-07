@@ -165,7 +165,6 @@ class ViewComponent extends React.Component {
                   title: "วันที่",
                   dataIndex: "news_file_date",
                   render: (cell) => dateFormat.toFormat(cell,"DD/MM/yyyy"),
-                  filterAble: true,
                   ellipsis: true,
                 },
                 {

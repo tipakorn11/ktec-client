@@ -65,10 +65,18 @@ class ViewComponent extends React.Component {
             let total = this.state.total - 1;
            
             const res = await prefix_model.deletePrefixByid({ prefixID: code })
-            if (res.require) {
+            if (res.data.length === 0 && res.require) {
               Swal.fire({ title: 'ลบรายการแล้ว !', text: '', icon: 'success' })
               this._fetchData()
-            } else {
+            }
+            else if (res.data.length > 0 && res.require){
+              this.setState({
+                loading: false,
+              }, () => {
+              Swal.fire({ title: 'เกิดข้อผิดพลาด !', text: 'ไม่สามารถดำเนินการได้เนื่องจากข้อมูลถูกใช้อยู่', icon: 'warning' })
+            })
+          }
+             else {
               this.setState({
                 loading: false,
               }, () => {

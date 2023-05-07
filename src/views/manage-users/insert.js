@@ -278,6 +278,7 @@ class Update extends React.Component {
   }
 
   _handleTeacherLicense = (name, e, idx) => {
+    console.log(name,e,idx);
     let { teacher_license } = this.state
     if (name === "tl_date") teacher_license[idx][name] = e
     else if (name === "tl_since") teacher_license[idx][name] = e
@@ -383,7 +384,8 @@ class Update extends React.Component {
             training_end_date: item.training_end_date,
           })),
           teacher_licenses: this.state.teacher_license.map((item) => ({
-            teacher_license: item.teacher_license,
+            teacher_licenseID: item.teacher_licenseID,
+            tl_licenseNO: item.tl_licenseNO,
             personalID: item.personalID,
             tl_date: item.tl_date,
             tl_since: item.tl_since,
