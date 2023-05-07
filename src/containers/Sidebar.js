@@ -19,11 +19,12 @@ const TheSidebar = (props) => {
   const show = useSelector(state => state.sidebarShow)
 
   const { PERMISSIONS } = props
+  let USER = JSON.parse(localStorage.getItem('session-user'));
 
   const [navigations, setNavigation] = useState([])
   useEffect(() => {
-    setNavigation(accessMenu({ PERMISSIONS, }))
-  }, [PERMISSIONS])
+    setNavigation(accessMenu({ PERMISSIONS, USER}))
+  }, [PERMISSIONS],[USER])
 
   return (
     <CSidebar show={show} onShowChange={(val) => dispatch({ type: 'set', sidebarShow: val })}>
