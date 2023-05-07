@@ -28,7 +28,8 @@ import {
   CourseModel,
 } from "../../models"
 import Swal from "sweetalert2"
-
+import GROBAL from "../../GLOBAL"
+import axios from "axios"
 const user_model = new UserModel()
 const prefix_model = new PrefixModel()
 const position_model = new PositionModel()
@@ -80,6 +81,7 @@ class Update extends React.Component {
       tel: "",
       positionID: "",
       courseID: "",
+      img:""
     }
   }
 
@@ -92,6 +94,7 @@ class Update extends React.Component {
     let code = await user_model.generateUserLastCode()
     let position = await position_model.getPositionBy()
     let course = await course_model.getCourseBy()
+    // this.DownloadFile()
     this.setState({
       course: course.data,
       position: position.data,
@@ -470,6 +473,31 @@ class Update extends React.Component {
           )
         }
       })
+      const data = new FormData()
+      data.append('img', this.state.img)
+      data.append('personalID', this.state.personalID)
+      const response = await axios.post(GROBAL.BASE_SERVER.URL + 'user/insertImgDir',data, { headers: { "Content-Type": "multipart/form-data;charset=utf-8", 'x-access-token': GROBAL.ACCESS_TOKEN["x-access-token"] } })
+  }
+  DownloadFile = async () => {
+    const { code } = this.props.match.params
+    const data = new FormData()
+    data.append('fileID', code)
+    await axios.post(GROBAL.BASE_SERVER.URL + 'files/downloadFile', data, {
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }, responseType: 'blob'
+    })
+      .then((response) => {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        this.state.img = link.href
+        console.log(url)
+        link.setAttribute('download', 'img.jpg'); 
+        document.body.appendChild(link);
+        link.click();
+      });
   }
   _checkSubmit() {
     if (this.state.addressID === "") {
@@ -1226,17 +1254,26 @@ class Update extends React.Component {
                         </Col>
                       </Row>
                     </Col>
-                    <Col lg={4}>
+                                      
+                    {/* <Col lg={4}>
                       <label>โปรไฟล์ </label>
                       <FormGroup className="text-center">
                         <img
                           className="image-upload"
                           style={{ maxWidth: 280 }}
-                          // src={this.state.employee_profile_image.src}
+                          src={this.state.img}
                           alt="profile"
                         />
                       </FormGroup>
-                    </Col>
+                      <FormGroup>
+                        <label>ไฟล์<font color="#F00"><b>*</b></font></label>
+                        <Input
+                          type="file"
+                          accept="image/*"
+                          onChange={(e) => e.target.value.length > 0? this.setState({ img: e.target.files[0] }):null}
+                        />
+                      </FormGroup>
+                    </Col> */}
                   </Row>
                 </TabPane>
                 <TabPane tabId="second">

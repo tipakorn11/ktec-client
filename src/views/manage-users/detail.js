@@ -511,7 +511,7 @@ class Detail extends React.Component {
                           ))
                         : null}
                     </Col>
-                    <Col lg={4}>
+                    {/* <Col lg={4}>
                       <label>โปรไฟล์ </label>
                       <FormGroup className="text-center">
                         <img
@@ -521,12 +521,11 @@ class Detail extends React.Component {
                           alt="profile"
                         />
                       </FormGroup>
-                    </Col>
+                    </Col> */}
                   </Row>
                 </TabPane>
                 <TabPane tabId="second">
-                  {this.state.tl.length
-                    ? this.state.tl.map((item) => (
+                  {this.state.tl.length? this.state.tl.map((item) => (
                         <div>
                           <Row>
                             <Col md={4}>

@@ -828,7 +828,7 @@ class Update extends React.Component {
                   )): null}
                     
                   </Col>
-                  <Col lg={4}>
+                  {/* <Col lg={4}>
                     <label>โปรไฟล์ </label>
                     <FormGroup className="text-center">
                       <img
@@ -839,7 +839,7 @@ class Update extends React.Component {
                       />
                     </FormGroup>
                     
-                  </Col>
+                  </Col> */}
                 </Row>
               </TabPane>
               <TabPane tabId="second">
